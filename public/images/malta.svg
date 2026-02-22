@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a1228"/>
+      <stop offset="30%" stop-color="#1a2a50"/>
+      <stop offset="60%" stop-color="#2a4a7a"/>
+      <stop offset="100%" stop-color="#3a6090"/>
+    </linearGradient>
+    <linearGradient id="sea" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a3a5a"/>
+      <stop offset="50%" stop-color="#0d2a48"/>
+      <stop offset="100%" stop-color="#0a1830"/>
+    </linearGradient>
+    <linearGradient id="rock" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6a5a45"/>
+      <stop offset="100%" stop-color="#4a3a28"/>
+    </linearGradient>
+  </defs>
+  <!-- Sky -->
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <!-- Moon -->
+  <circle cx="650" cy="90" r="35" fill="#e8d8a0" opacity="0.9"/>
+  <circle cx="662" cy="82" r="30" fill="url(#sky)"/>
+  <!-- Moon glow -->
+  <circle cx="650" cy="90" r="80" fill="#e8d8a0" opacity="0.08"/>
+  <circle cx="650" cy="90" r="50" fill="#e8d8a0" opacity="0.05"/>
+  <!-- Stars -->
+  <circle cx="100" cy="40" r="2" fill="#fff" opacity="0.8"/><circle cx="250" cy="60" r="1.5" fill="#fff" opacity="0.6"/>
+  <circle cx="450" cy="30" r="1.5" fill="#fff" opacity="0.7"/><circle cx="550" cy="55" r="1" fill="#fff" opacity="0.5"/>
+  <circle cx="350" cy="80" r="1" fill="#fff" opacity="0.4"/><circle cx="180" cy="110" r="1" fill="#fff" opacity="0.3"/>
+  <circle cx="500" cy="100" r="1.5" fill="#fff" opacity="0.5"/><circle cx="750" cy="50" r="1" fill="#fff" opacity="0.6"/>
+  <!-- Storm clouds -->
+  <ellipse cx="200" cy="120" rx="150" ry="50" fill="#1a2a40" opacity="0.6"/>
+  <ellipse cx="350" cy="140" rx="120" ry="40" fill="#1a2a40" opacity="0.5"/>
+  <ellipse cx="500" cy="110" rx="130" ry="45" fill="#1a2a40" opacity="0.4"/>
+  <!-- Lightning bolt -->
+  <path d="M300 150 L290 200 L305 195 L285 250" stroke="#e8d8a0" stroke-width="2" fill="none" opacity="0.4"/>
+  <!-- Sea -->
+  <rect x="0" y="330" width="800" height="270" fill="url(#sea)"/>
+  <!-- Waves -->
+  <path d="M0 340 Q50 328 100 340 Q150 352 200 340 Q250 328 300 340 Q350 352 400 340 Q450 328 500 340 Q550 352 600 340 Q650 328 700 340 Q750 352 800 340" stroke="#4a7a9a" stroke-width="2" fill="none" opacity="0.6"/>
+  <path d="M0 370 Q60 358 120 370 Q180 382 240 370 Q300 358 360 370 Q420 382 480 370 Q540 358 600 370 Q660 382 720 370 Q780 358 800 365" stroke="#3a6a8a" stroke-width="1.5" fill="none" opacity="0.5"/>
+  <path d="M0 400 Q70 390 140 400 Q210 410 280 400 Q350 390 420 400 Q490 410 560 400 Q630 390 700 400 Q770 410 800 405" stroke="#2a5a7a" stroke-width="1" fill="none" opacity="0.4"/>
+  <!-- Moonlight reflection on water -->
+  <ellipse cx="650" cy="380" rx="60" ry="8" fill="#e8d8a0" opacity="0.15"/>
+  <ellipse cx="650" cy="400" rx="40" ry="5" fill="#e8d8a0" opacity="0.1"/>
+  <ellipse cx="650" cy="420" rx="25" ry="3" fill="#e8d8a0" opacity="0.08"/>
+  <!-- === Ship (tilted, dramatic) === -->
+  <!-- Hull -->
+  <path d="M280 300 L260 350 L500 355 L480 295 Z" fill="#5a3a20" stroke="#8a6a40" stroke-width="1.5"/>
+  <path d="M270 340 Q380 360 490 345" stroke="#7a5a30" stroke-width="1" fill="none"/>
+  <!-- Mast -->
+  <rect x="375" y="200" width="6" height="150" fill="#7a5a30" transform="rotate(8 378 350)"/>
+  <!-- Sail (torn) -->
+  <path d="M381 210 L381 300 L440 290 Z" fill="#c8b898" stroke="#a89878" stroke-width="1" opacity="0.8"/>
+  <path d="M377 215 L377 295 L340 285 Z" fill="#b8a888" stroke="#a89070" stroke-width="1" opacity="0.7"/>
+  <!-- Sail tear -->
+  <path d="M410 250 L425 265" stroke="#5a3a20" stroke-width="1.5" opacity="0.5"/>
+  <!-- Cross on mast -->
+  <rect x="374" y="190" width="6" height="22" rx="1" fill="#f0d060"/>
+  <rect x="368" y="197" width="18" height="5" rx="1" fill="#f0d060"/>
+  <!-- Crew/figures on deck -->
+  <circle cx="320" cy="310" r="5" fill="#a08060"/><rect x="317" y="315" width="6" height="12" fill="#8a6a40"/>
+  <circle cx="420" cy="305" r="5" fill="#a08060"/><rect x="417" y="310" width="6" height="12" fill="#8a6a40"/>
+  <!-- Splash/waves at hull -->
+  <path d="M250 355 Q240 345 255 340 Q270 335 260 348" fill="#5a8aaa" opacity="0.5"/>
+  <path d="M500 350 Q510 340 505 335 Q495 340 505 350" fill="#5a8aaa" opacity="0.4"/>
+  <!-- Rocky coast right -->
+  <path d="M600 280 L630 255 L665 285 L700 250 L745 275 L780 255 L800 265 L800 500 L600 500 Z" fill="url(#rock)"/>
+  <path d="M620 310 L650 295 L680 310" stroke="#8a7a60" stroke-width="0.8" fill="none" opacity="0.5"/>
+  <!-- Lighthouse on coast -->
+  <rect x="710" y="200" width="24" height="75" rx="2" fill="#b8a880" stroke="#a09070" stroke-width="1"/>
+  <polygon points="722,200 700,225 744,225" fill="#c8b890"/>
+  <rect x="714" y="195" width="16" height="8" rx="2" fill="#c8b890"/>
+  <!-- Lighthouse light -->
+  <circle cx="722" cy="198" r="6" fill="#f0e0a0" opacity="0.9"/>
+  <circle cx="722" cy="198" r="15" fill="#f0e0a0" opacity="0.2"/>
+  <circle cx="722" cy="198" r="30" fill="#f0e0a0" opacity="0.08"/>
+  <!-- Light beam -->
+  <path d="M722 198 L580 280 L560 260 Z" fill="#f0e0a0" opacity="0.04"/>
+  <!-- Rocky coast left -->
+  <path d="M0 320 L35 290 L70 310 L110 280 L150 305 L180 320 L180 500 L0 500 Z" fill="url(#rock)"/>
+  <!-- Foam on rocks -->
+  <path d="M0 330 Q20 325 40 330 Q60 335 80 328" stroke="#8ab0c8" stroke-width="2" fill="none" opacity="0.4"/>
+  <path d="M600 310 Q620 305 640 312 Q660 318 680 308" stroke="#8ab0c8" stroke-width="2" fill="none" opacity="0.3"/>
+  <!-- Deep water foreground -->
+  <rect x="0" y="480" width="800" height="120" fill="#0a1830" opacity="0.7"/>
+  <!-- Title -->
+  <text x="400" y="545" text-anchor="middle" font-family="Georgia,serif" font-size="32" font-weight="700" fill="#c9a227" opacity="0.85">MALTA</text>
+  <text x="400" y="573" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#ffffff" opacity="0.5">O Naufragio de Paulo</text>
+</svg>

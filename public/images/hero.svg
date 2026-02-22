@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 800">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0a0820"/>
+      <stop offset="25%" stop-color="#1a1048"/>
+      <stop offset="50%" stop-color="#3a2060"/>
+      <stop offset="75%" stop-color="#c9a227" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#e8b830" stop-opacity="0.6"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="70%">
+      <stop offset="0%" stop-color="#f5d060" stop-opacity="0.5"/>
+      <stop offset="30%" stop-color="#c9a227" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
+    <linearGradient id="stone" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#b8a070"/>
+      <stop offset="100%" stop-color="#7a6540"/>
+    </linearGradient>
+    <linearGradient id="stoneL" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4b88a"/>
+      <stop offset="100%" stop-color="#a08860"/>
+    </linearGradient>
+    <linearGradient id="dome" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5d060"/>
+      <stop offset="100%" stop-color="#c9a227"/>
+    </linearGradient>
+  </defs>
+  <!-- Sky -->
+  <rect width="1400" height="800" fill="url(#sky)"/>
+  <rect x="0" y="350" width="1400" height="450" fill="url(#sunGlow)"/>
+  <!-- Stars -->
+  <circle cx="100" cy="50" r="2.5" fill="#fff" opacity="0.9"/><circle cx="280" cy="30" r="1.5" fill="#fff" opacity="0.7"/>
+  <circle cx="450" cy="60" r="2" fill="#fff" opacity="0.6"/><circle cx="650" cy="25" r="1.5" fill="#fff" opacity="0.8"/>
+  <circle cx="850" cy="45" r="2" fill="#fff" opacity="0.7"/><circle cx="1050" cy="35" r="1.5" fill="#fff" opacity="0.6"/>
+  <circle cx="1250" cy="55" r="2" fill="#fff" opacity="0.8"/><circle cx="350" cy="100" r="1" fill="#fff" opacity="0.5"/>
+  <circle cx="550" cy="90" r="1.5" fill="#c9a227" opacity="0.5"/><circle cx="750" cy="80" r="1" fill="#c9a227" opacity="0.4"/>
+  <circle cx="950" cy="100" r="1" fill="#fff" opacity="0.4"/><circle cx="1150" cy="75" r="1.5" fill="#c9a227" opacity="0.4"/>
+  <circle cx="200" cy="130" r="1" fill="#fff" opacity="0.3"/><circle cx="1300" cy="40" r="1" fill="#fff" opacity="0.5"/>
+  <!-- Distant mountains -->
+  <path d="M0 380 Q150 340 300 365 Q500 390 700 350 Q900 310 1100 355 Q1300 380 1400 360 L1400 800 L0 800Z" fill="#2a1a40" opacity="0.5"/>
+  <!-- === Temple of Artemis (left) === -->
+  <rect x="120" y="290" width="250" height="200" rx="3" fill="url(#stone)"/>
+  <!-- Columns -->
+  <rect x="135" y="300" width="20" height="180" rx="3" fill="url(#stoneL)"/><rect x="170" y="300" width="20" height="180" rx="3" fill="url(#stoneL)"/>
+  <rect x="205" y="300" width="20" height="180" rx="3" fill="url(#stoneL)"/><rect x="240" y="300" width="20" height="180" rx="3" fill="url(#stoneL)"/>
+  <rect x="275" y="300" width="20" height="180" rx="3" fill="url(#stoneL)"/><rect x="310" y="300" width="20" height="180" rx="3" fill="url(#stoneL)"/>
+  <rect x="345" y="300" width="20" height="180" rx="3" fill="url(#stoneL)"/>
+  <!-- Entablature -->
+  <rect x="120" y="285" width="260" height="18" rx="2" fill="#c9a870"/>
+  <!-- Pediment -->
+  <polygon points="250,240 110,285 390,285" fill="#b89870" stroke="#a08860" stroke-width="1"/>
+  <!-- Decorative -->
+  <circle cx="250" cy="262" r="8" fill="#a08860" opacity="0.6"/>
+  <!-- === Central Dome (church) === -->
+  <rect x="530" y="310" width="340" height="190" rx="3" fill="url(#stone)"/>
+  <ellipse cx="700" cy="310" rx="130" ry="80" fill="url(#dome)"/>
+  <rect x="695" y="218" width="10" height="30" fill="#c9a227"/>
+  <circle cx="700" cy="212" r="8" fill="#f5d060" stroke="#c9a227" stroke-width="1.5"/>
+  <!-- Cross on dome -->
+  <rect x="696" y="195" width="8" height="26" rx="1" fill="#f5d060"/>
+  <rect x="689" y="204" width="22" height="6" rx="1" fill="#f5d060"/>
+  <!-- Windows -->
+  <rect x="570" y="360" width="16" height="30" rx="8" fill="#4a3a60"/><rect x="610" y="360" width="16" height="30" rx="8" fill="#4a3a60"/>
+  <rect x="775" y="360" width="16" height="30" rx="8" fill="#4a3a60"/><rect x="815" y="360" width="16" height="30" rx="8" fill="#4a3a60"/>
+  <rect x="690" y="350" width="20" height="40" rx="10" fill="#4a3a60"/>
+  <!-- === Minaret/Tower (right) === -->
+  <rect x="1000" y="250" width="50" height="250" rx="3" fill="url(#stone)" stroke="#a08860" stroke-width="1"/>
+  <rect x="990" y="240" width="70" height="16" rx="2" fill="#b89870"/>
+  <polygon points="1025,200 990,240 1060,240" fill="#b89870" stroke="#a08860" stroke-width="1"/>
+  <!-- Cross on tower -->
+  <rect x="1022" y="182" width="6" height="22" rx="1" fill="#f5d060"/>
+  <rect x="1015" y="190" width="20" height="5" rx="1" fill="#f5d060"/>
+  <!-- Balcony -->
+  <rect x="985" y="310" width="80" height="8" rx="2" fill="#c9a870"/>
+  <!-- === Small buildings === -->
+  <rect x="50" y="420" width="70" height="80" rx="2" fill="#6a5a40"/>
+  <ellipse cx="85" cy="420" rx="28" ry="18" fill="#7a6a50"/>
+  <rect x="400" y="380" width="100" height="120" rx="2" fill="#6a5a40"/>
+  <rect x="420" y="370" width="60" height="130" rx="1" fill="#7a6a50"/>
+  <rect x="880" y="350" width="80" height="150" rx="2" fill="#6a5a40"/>
+  <ellipse cx="920" cy="350" rx="30" ry="20" fill="#7a6a50"/>
+  <rect x="1100" y="380" width="90" height="120" rx="2" fill="#6a5a40"/>
+  <rect x="1210" y="400" width="80" height="100" rx="2" fill="#5a4a35"/>
+  <rect x="1310" y="420" width="90" height="80" rx="2" fill="#5a4a35"/>
+  <!-- City wall -->
+  <rect x="0" y="490" width="1400" height="18" rx="2" fill="#8a7a58" stroke="#a08860" stroke-width="1"/>
+  <!-- Battlements on wall -->
+  <rect x="20" y="478" width="16" height="16" fill="#8a7a58"/><rect x="50" y="478" width="16" height="16" fill="#8a7a58"/>
+  <rect x="80" y="478" width="16" height="16" fill="#8a7a58"/><rect x="1300" y="478" width="16" height="16" fill="#8a7a58"/>
+  <rect x="1330" y="478" width="16" height="16" fill="#8a7a58"/><rect x="1360" y="478" width="16" height="16" fill="#8a7a58"/>
+  <!-- Ground -->
+  <rect x="0" y="508" width="1400" height="292" fill="#3d2a15"/>
+  <!-- Road/path -->
+  <path d="M0 540 Q350 525 700 550 Q1050 575 1400 545" stroke="#5a4a30" stroke-width="2" opacity="0.5" fill="none"/>
+  <path d="M0 560 Q350 545 700 570 Q1050 595 1400 565" stroke="#4a3a25" stroke-width="1" opacity="0.3" fill="none"/>
+  <!-- Trees along road -->
+  <circle cx="150" cy="530" r="18" fill="#4a5a30" opacity="0.6"/><rect x="147" y="540" width="6" height="15" fill="#3a4a25"/>
+  <circle cx="500" cy="535" r="15" fill="#3a4a25" opacity="0.5"/><rect x="497" y="545" width="6" height="12" fill="#3a3a20"/>
+  <circle cx="900" cy="538" r="16" fill="#4a5a30" opacity="0.5"/><rect x="897" y="548" width="6" height="12" fill="#3a4a25"/>
+  <circle cx="1250" cy="535" r="14" fill="#3a4a25" opacity="0.5"/><rect x="1247" y="545" width="6" height="12" fill="#3a3a20"/>
+  <!-- Golden horizon glow -->
+  <circle cx="700" cy="500" r="400" fill="#c9a227" opacity="0.06"/>
+  <circle cx="700" cy="500" r="200" fill="#f0d060" opacity="0.04"/>
+  <!-- Title -->
+  <text x="700" y="700" text-anchor="middle" font-family="Georgia,serif" font-size="38" font-weight="700" fill="#c9a227" opacity="0.7">AS VIAGENS DO APOSTOLO PAULO</text>
+  <text x="700" y="740" text-anchor="middle" font-family="Georgia,serif" font-size="17" fill="#ffffff" opacity="0.35">Uma jornada de fe atraves do mundo antigo</text>
+</svg>

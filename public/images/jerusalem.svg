@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a0a3e"/>
+      <stop offset="40%" stop-color="#2d1b69"/>
+      <stop offset="70%" stop-color="#c9a227" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#e8c547" stop-opacity="0.5"/>
+    </linearGradient>
+    <radialGradient id="sunGlow" cx="50%" cy="65%">
+      <stop offset="0%" stop-color="#f0d060" stop-opacity="0.6"/>
+      <stop offset="40%" stop-color="#c9a227" stop-opacity="0.25"/>
+      <stop offset="100%" stop-color="#c9a227" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="wallG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#d4a84a"/>
+      <stop offset="100%" stop-color="#8b6a30"/>
+    </linearGradient>
+    <linearGradient id="domeG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5d060"/>
+      <stop offset="100%" stop-color="#c9a227"/>
+    </linearGradient>
+  </defs>
+  <!-- Sky -->
+  <rect width="800" height="600" fill="url(#sky)"/>
+  <rect x="0" y="300" width="800" height="300" fill="url(#sunGlow)"/>
+  <!-- Stars -->
+  <circle cx="80" cy="40" r="2" fill="#fff" opacity="0.8"/><circle cx="200" cy="60" r="1.5" fill="#fff" opacity="0.6"/>
+  <circle cx="350" cy="30" r="1" fill="#fff" opacity="0.5"/><circle cx="600" cy="50" r="2" fill="#fff" opacity="0.7"/>
+  <circle cx="720" cy="35" r="1.5" fill="#fff" opacity="0.5"/><circle cx="500" cy="75" r="1" fill="#fff" opacity="0.4"/>
+  <circle cx="150" cy="100" r="1" fill="#c9a227" opacity="0.6"/><circle cx="680" cy="90" r="1" fill="#c9a227" opacity="0.5"/>
+  <!-- Distant hills -->
+  <path d="M0 340 Q100 310 200 325 Q350 340 500 315 Q650 290 800 320 L800 600 L0 600Z" fill="#3d2a15" opacity="0.5"/>
+  <!-- City wall background -->
+  <rect x="80" y="320" width="640" height="120" rx="3" fill="#8b7040" stroke="#a68840" stroke-width="1.5"/>
+  <rect x="80" y="310" width="640" height="15" rx="2" fill="#a08040"/>
+  <!-- Battlements -->
+  <rect x="90" y="300" width="18" height="16" fill="#a08040"/><rect x="120" y="300" width="18" height="16" fill="#a08040"/>
+  <rect x="150" y="300" width="18" height="16" fill="#a08040"/><rect x="180" y="300" width="18" height="16" fill="#a08040"/>
+  <rect x="540" y="300" width="18" height="16" fill="#a08040"/><rect x="570" y="300" width="18" height="16" fill="#a08040"/>
+  <rect x="600" y="300" width="18" height="16" fill="#a08040"/><rect x="630" y="300" width="18" height="16" fill="#a08040"/>
+  <rect x="660" y="300" width="18" height="16" fill="#a08040"/><rect x="690" y="300" width="18" height="16" fill="#a08040"/>
+  <!-- Golden Gate -->
+  <rect x="340" y="340" width="120" height="100" rx="2" fill="#6b5530"/>
+  <path d="M340 340 Q400 300 460 340" fill="#7a6535" stroke="#a08040" stroke-width="1.5"/>
+  <rect x="395" y="360" width="10" height="80" fill="#a08040" opacity="0.5"/>
+  <!-- Dome of the Rock -->
+  <rect x="250" y="240" width="180" height="100" rx="3" fill="#5a6b8a" stroke="#7a8ba8" stroke-width="1"/>
+  <ellipse cx="340" cy="240" rx="70" ry="50" fill="url(#domeG)"/>
+  <rect x="335" y="180" width="10" height="20" fill="#c9a227"/>
+  <circle cx="340" cy="175" r="6" fill="#f0d060" stroke="#c9a227" stroke-width="1"/>
+  <!-- Windows on Dome base -->
+  <rect x="270" y="270" width="12" height="20" rx="6" fill="#3a4a6a"/><rect x="295" y="270" width="12" height="20" rx="6" fill="#3a4a6a"/>
+  <rect x="370" y="270" width="12" height="20" rx="6" fill="#3a4a6a"/><rect x="395" y="270" width="12" height="20" rx="6" fill="#3a4a6a"/>
+  <!-- Tower of David (left) -->
+  <rect x="120" y="210" width="45" height="210" rx="2" fill="#7a6a50" stroke="#8b7a55" stroke-width="1"/>
+  <rect x="110" y="200" width="65" height="16" rx="2" fill="#8b7a55"/>
+  <rect x="118" y="190" width="14" height="16" fill="#8b7a55"/><rect x="140" y="190" width="14" height="16" fill="#8b7a55"/>
+  <rect x="162" y="190" width="14" height="16" fill="#8b7a55"/>
+  <!-- Church tower (right) -->
+  <rect x="560" y="220" width="40" height="200" rx="2" fill="#7a6a50" stroke="#8b7a55" stroke-width="1"/>
+  <polygon points="580,180 555,220 605,220" fill="#8b7a55"/>
+  <!-- Cross on church -->
+  <rect x="577" y="162" width="6" height="24" rx="1" fill="#f0d060"/>
+  <rect x="571" y="170" width="18" height="5" rx="1" fill="#f0d060"/>
+  <!-- Small buildings -->
+  <rect x="190" y="280" width="50" height="60" rx="2" fill="#6a5a40"/><rect x="470" y="270" width="60" height="70" rx="2" fill="#6a5a40"/>
+  <rect x="500" y="260" width="30" height="80" rx="1" fill="#7a6a50"/>
+  <ellipse cx="215" cy="280" rx="18" ry="12" fill="#7a6a50"/>
+  <ellipse cx="500" cy="270" rx="22" ry="14" fill="#7a6a50"/>
+  <!-- Ground / foreground -->
+  <rect x="0" y="440" width="800" height="160" fill="#3d2a15"/>
+  <path d="M0 440 Q200 435 400 445 Q600 455 800 440" stroke="#5a4a30" stroke-width="1" fill="none"/>
+  <!-- Olive trees foreground -->
+  <circle cx="100" cy="460" r="25" fill="#4a5a30" opacity="0.7"/><rect x="97" y="475" width="6" height="25" fill="#5a4a30"/>
+  <circle cx="700" cy="465" r="22" fill="#4a5a30" opacity="0.7"/><rect x="697" y="480" width="6" height="20" fill="#5a4a30"/>
+  <circle cx="680" cy="455" r="18" fill="#3a4a25" opacity="0.6"/>
+  <!-- Golden sunlight glow -->
+  <circle cx="400" cy="440" r="250" fill="#c9a227" opacity="0.08"/>
+  <circle cx="400" cy="440" r="150" fill="#f0d060" opacity="0.06"/>
+  <!-- Title -->
+  <text x="400" y="550" text-anchor="middle" font-family="Georgia,serif" font-size="32" font-weight="700" fill="#c9a227" opacity="0.8">JERUSALEM</text>
+  <text x="400" y="578" text-anchor="middle" font-family="Georgia,serif" font-size="15" fill="#ffffff" opacity="0.5">A Cidade Santa</text>
+</svg>

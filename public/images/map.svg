@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720">
+  <defs>
+    <linearGradient id="seaG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1a3a5a"/>
+      <stop offset="50%" stop-color="#15305a"/>
+      <stop offset="100%" stop-color="#0d2040"/>
+    </linearGradient>
+    <linearGradient id="landG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#6a7a50"/>
+      <stop offset="100%" stop-color="#4a5a35"/>
+    </linearGradient>
+    <linearGradient id="africaG" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#8a7a50"/>
+      <stop offset="100%" stop-color="#5a4a30"/>
+    </linearGradient>
+  </defs>
+  <!-- Sea background -->
+  <rect width="1280" height="720" fill="url(#seaG)"/>
+  <!-- Sea texture lines -->
+  <path d="M0 250 Q200 240 400 255 Q600 270 800 248 Q1000 226 1280 245" stroke="#2a5a7a" stroke-width="0.8" fill="none" opacity="0.4"/>
+  <path d="M0 320 Q200 310 400 325 Q600 340 800 315 Q1000 290 1280 310" stroke="#2a5a7a" stroke-width="0.6" fill="none" opacity="0.3"/>
+  <path d="M0 390 Q200 380 400 395 Q600 410 800 385 Q1000 360 1280 380" stroke="#2a5a7a" stroke-width="0.5" fill="none" opacity="0.25"/>
+  <!-- ═══ LAND MASSES ═══ -->
+  <!-- Europe top/France/Spain -->
+  <path d="M0 0 L0 160 Q50 170 100 150 Q200 120 300 100 Q400 80 450 60 L450 0 Z" fill="url(#landG)" stroke="#8a9a60" stroke-width="1.5"/>
+  <!-- Italy -->
+  <path d="M250 0 L240 60 Q260 90 280 140 Q300 200 310 260 Q320 300 315 330 Q308 360 290 380 Q280 390 270 375 Q260 350 255 310 Q248 270 240 220 Q232 170 230 100 L230 0 Z" fill="url(#landG)" stroke="#8a9a60" stroke-width="1.5"/>
+  <!-- Sicily -->
+  <path d="M320 380 Q340 370 360 378 Q380 386 370 395 Q355 400 335 395 Q320 388 320 380 Z" fill="url(#landG)" stroke="#8a9a60" stroke-width="1"/>
+  <!-- Greece/Balkans -->
+  <path d="M450 0 L440 50 Q460 80 480 120 Q500 160 510 190 Q520 220 500 260 Q480 280 470 250 Q465 220 460 180 Q450 140 440 100 Q435 70 440 0 Z" fill="url(#landG)" stroke="#8a9a60" stroke-width="1.5"/>
+  <!-- Peloponnese -->
+  <path d="M470 250 Q490 260 500 280 Q510 300 495 310 Q480 315 465 305 Q455 290 460 270 Q465 255 470 250 Z" fill="url(#landG)" stroke="#8a9a60" stroke-width="1"/>
+  <!-- Crete -->
+  <ellipse cx="550" cy="350" rx="55" ry="12" fill="url(#landG)" stroke="#8a9a60" stroke-width="1"/>
+  <!-- Turkey/Asia Minor -->
+  <path d="M580 0 L560 40 Q580 80 620 110 Q680 150 750 170 Q820 185 900 180 Q960 175 1020 160 Q1080 145 1120 130 L1200 110 L1280 90 L1280 0 Z" fill="url(#landG)" stroke="#8a9a60" stroke-width="1.5"/>
+  <!-- Turkey south coast detail -->
+  <path d="M680 170 Q720 190 760 185 Q800 180 840 190 Q880 200 920 195 Q960 188 1000 195 Q1040 205 1080 195 L1100 190" stroke="#8a9a60" stroke-width="1" fill="none" opacity="0.5"/>
+  <!-- Cyprus -->
+  <ellipse cx="1000" cy="240" rx="45" ry="16" fill="url(#landG)" stroke="#8a9a60" stroke-width="1.5"/>
+  <!-- Israel / Holy Land -->
+  <path d="M1100 210 L1135 210 Q1140 260 1145 320 Q1148 370 1140 400 L1100 400 Q1095 350 1098 300 Q1100 250 1100 210 Z" fill="#8a9a60" stroke="#a0aa70" stroke-width="1.5"/>
+  <!-- Egypt/North Africa -->
+  <path d="M0 520 Q100 500 250 510 Q400 520 550 505 Q700 490 850 500 Q1000 510 1140 495 L1280 505 L1280 720 L0 720 Z" fill="url(#africaG)" stroke="#a09060" stroke-width="1.5"/>
+  <!-- Malta island -->
+  <ellipse cx="380" cy="430" rx="12" ry="8" fill="url(#landG)" stroke="#a0aa70" stroke-width="1.5"/>
+  <!-- ═══ JOURNEY ROUTES ═══ -->
+  <!-- Journey 1 (bright gold) - Cyprus, South Turkey -->
+  <path d="M1118 300 Q1060 260 1000 240 Q920 210 850 180 Q790 160 760 170 Q740 180 770 190 Q820 210 920 230 Q1000 250 1060 275 Q1100 290 1118 300" stroke="#f0d060" stroke-width="3" fill="none" opacity="0.9" stroke-dasharray="10 5"/>
+  <!-- Journey 2 (warm gold) - Greece, Macedonia -->
+  <path d="M1118 300 Q1040 260 950 230 Q860 200 770 170 Q680 140 600 110 Q530 90 490 140 Q470 170 485 200 Q500 230 540 210 Q600 170 700 150 Q800 135 900 170 Q1000 210 1060 260 Q1100 285 1118 300" stroke="#c9a227" stroke-width="3" fill="none" opacity="0.8" stroke-dasharray="8 4"/>
+  <!-- Journey 3 (deep gold) - To Rome via Malta -->
+  <path d="M1118 300 Q1040 320 950 310 Q860 300 770 330 Q680 360 600 380 Q520 400 450 420 Q400 430 380 430 Q360 430 330 400 Q300 370 280 340 Q270 320 270 300" stroke="#e8a830" stroke-width="3" fill="none" opacity="0.7" stroke-dasharray="7 4"/>
+  <!-- ═══ CITY MARKERS ═══ -->
+  <!-- Jerusalem (main) -->
+  <circle cx="1118" cy="300" r="8" fill="#f0d060" stroke="#fff" stroke-width="2"/>
+  <text x="1118" y="325" text-anchor="middle" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#f0d060">Jerusalem</text>
+  <!-- Ephesus -->
+  <circle cx="850" cy="180" r="6" fill="#f0d060" stroke="#fff" stroke-width="1.5"/>
+  <text x="850" y="168" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#f0d060">Efeso</text>
+  <!-- Athens -->
+  <circle cx="490" cy="200" r="6" fill="#f0d060" stroke="#fff" stroke-width="1.5"/>
+  <text x="490" y="225" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#f0d060">Atenas</text>
+  <!-- Philippi -->
+  <circle cx="510" cy="110" r="5" fill="#c9a227" stroke="#fff" stroke-width="1.5"/>
+  <text x="535" y="105" font-family="Georgia,serif" font-size="11" fill="#c9a227">Filipos</text>
+  <!-- Rome -->
+  <circle cx="270" cy="300" r="7" fill="#f0d060" stroke="#fff" stroke-width="2"/>
+  <text x="270" y="288" text-anchor="middle" font-family="Georgia,serif" font-size="12" font-weight="600" fill="#f0d060">Roma</text>
+  <!-- Malta -->
+  <circle cx="380" cy="430" r="5" fill="#e8a830" stroke="#fff" stroke-width="1.5"/>
+  <text x="380" y="455" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#e8a830">Malta</text>
+  <!-- Cyprus -->
+  <circle cx="1000" cy="240" r="5" fill="#c9a227" stroke="#fff" stroke-width="1.5"/>
+  <text x="1000" y="270" text-anchor="middle" font-family="Georgia,serif" font-size="11" fill="#c9a227">Chipre</text>
+  <!-- Antioch -->
+  <circle cx="1080" cy="175" r="5" fill="#c9a227" stroke="#fff" stroke-width="1.5"/>
+  <text x="1080" y="165" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c9a227">Antioquia</text>
+  <!-- Corinth -->
+  <circle cx="480" cy="270" r="4" fill="#c9a227" stroke="#fff" stroke-width="1"/>
+  <text x="480" y="290" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#c9a227">Corinto</text>
+  <!-- ═══ LEGEND ═══ -->
+  <rect x="40" y="600" width="340" height="95" rx="12" fill="rgba(10,20,40,0.85)" stroke="#c9a227" stroke-width="1"/>
+  <text x="60" y="625" font-family="Georgia,serif" font-size="13" font-weight="700" fill="#f0d060">Viagens Missionarias</text>
+  <line x1="60" y1="645" x2="130" y2="645" stroke="#f0d060" stroke-width="3" stroke-dasharray="10 5"/>
+  <text x="140" y="649" font-family="Georgia,serif" font-size="12" fill="#f0d060">1a Viagem (46-48 d.C.)</text>
+  <line x1="60" y1="665" x2="130" y2="665" stroke="#c9a227" stroke-width="3" stroke-dasharray="8 4"/>
+  <text x="140" y="669" font-family="Georgia,serif" font-size="12" fill="#c9a227">2a Viagem (49-52 d.C.)</text>
+  <line x1="60" y1="685" x2="130" y2="685" stroke="#e8a830" stroke-width="3" stroke-dasharray="7 4"/>
+  <text x="140" y="689" font-family="Georgia,serif" font-size="12" fill="#e8a830">3a Viagem / Roma (53-62 d.C.)</text>
+  <!-- Title -->
+  <text x="780" y="660" text-anchor="middle" font-family="Georgia,serif" font-size="24" font-weight="700" fill="#c9a227" opacity="0.8">VIAGENS MISSIONARIAS DO APOSTOLO PAULO</text>
+  <text x="780" y="690" text-anchor="middle" font-family="Georgia,serif" font-size="14" fill="#ffffff" opacity="0.4">Mar Mediterraneo · Seculo I d.C.</text>
+</svg>

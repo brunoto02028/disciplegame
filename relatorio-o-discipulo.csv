@@ -1,0 +1,102 @@
+CATEGORIA,ITEM,DETALHE,VALOR/STATUS
+TECNOLOGIA,Framework,Next.js,16.1.6
+TECNOLOGIA,Frontend,React,19.2.3
+TECNOLOGIA,Linguagem,TypeScript,5.x
+TECNOLOGIA,Estilização,Inline Styles (Dark Gaming Theme),Implementado
+TECNOLOGIA,Autenticação,Sessões em memória (bcryptjs),Temporário
+TECNOLOGIA,Banco de Dados,MockDB em memória,Temporário → Supabase
+TECNOLOGIA,ORM Preparado,Prisma + pg,Instalado
+TECNOLOGIA,Servidor,localhost,3000
+
+PÁGINAS,Homepage,/,Pública
+PÁGINAS,Login,/auth/login,Pública
+PÁGINAS,Cadastro,/auth/register,Pública
+PÁGINAS,Dashboard,/dashboard,Autenticada
+PÁGINAS,Jogo,/game/[cityId],Autenticada
+PÁGINAS,Resultados,/results,Autenticada
+PÁGINAS,Ranking Global,/ranking,Autenticada
+PÁGINAS,Perfil do Usuário,/profile,Autenticada
+PÁGINAS,Admin Login,/admin/login,Protegida por senha
+PÁGINAS,Admin Dashboard,/admin,Protegida por senha
+PÁGINAS,Admin Perguntas,/admin/questions,Protegida por senha
+PÁGINAS,Admin Cidades,/admin/cities,Protegida por senha
+PÁGINAS,Admin Desafios,/admin/challenges,Protegida por senha
+PÁGINAS,Admin Usuários,/admin/users,Protegida por senha
+
+CONTEÚDO,Circuito,MVP Inicial,Ativo
+CONTEÚDO,Cidade 1,Jerusalém,Israel - 9 perguntas
+CONTEÚDO,Cidade 2,Éfeso,Turquia - 9 perguntas
+CONTEÚDO,Cidade 3,Malta,Malta - 9 perguntas
+CONTEÚDO,Total de Perguntas,27,3 cidades × 9 perguntas
+CONTEÚDO,Bloco 1,Contexto Bíblico,3 perguntas por cidade
+CONTEÚDO,Bloco 2,Geografia Atual,3 perguntas por cidade
+CONTEÚDO,Bloco 3,Turismo & Economia,3 perguntas por cidade
+
+PONTUAÇÃO,Resposta Correta,Pontos base,+100 pts
+PONTUAÇÃO,Streak ≥ 3 acertos,Pontos com bônus,+130 pts
+PONTUAÇÃO,Resposta Errada,Pontos,0 pts
+PONTUAÇÃO,Bônus de Velocidade,Máximo adicional,+500 pts
+PONTUAÇÃO,Máximo por Cidade,Teórico,~1.670 pts
+PONTUAÇÃO,Meta para Conquista Lendário,Mínimo,1.200 pts
+
+CONQUISTAS,Primeiro Passo 👣,Completar 1 partida,+50 pts
+CONQUISTAS,Perfeito 💎,100% de acertos em uma cidade,+200 pts
+CONQUISTAS,Velocista ⚡,Completar em menos de 3 minutos,+150 pts
+CONQUISTAS,Cidade Santa ✡️,Completar Jerusalém,+100 pts
+CONQUISTAS,Apóstolo do Oriente 🏛️,Completar Éfeso,+100 pts
+CONQUISTAS,Sobrevivente 🐍,Completar Malta,+100 pts
+CONQUISTAS,Circuito Completo 🗺️,Completar as 3 cidades,+500 pts
+CONQUISTAS,Em Chamas 🔥,5 respostas seguidas corretas,+100 pts
+CONQUISTAS,Lendário 👑,Alcançar 1.200 pontos em uma partida,+300 pts
+CONQUISTAS,Persistente 💪,Jogar 3 ou mais partidas,+75 pts
+CONQUISTAS,Total de Conquistas,,10
+
+APIS,POST /api/auth/login,Login do usuário,Implementado
+APIS,POST /api/auth/register,Cadastro de usuário,Implementado
+APIS,POST /api/auth/logout,Logout,Implementado
+APIS,GET /api/cities,Listar cidades do circuito,Implementado
+APIS,GET /api/questions/[cityId],Perguntas de uma cidade,Implementado
+APIS,POST /api/sessions/start,Iniciar sessão de jogo,Implementado
+APIS,POST /api/sessions/[id]/answer,Submeter resposta,Implementado
+APIS,POST /api/sessions/[id]/complete,Finalizar sessão,Implementado
+APIS,GET /api/user/profile,Perfil do usuário logado,Implementado
+APIS,GET /api/user/sessions,Histórico de partidas,Implementado
+APIS,GET /api/user/achievements,Conquistas do usuário,Implementado
+APIS,GET /api/rankings,Ranking global,Implementado
+APIS,POST /api/admin/login,Login admin,Implementado
+APIS,GET /api/admin/stats,Estatísticas gerais,Implementado
+APIS,GET/POST /api/admin/questions,Listar e criar perguntas,Implementado
+APIS,PUT/DELETE /api/admin/questions/[id],Editar e deletar pergunta,Implementado
+APIS,GET/POST /api/admin/cities,Listar e criar cidades,Implementado
+APIS,GET/POST/PUT /api/admin/challenges,Gerenciar desafios,Implementado
+APIS,GET /api/admin/users,Listar usuários,Implementado
+
+FUNCIONALIDADES,Streak em tempo real,Contador de acertos seguidos no jogo,Implementado
+FUNCIONALIDADES,Pontos animados por pergunta,+100/+130 pts exibidos ao acertar,Implementado
+FUNCIONALIDADES,Dots de progresso,Verde/vermelho/azul por pergunta,Implementado
+FUNCIONALIDADES,Timer de jogo,Contador MM:SS em tempo real,Implementado
+FUNCIONALIDADES,Grade de resultado,PERFEITO / EXCELENTE / BOM / TENTE NOVAMENTE,Implementado
+FUNCIONALIDADES,Conquistas na tela de resultado,Exibe conquistas desbloqueadas,Implementado
+FUNCIONALIDADES,Compartilhamento de resultado,navigator.share + fallback clipboard,Implementado
+FUNCIONALIDADES,Ranking global com pódio,Top 3 com medalhas ouro/prata/bronze,Implementado
+FUNCIONALIDADES,Perfil do usuário,Stats + histórico + conquistas,Implementado
+FUNCIONALIDADES,Desafio semanal com countdown,Contador real até segunda-feira,Implementado
+FUNCIONALIDADES,Painel Admin completo,CRUD perguntas/cidades/desafios/usuários,Implementado
+FUNCIONALIDADES,Proteção do admin,Cookie de sessão admin (8h),Implementado
+
+LIMITAÇÕES,Persistência de dados,Dados perdidos ao reiniciar servidor,Aguardando Supabase
+LIMITAÇÕES,Imagens das cidades,Campos existem mas são nulos,Pendente
+LIMITAÇÕES,Email de verificação,Cadastro sem confirmação de email,Pendente
+LIMITAÇÕES,Multi-sessão,Sessões em memória,Aguardando Supabase
+
+ROADMAP,Migração Supabase,Schema SQL pronto em SUPABASE_MIGRATION.md,Alta prioridade
+ROADMAP,Mais cidades e perguntas,Via painel admin,Alta prioridade
+ROADMAP,Imagens das cidades,Upload ou URL externa,Média prioridade
+ROADMAP,Multiplayer / desafio entre amigos,Modo versus,Média prioridade
+ROADMAP,Notificações push,Desafios semanais,Média prioridade
+ROADMAP,App mobile,React Native,Baixa prioridade
+ROADMAP,Modo offline,Service Worker,Baixa prioridade
+
+ACESSO,Jogo (demo),demo@discipulo.com / demo123,http://localhost:3000
+ACESSO,Admin,Senha: admin2026,http://localhost:3000/admin/login
+ACESSO,Guia Supabase,SUPABASE_MIGRATION.md,Raiz do projeto
