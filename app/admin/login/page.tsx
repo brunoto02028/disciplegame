@@ -1,10 +1,8 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function AdminLoginPage() {
-    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
@@ -49,7 +47,7 @@ export default function AdminLoginPage() {
                 if (remember) localStorage.setItem('admin_email', email);
             } else if (data.success) {
                 if (remember) localStorage.setItem('admin_email', email);
-                router.push('/admin');
+                window.location.href = '/admin';
             } else {
                 setError(data.error || 'Credenciais inválidas');
                 if (data.remaining !== undefined) setRemaining(data.remaining);
@@ -74,7 +72,7 @@ export default function AdminLoginPage() {
             if (res.status === 429) {
                 setError(data.error);
             } else if (data.success) {
-                router.push('/admin');
+                window.location.href = '/admin';
             } else {
                 setError(data.error || 'Código inválido');
                 setVerifyCode('');
