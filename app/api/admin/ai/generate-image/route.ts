@@ -3,8 +3,10 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import fs from 'fs';
 import path from 'path';
 
+import { isValidSession } from '@/lib/adminSession';
+
 function requireAdmin(req: NextRequest) {
-    return req.cookies.get('admin_session')?.value === 'authenticated';
+    return isValidSession(req.cookies.get('admin_session')?.value);
 }
 
 // Save base64 image to disk and return public URL

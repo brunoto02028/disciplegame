@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
+import { isValidSession } from '@/lib/adminSession';
 
 export async function POST(request: NextRequest) {
+    if (!isValidSession(request.cookies.get('admin_session')?.value)) {
+        return NextResponse.json({ success: false, error: 'Não autorizado' }, { status: 401 });
+    }
     try {
         const formData = await request.formData();
         const file = formData.get('file') as File | null;

@@ -3,8 +3,10 @@ import { mockStore, generateId } from '@/lib/mockDb';
 
 const MVP_CIRCUIT_ID = '00000000-0000-0000-0000-000000000001';
 
+import { isValidSession } from '@/lib/adminSession';
+
 function requireAdmin(req: NextRequest) {
-    return req.cookies.get('admin_session')?.value === 'authenticated';
+    return isValidSession(req.cookies.get('admin_session')?.value);
 }
 
 export async function GET(request: NextRequest) {

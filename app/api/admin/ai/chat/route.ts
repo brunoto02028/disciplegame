@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
+import { isValidSession } from '@/lib/adminSession';
 
 function requireAdmin(req: NextRequest) {
-    return req.cookies.get('admin_session')?.value === 'authenticated';
+    return isValidSession(req.cookies.get('admin_session')?.value);
 }
 
 const MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash-lite'];
@@ -176,7 +177,7 @@ Retorne SOMENTE JSON: {"prompt": "detailed image generation prompt in English"}`
             const origin = request.nextUrl.origin;
             const imgRes = await fetch(`${origin}/api/admin/ai/generate-image`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Cookie': 'admin_session=authenticated' },
+                headers: { 'Content-Type': 'application/json', 'Cookie': `admin_session=${request.cookies.get('admin_session')?.value}` },
                 body: JSON.stringify({ prompt: imagePrompt, count: 2 }),
             });
             const imgData = await imgRes.json();

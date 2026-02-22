@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { mockStore } from '@/lib/mockDb';
+import { isValidSession } from '@/lib/adminSession';
 
 function requireAdmin(req: NextRequest) {
-    return req.cookies.get('admin_session')?.value === 'authenticated';
+    return isValidSession(req.cookies.get('admin_session')?.value);
 }
 
 export async function PUT(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {

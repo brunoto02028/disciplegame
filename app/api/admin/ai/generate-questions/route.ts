@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { isValidSession } from '@/lib/adminSession';
 
 function requireAdmin(req: NextRequest) {
-    return req.cookies.get('admin_session')?.value === 'authenticated';
+    return isValidSession(req.cookies.get('admin_session')?.value);
 }
 
 const BLOCK_NAMES: Record<string, string> = {
