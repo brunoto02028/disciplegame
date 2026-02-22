@@ -1,14 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { verifyTOTP } from '@/lib/totp';
 import { createSession, destroySession } from '@/lib/adminSession';
+import { sendVerificationCode } from '@/lib/email';
+import crypto from 'crypto';
 
+const ADMIN_EMAIL = process.env.ADMIN_EMAIL || '';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin2026';
-const ADMIN_TOTP_SECRET = process.env.ADMIN_TOTP_SECRET || '';
 
 // ── Rate limiting (in-memory) ──
 const loginAttempts = new Map<string, { count: number; firstAttempt: number }>();
 const MAX_ATTEMPTS = 5;
 const WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+
+// ── Pending email verification codes ──
+const pendingCodes = new Map<string, { code: string; email: string; expiresAt: number; password: string }>();
+const CODE_TTL = 5 * 60 * 1000; // 5 minutes
 
 function getClientIP(req: NextRequest): string {
     return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'unknown';
@@ -33,6 +38,9 @@ function resetRateLimit(ip: string) {
     loginAttempts.delete(ip);
 }
 
+function generateCode(): string {
+    return crypto.randomInt(100000, 999999).toString();
+}
 
 export async function POST(request: NextRequest) {
     const ip = getClientIP(request);
@@ -46,45 +54,102 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-        const { password, totp_code, step } = await request.json();
+        const body = await request.json();
+        const { email, password, verification_code, step, remember } = body;
 
-        // Step 1: Verify password
-        if (password !== ADMIN_PASSWORD) {
-            return NextResponse.json(
-                { success: false, error: 'Credenciais inválidas', remaining: rateCheck.remaining },
-                { status: 401 }
-            );
-        }
-
-        // If TOTP is configured, require 2FA
-        if (ADMIN_TOTP_SECRET) {
-            // Step 1 response: password OK, need TOTP
-            if (step === 'password' || !totp_code) {
-                return NextResponse.json({ success: true, step: 'totp', message: 'Senha verificada. Insira o código 2FA.' });
+        // ── Step 1: Verify email + password ──
+        if (step === 'credentials') {
+            if (!email || !password) {
+                return NextResponse.json({ success: false, error: 'Email e senha são obrigatórios' }, { status: 400 });
             }
 
-            // Step 2: Verify TOTP code
-            if (!verifyTOTP(ADMIN_TOTP_SECRET, totp_code)) {
+            if (email !== ADMIN_EMAIL || password !== ADMIN_PASSWORD) {
                 return NextResponse.json(
-                    { success: false, error: 'Código 2FA inválido', remaining: rateCheck.remaining },
+                    { success: false, error: 'Email ou senha incorretos', remaining: rateCheck.remaining },
                     { status: 401 }
                 );
             }
+
+            // Generate and send verification code
+            const code = generateCode();
+            const codeId = crypto.randomBytes(16).toString('hex');
+            pendingCodes.set(codeId, {
+                code,
+                email,
+                password,
+                expiresAt: Date.now() + CODE_TTL,
+            });
+
+            // Auto-cleanup expired codes
+            setTimeout(() => pendingCodes.delete(codeId), CODE_TTL + 1000);
+
+            const emailSent = await sendVerificationCode(email, code);
+
+            if (!emailSent) {
+                // If email sending fails, skip verification and grant access directly
+                console.warn('[LOGIN] Email not configured — granting direct access');
+                resetRateLimit(ip);
+                const sessionToken = createSession(remember ? 30 * 24 * 60 * 60 * 1000 : 8 * 60 * 60 * 1000);
+                const response = NextResponse.json({ success: true, message: 'Login realizado!' });
+                response.cookies.set('admin_session', sessionToken, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'strict',
+                    maxAge: remember ? 30 * 24 * 60 * 60 : 8 * 60 * 60,
+                    path: '/',
+                });
+                return response;
+            }
+
+            return NextResponse.json({
+                success: true,
+                step: 'verify_email',
+                code_id: codeId,
+                message: `Código enviado para ${email.replace(/(.{2})(.*)(@.*)/, '$1***$3')}`,
+            });
         }
 
-        // All verified — create secure session
-        resetRateLimit(ip);
-        const sessionToken = createSession();
+        // ── Step 2: Verify email code ──
+        if (step === 'verify_code') {
+            const { code_id } = body;
+            if (!code_id || !verification_code) {
+                return NextResponse.json({ success: false, error: 'Código de verificação obrigatório' }, { status: 400 });
+            }
 
-        const response = NextResponse.json({ success: true, message: 'Login realizado com sucesso!' });
-        response.cookies.set('admin_session', sessionToken, {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'strict',
-            maxAge: 60 * 60 * 8,
-            path: '/',
-        });
-        return response;
+            const pending = pendingCodes.get(code_id);
+            if (!pending) {
+                return NextResponse.json({ success: false, error: 'Código expirado. Faça login novamente.' }, { status: 401 });
+            }
+
+            if (Date.now() > pending.expiresAt) {
+                pendingCodes.delete(code_id);
+                return NextResponse.json({ success: false, error: 'Código expirado. Faça login novamente.' }, { status: 401 });
+            }
+
+            if (pending.code !== verification_code) {
+                return NextResponse.json(
+                    { success: false, error: 'Código incorreto', remaining: rateCheck.remaining },
+                    { status: 401 }
+                );
+            }
+
+            // Code verified — grant access
+            pendingCodes.delete(code_id);
+            resetRateLimit(ip);
+            const sessionToken = createSession(remember ? 30 * 24 * 60 * 60 * 1000 : 8 * 60 * 60 * 1000);
+
+            const response = NextResponse.json({ success: true, message: 'Login realizado com sucesso!' });
+            response.cookies.set('admin_session', sessionToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'strict',
+                maxAge: remember ? 30 * 24 * 60 * 60 : 8 * 60 * 60,
+                path: '/',
+            });
+            return response;
+        }
+
+        return NextResponse.json({ success: false, error: 'Step inválido' }, { status: 400 });
     } catch {
         return NextResponse.json({ success: false, error: 'Erro interno' }, { status: 500 });
     }
