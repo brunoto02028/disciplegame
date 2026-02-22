@@ -173,11 +173,13 @@ Retorne SOMENTE JSON: {"prompt": "detailed image generation prompt in English"}`
                 imagePrompt = conversationSummary;
             }
 
-            // Call the image generation endpoint
-            const origin = request.nextUrl.origin;
-            const imgRes = await fetch(`${origin}/api/admin/ai/generate-image`, {
+            // Call the image generation endpoint (use localhost for internal server-to-server call)
+            const port = process.env.PORT || '3001';
+            const internalOrigin = `http://localhost:${port}`;
+            const sessionCookie = request.cookies.get('admin_session')?.value || '';
+            const imgRes = await fetch(`${internalOrigin}/api/admin/ai/generate-image`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Cookie': `admin_session=${request.cookies.get('admin_session')?.value}` },
+                headers: { 'Content-Type': 'application/json', 'Cookie': `admin_session=${sessionCookie}` },
                 body: JSON.stringify({ prompt: imagePrompt, count: 2 }),
             });
             const imgData = await imgRes.json();
