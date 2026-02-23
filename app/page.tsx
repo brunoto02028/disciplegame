@@ -78,6 +78,9 @@ export default function HomePage() {
             <Link href="/auth/register" style={{ padding: '15px 36px', borderRadius: 12, background: 'linear-gradient(135deg,#c9a227,#8b6914)', color: '#1a0a4a', fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 24px rgba(201,162,39,0.5)', display: 'inline-block' }}>
               {hero.cta_primary || 'Comecar Jornada'}
             </Link>
+            <Link href="/demo" style={{ padding: '15px 36px', borderRadius: 12, background: 'rgba(39,174,96,0.15)', color: '#2ecc71', fontWeight: 700, fontSize: 16, textDecoration: 'none', border: '1px solid rgba(39,174,96,0.4)', display: 'inline-block' }}>
+              ▶ Experimentar Grátis
+            </Link>
             <Link href="/auth/login" style={{ padding: '15px 36px', borderRadius: 12, background: 'rgba(255,255,255,0.06)', color: '#c9a227', fontWeight: 700, fontSize: 16, textDecoration: 'none', border: goldBorder, display: 'inline-block' }}>
               {hero.cta_secondary || 'Ja tenho conta'}
             </Link>

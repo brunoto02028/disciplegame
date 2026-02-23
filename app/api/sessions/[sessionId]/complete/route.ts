@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { mockStore, getAnswersBySession, getRankings, generateId } from '@/lib/mockDb';
 import { getSession } from '@/lib/auth';
+import { addXP } from '@/lib/gamification';
 
 export async function POST(
     request: NextRequest,
@@ -69,6 +70,19 @@ export async function POST(
         const allRankings = getRankings(circuitId);
         const userRank = allRankings.find(r => r.user_id === userSession.userId);
 
+        // Determinar cityId da sessão (via answers -> questions -> city)
+        let cityId: string | null = null;
+        if (answers.length > 0) {
+            const firstQ = mockStore.questions.get(answers[0].question_id);
+            if (firstQ) cityId = firstQ.city_id;
+        }
+
+        // Award XP based on performance
+        const xpBase = totalPoints;
+        const xpBonus = accuracyPercentage === 100 ? 200 : accuracyPercentage >= 80 ? 100 : 0;
+        const totalXP = xpBase + xpBonus;
+        const xpResult = addXP(userSession.userId, totalXP, 'game_complete');
+
         return NextResponse.json({
             success: true,
             data: {
@@ -78,6 +92,11 @@ export async function POST(
                 correctAnswers,
                 totalQuestions,
                 rank: userRank?.rank || 1,
+                cityId,
+                xpEarned: totalXP,
+                levelUp: xpResult.levelUp,
+                newLevel: xpResult.newLevel,
+                newLevelName: xpResult.newLevelName,
             },
         });
     } catch (error) {

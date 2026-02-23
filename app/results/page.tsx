@@ -15,6 +15,7 @@ function ResultsContent() {
     const [newAchievements, setNewAchievements] = useState<any[]>([]);
     const [showAnimation, setShowAnimation] = useState(false);
     const [shareMsg, setShareMsg] = useState('');
+    const [cityId, setCityId] = useState<string | null>(null);
 
     useEffect(() => {
         if (!sessionId) { router.push('/dashboard'); return; }
@@ -31,6 +32,7 @@ function ResultsContent() {
                 const achData = await achRes.json();
                 if (!data.success) { router.push('/dashboard'); return; }
                 setResults(data.data);
+                if (data.data.cityId) setCityId(data.data.cityId);
                 if (achData.success) {
                     setNewAchievements(achData.data.filter((a: any) => a.unlocked).slice(0, 3));
                 }
@@ -45,7 +47,7 @@ function ResultsContent() {
 
     const handleShare = () => {
         if (!results) return;
-        const text = 'Completei uma cidade no jogo O Discipulo! ' + results.totalPoints + ' pontos com ' + results.accuracyPercentage + '% de precisao. Venha jogar! discipulo.app';
+        const text = 'Completei uma cidade no jogo O Discípulo! ' + results.totalPoints + ' pontos com ' + results.accuracyPercentage + '% de precisão. Venha jogar! disciplegame.com';
         if (navigator.share) {
             navigator.share({ title: 'O Discipulo', text });
         } else {
@@ -152,8 +154,13 @@ function ResultsContent() {
                 )}
 
                 {/* Actions */}
+                {cityId && (
+                    <Link href={`/game/${cityId}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, width: '100%', padding: '14px', borderRadius: 12, background: 'linear-gradient(135deg,#c9a227,#8b6914)', color: '#1a0a4a', fontWeight: 700, fontSize: 15, textDecoration: 'none', marginBottom: 12, boxShadow: '0 4px 20px rgba(201,162,39,0.4)' }}>
+                        🔁 Jogar Novamente
+                    </Link>
+                )}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
-                    <Link href="/dashboard" style={{ padding: '13px', borderRadius: 12, background: 'linear-gradient(135deg,#c9a227,#8b6914)', color: '#1a0a4a', fontWeight: 700, fontSize: 14, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
+                    <Link href="/dashboard" style={{ padding: '13px', borderRadius: 12, background: 'rgba(255,255,255,0.05)', border: goldBorder, color: '#fff', fontWeight: 700, fontSize: 14, textDecoration: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>
                         🏠 Dashboard
                     </Link>
                     <button onClick={handleShare} style={{ padding: '13px', borderRadius: 12, background: 'rgba(255,255,255,0.05)', border: goldBorder, color: '#c9a227', fontWeight: 700, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6 }}>

@@ -22,21 +22,6 @@ const navSections = [
             { href: '/admin/challenges', label: 'Desafios', icon: '⚡' },
         ],
     },
-    {
-        title: 'COMUNICAÇÃO',
-        items: [
-            { href: '/admin/email', label: 'Email Marketing', icon: '📧' },
-            { href: '/admin/whatsapp', label: 'WhatsApp', icon: '💬' },
-            { href: '/admin/templates', label: 'Templates', icon: '📋' },
-        ],
-    },
-    {
-        title: 'MONETIZAÇÃO',
-        items: [
-            { href: '/admin/plans', label: 'Planos & Assinaturas', icon: '💎' },
-            { href: '/admin/payments', label: 'Pagamentos', icon: '💳' },
-        ],
-    },
 ];
 
 const goldBorder = '1px solid rgba(201,162,39,0.3)';
