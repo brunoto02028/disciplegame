@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { mockStore, persistAdminData } from '@/lib/mockDb';
+import { mockStore, persistAdminData, registerImageInBank } from '@/lib/mockDb';
 import { isValidSession } from '@/lib/adminSession';
 
 function requireAdmin(req: NextRequest) {
@@ -31,6 +31,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
             active: body.active !== undefined ? body.active : city.active,
         };
         mockStore.cities.set(cityId, updated);
+        if (updated.image_url) registerImageInBank(updated.image_url, 'cities');
         persistAdminData();
         return NextResponse.json({ success: true, data: updated });
     } catch {

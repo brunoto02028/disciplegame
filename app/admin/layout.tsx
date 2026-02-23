@@ -20,6 +20,7 @@ const navSections = [
             { href: '/admin/questions', label: 'Perguntas', icon: '❓' },
             { href: '/admin/game-rules', label: 'Regras do Jogo', icon: '🎮' },
             { href: '/admin/challenges', label: 'Desafios', icon: '⚡' },
+            { href: '/admin/image-bank', label: 'Banco de Imagens', icon: '🖼️' },
         ],
     },
 ];

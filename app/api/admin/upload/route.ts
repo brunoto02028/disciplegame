@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { writeFile, mkdir } from 'fs/promises';
 import path from 'path';
 import { isValidSession } from '@/lib/adminSession';
+import { mockStore, generateId, persistAdminData } from '@/lib/mockDb';
+import type { ImageBankItem } from '@/lib/mockDb';
 
 export async function POST(request: NextRequest) {
     if (!isValidSession(request.cookies.get('admin_session')?.value)) {
@@ -38,9 +40,19 @@ export async function POST(request: NextRequest) {
 
         const url = `/uploads/${category}/${filename}`;
 
+        // Auto-register in image bank
+        const imgId = 'img-' + generateId();
+        const bankItem: ImageBankItem = {
+            id: imgId, url, name: file.name || filename,
+            category, size: file.size, type: file.type,
+            usedIn: [], uploaded_at: new Date().toISOString(),
+        };
+        mockStore.imageBank.set(imgId, bankItem);
+        persistAdminData();
+
         return NextResponse.json({
             success: true,
-            data: { url, filename, category, size: file.size, type: file.type },
+            data: { url, filename, category, size: file.size, type: file.type, imageBankId: imgId },
         });
     } catch (error) {
         console.error('Upload error:', error);

@@ -30,6 +30,16 @@ export interface MockRanking {
     total_points: number; accuracy_percentage: number;
     total_time_seconds: number; completed_at: Date;
 }
+export interface ImageBankItem {
+    id: string;
+    url: string;
+    name: string;
+    category: string;
+    size: number;
+    type: string;
+    usedIn: string[]; // e.g. ['city:city-jerusalem-001', 'settings:hero.image_url']
+    uploaded_at: string;
+}
 
 const MVP_CIRCUIT_ID = '00000000-0000-0000-0000-000000000001';
 // Hash pré-computado de 'demo123' com bcrypt (salt rounds: 10)
@@ -119,6 +129,7 @@ const _defaultStore = {
     gameSessions: new Map<string, MockGameSession>(),
     userAnswers: new Map<string, MockUserAnswer>(),
     rankings: new Map<string, MockRanking>(),
+    imageBank: new Map<string, ImageBankItem>(),
 
     siteSettings: {
         hero: {
@@ -215,6 +226,42 @@ export function persistAdminData() {
             console.error('[MockDb] Failed to persist:', e);
         }
     }
+}
+
+// Auto-register an image URL in the bank (called from admin APIs)
+export function registerImageInBank(url: string | null, category: string = 'general') {
+    if (!url || url.trim() === '') return;
+    // Check if already in bank
+    for (const img of mockStore.imageBank.values()) {
+        if (img.url === url) return; // already registered
+    }
+    const id = 'img-' + generateId();
+    const item: ImageBankItem = {
+        id, url,
+        name: extractNameFromUrl(url),
+        category, size: 0,
+        type: guessImageType(url),
+        usedIn: [],
+        uploaded_at: new Date().toISOString(),
+    };
+    mockStore.imageBank.set(id, item);
+}
+
+function extractNameFromUrl(url: string): string {
+    try {
+        const parts = url.split('/');
+        const filename = parts[parts.length - 1].split('?')[0];
+        return decodeURIComponent(filename).substring(0, 60) || 'imagem';
+    } catch { return 'imagem'; }
+}
+
+function guessImageType(url: string): string {
+    const l = url.toLowerCase();
+    if (l.includes('.png')) return 'image/png';
+    if (l.includes('.webp')) return 'image/webp';
+    if (l.includes('.gif')) return 'image/gif';
+    if (l.includes('.svg')) return 'image/svg+xml';
+    return 'image/jpeg';
 }
 
 export function generateId(): string {

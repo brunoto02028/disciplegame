@@ -37,6 +37,7 @@ export default function AdminDashboard() {
         { href: '/admin/questions', label: 'Perguntas', icon: '❓', color: '#d4b84a' },
         { href: '/admin/settings', label: 'Config. do Site', icon: '⚙️', color: '#f5c518' },
         { href: '/admin/game-rules', label: 'Regras do Jogo', icon: '🎮', color: '#27ae60' },
+        { href: '/admin/image-bank', label: 'Banco de Imagens', icon: '🖼️', color: '#9b59b6' },
     ];
 
     return (

@@ -12,6 +12,7 @@ interface PersistedData {
     questions: Record<string, any>;
     siteSettings: Record<string, any>;
     gameRules: Record<string, any>;
+    imageBank?: Record<string, any>;
     savedAt: string;
 }
 
@@ -39,6 +40,7 @@ export function savePersistedData(store: {
     questions: Map<string, any>;
     siteSettings: Record<string, any>;
     gameRules: Record<string, any>;
+    imageBank: Map<string, any>;
 }) {
     try {
         ensureDataDir();
@@ -48,6 +50,7 @@ export function savePersistedData(store: {
             questions: Object.fromEntries(store.questions),
             siteSettings: store.siteSettings,
             gameRules: store.gameRules,
+            imageBank: Object.fromEntries(store.imageBank),
             savedAt: new Date().toISOString(),
         };
 
@@ -63,6 +66,7 @@ export function applyPersistedData(store: {
     questions: Map<string, any>;
     siteSettings: Record<string, any>;
     gameRules: Record<string, any>;
+    imageBank: Map<string, any>;
 }): boolean {
     const data = loadPersistedData();
     if (!data) return false;
@@ -95,6 +99,15 @@ export function applyPersistedData(store: {
     if (data.gameRules) {
         Object.assign(store.gameRules, data.gameRules);
         console.log('[Persistence] Restored game rules');
+    }
+
+    // Restore image bank
+    if (data.imageBank && Object.keys(data.imageBank).length > 0) {
+        store.imageBank.clear();
+        for (const [id, img] of Object.entries(data.imageBank)) {
+            store.imageBank.set(id, img);
+        }
+        console.log(`[Persistence] Restored ${store.imageBank.size} images`);
     }
 
     return true;

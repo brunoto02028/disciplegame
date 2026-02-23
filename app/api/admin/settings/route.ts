@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { mockStore, persistAdminData } from '@/lib/mockDb';
+import { mockStore, persistAdminData, registerImageInBank } from '@/lib/mockDb';
 import { isValidSession } from '@/lib/adminSession';
 
 function requireAdmin(req: NextRequest) {
@@ -25,6 +25,8 @@ export async function POST(request: NextRequest) {
         } else {
             mockStore.siteSettings[section] = data;
         }
+        // Auto-register any image URLs in the image bank
+        if (data.image_url) registerImageInBank(data.image_url, 'settings');
         persistAdminData();
         return NextResponse.json({ success: true, data: mockStore.siteSettings[section] });
     } catch {

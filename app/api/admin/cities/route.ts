@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { mockStore, generateId, persistAdminData } from '@/lib/mockDb';
+import { mockStore, generateId, persistAdminData, registerImageInBank } from '@/lib/mockDb';
 
 const MVP_CIRCUIT_ID = '00000000-0000-0000-0000-000000000001';
 
@@ -44,6 +44,7 @@ export async function POST(request: NextRequest) {
             biblical_ref: biblical_ref || '',
             active: active !== false,
         });
+        if (image_url) registerImageInBank(image_url, 'cities');
         persistAdminData();
         return NextResponse.json({ success: true, data: { id } });
     } catch {
