@@ -9,7 +9,8 @@ export async function GET() {
         .map(c => ({
             id: c.id, name: c.name, country: c.country, flag: c.flag,
             image_url: c.image_url, description: c.description,
-            biblical_ref: c.biblical_ref, order_index: c.order_index,
+            biblical_ref: c.biblical_ref, biblical_context: c.biblical_context,
+            order_index: c.order_index, tourist_spots: c.tourist_spots || [],
         }));
 
     return NextResponse.json({

@@ -29,6 +29,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
             flag: body.flag !== undefined ? body.flag : city.flag,
             biblical_ref: body.biblical_ref !== undefined ? body.biblical_ref : city.biblical_ref,
             active: body.active !== undefined ? body.active : city.active,
+            tourist_spots: body.tourist_spots !== undefined ? body.tourist_spots : city.tourist_spots,
         };
         mockStore.cities.set(cityId, updated);
         if (updated.image_url) registerImageInBank(updated.image_url, 'cities');

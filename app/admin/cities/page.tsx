@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 
 interface ChatMsg { role: 'user' | 'assistant'; content: string }
 
-const emptyForm = { name: '', name_en: '', country: '', modern_name: '', description: '', biblical_context: '', latitude: '', longitude: '', flag: '', biblical_ref: '', image_url: '', active: true };
+const emptyForm = { name: '', name_en: '', country: '', modern_name: '', description: '', biblical_context: '', latitude: '', longitude: '', flag: '', biblical_ref: '', image_url: '', active: true, tourist_spots: [] as { name: string; description: string; image_url: string }[] };
 
 export default function AdminCitiesPage() {
     const router = useRouter();
@@ -60,6 +60,7 @@ export default function AdminCitiesPage() {
             longitude: String(city.longitude || ''), flag: city.flag || '',
             biblical_ref: city.biblical_ref || '', image_url: city.image_url || '',
             active: city.active !== false,
+            tourist_spots: city.tourist_spots || [],
         });
         setEditingId(city.id);
         resetChat();
@@ -468,6 +469,38 @@ export default function AdminCitiesPage() {
                                     <input value={form.longitude} onChange={e => setForm(f => ({ ...f, longitude: e.target.value }))} style={inputStyle} placeholder="Ex: 27.3417" type="number" step="any" />
                                 </div>
                             </div>
+                            {/* Tourist Spots */}
+                            <div>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                                    <label style={labelStyle}>Pontos Turísticos ({form.tourist_spots.length})</label>
+                                    <button type="button" onClick={() => setForm(f => ({ ...f, tourist_spots: [...f.tourist_spots, { name: '', description: '', image_url: '' }] }))} style={{ padding: '6px 12px', borderRadius: 6, background: 'rgba(46,204,113,0.1)', border: '1px solid rgba(46,204,113,0.3)', color: '#2ecc71', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>➕ Novo Ponto</button>
+                                </div>
+                                {form.tourist_spots.map((spot, si) => (
+                                    <div key={si} style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12, padding: 14, marginBottom: 8, position: 'relative' }}>
+                                        <button type="button" onClick={() => setForm(f => ({ ...f, tourist_spots: f.tourist_spots.filter((_, j) => j !== si) }))} style={{ position: 'absolute', top: 8, right: 8, padding: '4px 8px', borderRadius: 6, background: 'rgba(231,76,60,0.08)', border: '1px solid rgba(231,76,60,0.2)', color: '#e74c3c', fontSize: 10, cursor: 'pointer' }}>🗑️</button>
+                                        <div className="admin-city-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 8 }}>
+                                            <div>
+                                                <label style={{ ...labelStyle, fontSize: 10 }}>Nome do Ponto</label>
+                                                <input value={spot.name} onChange={e => setForm(f => { const ts = [...f.tourist_spots]; ts[si] = { ...ts[si], name: e.target.value }; return { ...f, tourist_spots: ts }; })} style={inputStyle} placeholder="Ex: Muro das Lamentações" />
+                                            </div>
+                                            <div>
+                                                <label style={{ ...labelStyle, fontSize: 10 }}>URL da Imagem</label>
+                                                <input value={spot.image_url} onChange={e => setForm(f => { const ts = [...f.tourist_spots]; ts[si] = { ...ts[si], image_url: e.target.value }; return { ...f, tourist_spots: ts }; })} style={inputStyle} placeholder="https://..." />
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label style={{ ...labelStyle, fontSize: 10 }}>Descrição</label>
+                                            <textarea value={spot.description} onChange={e => setForm(f => { const ts = [...f.tourist_spots]; ts[si] = { ...ts[si], description: e.target.value }; return { ...f, tourist_spots: ts }; })} rows={2} style={{ ...inputStyle, resize: 'vertical' as const }} placeholder="Breve descrição do ponto turístico..." />
+                                        </div>
+                                        {spot.image_url && (
+                                            <div style={{ marginTop: 6, width: 80, height: 50, borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                                <img src={spot.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                            </div>
+                                        )}
+                                    </div>
+                                ))}
+                            </div>
+
                             {/* Active toggle */}
                             <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '10px 14px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}>
                                 <button onClick={() => setForm(f => ({ ...f, active: !f.active }))} style={{ width: 44, height: 24, borderRadius: 12, background: form.active ? '#2ecc71' : 'rgba(255,255,255,0.15)', border: 'none', cursor: 'pointer', position: 'relative', transition: 'background 0.2s' }}>

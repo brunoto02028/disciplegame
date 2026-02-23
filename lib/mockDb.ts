@@ -2,12 +2,18 @@ export interface MockUser {
     id: string; email: string; name: string; password_hash: string;
     country: string | null; church: string | null; created_at: Date;
 }
+export interface TouristSpot {
+    name: string;
+    description: string;
+    image_url: string;
+}
 export interface MockCity {
     id: string; circuit_id: string; name: string; name_en: string;
     country: string; modern_name: string; description: string;
     description_en: string; biblical_context: string;
     latitude: number; longitude: number; image_url: string | null; order_index: number;
     flag: string; biblical_ref: string; active: boolean;
+    tourist_spots?: TouristSpot[];
 }
 export interface MockQuestion {
     id: string; city_id: string; block: number; difficulty: number;
@@ -66,6 +72,11 @@ const _defaultStore = {
             biblical_context: 'Jerusalém foi o centro da missão apostólica. Foi aqui que Jesus foi crucificado, ressuscitou e onde a Igreja nasceu no Pentecostes (Atos 2). Paulo visitou Jerusalém várias vezes para se reunir com os apóstolos.',
             latitude: 31.7683, longitude: 35.2137, image_url: 'https://images.unsplash.com/photo-1544967082-d9d25d867d66?auto=format&fit=crop&w=800&q=80', order_index: 1,
             flag: '🇮🇱', biblical_ref: 'Atos 1-7', active: true,
+            tourist_spots: [
+                { name: 'Igreja do Santo Sepulcro', description: 'Local da crucificação e ressurreição de Jesus, o lugar mais sagrado do cristianismo.', image_url: 'https://images.unsplash.com/photo-1562979314-bee7453e911c?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Muro das Lamentações', description: 'Remanescente do Segundo Templo, local de oração mais sagrado do judaísmo.', image_url: 'https://images.unsplash.com/photo-1547483238-2cbf881a559f?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Via Dolorosa', description: 'O caminho percorrido por Jesus carregando a cruz até o Calvário.', image_url: 'https://images.unsplash.com/photo-1558284989-30e0f90b4703?auto=format&fit=crop&w=600&q=80' },
+            ],
         }],
         ['city-efeso-002', {
             id: 'city-efeso-002', circuit_id: MVP_CIRCUIT_ID,
@@ -75,6 +86,11 @@ const _defaultStore = {
             biblical_context: 'Paulo passou cerca de 3 anos em Éfeso (Atos 19-20), tornando-a base para a evangelização da Ásia Menor. A cidade era famosa pelo Templo de Ártemis, uma das Sete Maravilhas do Mundo Antigo.',
             latitude: 37.9395, longitude: 27.3417, image_url: 'https://images.unsplash.com/photo-1589254065878-42c6b0e0a0bf?auto=format&fit=crop&w=800&q=80', order_index: 2,
             flag: '🇹🇷', biblical_ref: 'Atos 19-20', active: true,
+            tourist_spots: [
+                { name: 'Biblioteca de Celso', description: 'Uma das bibliotecas mais antigas do mundo, símbolo icônico de Éfeso.', image_url: 'https://images.unsplash.com/photo-1590074072786-a66914d668f1?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Grande Teatro', description: 'Teatro com capacidade para 25.000 pessoas onde houve o tumulto contra Paulo.', image_url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Casa da Virgem Maria', description: 'Santuário no Monte Koressos, onde tradição diz que Maria viveu seus últimos dias.', image_url: 'https://images.unsplash.com/photo-1601922046210-47ac6e9e8fbb?auto=format&fit=crop&w=600&q=80' },
+            ],
         }],
         ['city-malta-003', {
             id: 'city-malta-003', circuit_id: MVP_CIRCUIT_ID,
@@ -84,6 +100,11 @@ const _defaultStore = {
             biblical_context: 'Paulo naufragou em Malta durante sua viagem a Roma (Atos 27-28). Na ilha, sobreviveu à picada de uma víbora e curou o pai do governador Públio, além de muitos outros habitantes.',
             latitude: 35.9375, longitude: 14.3754, image_url: 'https://images.unsplash.com/photo-1514890547357-a9ee288728e0?auto=format&fit=crop&w=800&q=80', order_index: 3,
             flag: '🇲🇹', biblical_ref: 'Atos 27-28', active: true,
+            tourist_spots: [
+                { name: 'Baía de São Paulo', description: 'Local tradicional do naufrágio do Apóstolo Paulo, com estátua comemorativa.', image_url: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Catedral de São João', description: 'Uma das catedrais mais impressionantes da Europa, com interior barroco em ouro.', image_url: 'https://images.unsplash.com/photo-1584466990297-eb0e1c40f0a1?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Gruta de São Paulo', description: 'Caverna em Rabat onde a tradição diz que Paulo orou e pregou durante sua estadia.', image_url: 'https://images.unsplash.com/photo-1504512485720-7d83a16ee930?auto=format&fit=crop&w=600&q=80' },
+            ],
         }],
     ]),
 
@@ -176,6 +197,51 @@ const _defaultStore = {
         },
         footer: {
             text: '© 2026 O Discipulo - Ricardo Almeida - Usine Criative - Todos os direitos reservados',
+        },
+        about: {
+            label: 'Sobre o Jogo',
+            title: 'O que é O Discípulo?',
+            subtitle: 'Uma experiência única que combina fé, história e aventura.',
+            paragraphs: [
+                'O Discípulo é um jogo educativo interativo que te leva numa viagem pelas cidades percorridas pelo Apóstolo Paulo. Responda perguntas sobre história bíblica, geografia moderna e turismo religioso enquanto compete com jogadores do mundo todo.',
+                'Cada cidade é uma fase completa com 3 blocos de conhecimento: contexto bíblico, geografia atual e turismo local. São 9 perguntas por cidade, com dificuldade progressiva e timer — teste seus conhecimentos e suba no ranking!',
+                'Além de aprender, você pode desafiar amigos em duelos PvP, participar de desafios diários, ganhar XP para subir de nível e até fazer check-in GPS nas cidades reais para ganhar pontos extras.',
+            ],
+            features: [
+                { icon: '📖', title: 'Conteúdo Bíblico', desc: 'Perguntas baseadas nas Escrituras e no contexto histórico das viagens de Paulo.' },
+                { icon: '🌍', title: 'Geografia Real', desc: 'Aprenda sobre as cidades modernas que guardam a história do cristianismo primitivo.' },
+                { icon: '✈️', title: 'Turismo Religioso', desc: 'Descubra pontos turísticos, monumentos e locais sagrados de cada cidade.' },
+                { icon: '🏆', title: 'Competição Global', desc: 'Ranking mundial, duelos PvP, desafios diários e sistema de ligas.' },
+            ],
+        },
+        testimonials: {
+            label: 'O que Dizem',
+            title: 'Jogadores ao Redor do Mundo',
+            subtitle: 'Veja o que a comunidade está falando sobre O Discípulo.',
+            items: [
+                { name: 'Ana Silva', role: 'Professora de EBD', text: 'Uso O Discípulo nas aulas da Escola Bíblica Dominical. Os jovens adoram competir enquanto aprendem!', avatar: '👩‍🏫' },
+                { name: 'Pastor Carlos', role: 'Igreja Batista Central', text: 'Uma ferramenta incrível para engajar a igreja no estudo bíblico de forma divertida e moderna.', avatar: '⛪' },
+                { name: 'Marcos Oliveira', role: 'Jogador desde 2026', text: 'Aprendi mais sobre as viagens de Paulo jogando do que em anos de estudo. Viciante e educativo!', avatar: '🎮' },
+            ],
+            stats: [
+                { number: '1.200+', label: 'Jogadores Ativos' },
+                { number: '45.000+', label: 'Perguntas Respondidas' },
+                { number: '98%', label: 'Aprovação' },
+                { number: '15+', label: 'Países' },
+            ],
+        },
+        faq: {
+            label: 'Dúvidas Frequentes',
+            title: 'Perguntas Frequentes',
+            subtitle: 'Tudo que você precisa saber sobre O Discípulo.',
+            items: [
+                { question: 'O jogo é gratuito?', answer: 'Sim! O Discípulo é gratuito para jogar. Temos um plano Premium opcional com power-ups extras e conteúdo exclusivo.' },
+                { question: 'Preciso instalar um aplicativo?', answer: 'Não! O Discípulo funciona direto no navegador do celular ou computador. Basta acessar disciplegame.com.' },
+                { question: 'Como funciona o sistema de pontos?', answer: 'Cada pergunta vale pontos baseados na dificuldade: fácil (100 pts), médio (200 pts) e difícil (300 pts). Você tem 30 segundos por pergunta.' },
+                { question: 'Posso jogar com amigos?', answer: 'Sim! Você pode criar salas privadas, desafiar amigos em duelos PvP e compartilhar seus resultados.' },
+                { question: 'Quais cidades estão disponíveis?', answer: 'Atualmente temos Jerusalém, Éfeso e Malta. Novas cidades são adicionadas regularmente seguindo as viagens do Apóstolo Paulo.' },
+                { question: 'O conteúdo é biblicamente preciso?', answer: 'Sim! Todas as perguntas são baseadas em fontes bíblicas e históricas confiáveis, com explicações detalhadas após cada resposta.' },
+            ],
         },
     } as Record<string, any>,
 

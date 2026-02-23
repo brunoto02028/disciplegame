@@ -5,9 +5,12 @@ import { useRouter } from 'next/navigation';
 
 const TABS = [
     { id: 'hero', label: 'Hero', icon: '🏠' },
+    { id: 'about', label: 'Sobre o Jogo', icon: '📖' },
     { id: 'cities_section', label: 'Seção Cidades', icon: '🏛️' },
     { id: 'map_section', label: 'Mapa', icon: '🗺️' },
     { id: 'how_it_works', label: 'Como Funciona', icon: '⚙️' },
+    { id: 'testimonials', label: 'Depoimentos', icon: '💬' },
+    { id: 'faq', label: 'FAQ', icon: '❓' },
     { id: 'cta_section', label: 'CTA Final', icon: '🎯' },
     { id: 'footer', label: 'Footer', icon: '📋' },
 ];
@@ -348,6 +351,96 @@ export default function AdminSettingsPage() {
                                 <div><label style={{ ...labelStyle, marginBottom: 3 }}>Título</label><input value={item.title || ''} onChange={e => updateNestedField('how_it_works', 'items', i, 'title', e.target.value)} style={inputStyle} /></div>
                             </div>
                             <div><label style={{ ...labelStyle, marginBottom: 3 }}>Descrição</label><textarea value={item.desc || ''} onChange={e => updateNestedField('how_it_works', 'items', i, 'desc', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                        </div>
+                    ))}
+                </div>
+            </div>);
+            case 'about': return (<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div><label style={labelStyle}>Label</label><input value={s.label || ''} onChange={e => updateField('about', 'label', e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Título</label><input value={s.title || ''} onChange={e => updateField('about', 'title', e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Subtítulo</label><textarea value={s.subtitle || ''} onChange={e => updateField('about', 'subtitle', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                        <label style={{ ...labelStyle, marginBottom: 0 }}>Parágrafos ({(s.paragraphs || []).length})</label>
+                        <button onClick={() => addArrayItem('about', 'paragraphs', '')} style={btnGreen}>➕ Novo</button>
+                    </div>
+                    {(s.paragraphs || []).map((p: string, i: number) => (
+                        <div key={i} style={{ display: 'flex', gap: 6, alignItems: 'flex-start', marginBottom: 6 }}>
+                            <textarea value={p} onChange={e => {
+                                const arr = [...(s.paragraphs || [])];
+                                arr[i] = e.target.value;
+                                updateField('about', 'paragraphs', arr);
+                            }} rows={2} style={{ ...inputStyle, resize: 'vertical' }} />
+                            <button onClick={() => removeArrayItem('about', 'paragraphs', i)} style={{ ...btnRed, flexShrink: 0 }}>✕</button>
+                        </div>
+                    ))}
+                </div>
+                <div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                        <label style={{ ...labelStyle, marginBottom: 0 }}>Features ({(s.features || []).length})</label>
+                        <button onClick={() => addArrayItem('about', 'features', { icon: '🔍', title: '', desc: '' })} style={btnGreen}>➕ Nova</button>
+                    </div>
+                    {(s.features || []).map((f: any, i: number) => (
+                        <div key={i} style={{ ...glass, padding: 14, position: 'relative', marginBottom: 10 }}>
+                            <button onClick={() => removeArrayItem('about', 'features', i)} style={{ ...btnRed, position: 'absolute', top: 10, right: 10, padding: '4px 8px' }}>🗑️</button>
+                            <div className="settings-grid-2" style={{ display: 'grid', gridTemplateColumns: '60px 1fr', gap: 8, marginBottom: 8 }}>
+                                <div><label style={{ ...labelStyle, marginBottom: 3 }}>Ícone</label><input value={f.icon || ''} onChange={e => updateNestedField('about', 'features', i, 'icon', e.target.value)} style={inputStyle} /></div>
+                                <div><label style={{ ...labelStyle, marginBottom: 3 }}>Título</label><input value={f.title || ''} onChange={e => updateNestedField('about', 'features', i, 'title', e.target.value)} style={inputStyle} /></div>
+                            </div>
+                            <div><label style={{ ...labelStyle, marginBottom: 3 }}>Descrição</label><textarea value={f.desc || ''} onChange={e => updateNestedField('about', 'features', i, 'desc', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                        </div>
+                    ))}
+                </div>
+            </div>);
+            case 'testimonials': return (<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div><label style={labelStyle}>Label</label><input value={s.label || ''} onChange={e => updateField('testimonials', 'label', e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Título</label><input value={s.title || ''} onChange={e => updateField('testimonials', 'title', e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Subtítulo</label><textarea value={s.subtitle || ''} onChange={e => updateField('testimonials', 'subtitle', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                        <label style={{ ...labelStyle, marginBottom: 0 }}>Estatísticas ({(s.stats || []).length})</label>
+                        <button onClick={() => addArrayItem('testimonials', 'stats', { number: '', label: '' })} style={btnGreen}>➕ Nova</button>
+                    </div>
+                    {(s.stats || []).map((st: any, i: number) => (
+                        <div key={i} style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 6 }}>
+                            <input value={st.number || ''} onChange={e => updateNestedField('testimonials', 'stats', i, 'number', e.target.value)} style={{ ...inputStyle, width: 100 }} placeholder="Número" />
+                            <input value={st.label || ''} onChange={e => updateNestedField('testimonials', 'stats', i, 'label', e.target.value)} style={inputStyle} placeholder="Label" />
+                            <button onClick={() => removeArrayItem('testimonials', 'stats', i)} style={{ ...btnRed, flexShrink: 0 }}>✕</button>
+                        </div>
+                    ))}
+                </div>
+                <div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                        <label style={{ ...labelStyle, marginBottom: 0 }}>Depoimentos ({(s.items || []).length})</label>
+                        <button onClick={() => addArrayItem('testimonials', 'items', { name: '', role: '', text: '', avatar: '👤' })} style={btnGreen}>➕ Novo</button>
+                    </div>
+                    {(s.items || []).map((t: any, i: number) => (
+                        <div key={i} style={{ ...glass, padding: 14, position: 'relative', marginBottom: 10 }}>
+                            <button onClick={() => removeArrayItem('testimonials', 'items', i)} style={{ ...btnRed, position: 'absolute', top: 10, right: 10, padding: '4px 8px' }}>🗑️</button>
+                            <div className="settings-grid-2" style={{ display: 'grid', gridTemplateColumns: '60px 1fr 1fr', gap: 8, marginBottom: 8 }}>
+                                <div><label style={{ ...labelStyle, marginBottom: 3 }}>Avatar</label><input value={t.avatar || ''} onChange={e => updateNestedField('testimonials', 'items', i, 'avatar', e.target.value)} style={inputStyle} /></div>
+                                <div><label style={{ ...labelStyle, marginBottom: 3 }}>Nome</label><input value={t.name || ''} onChange={e => updateNestedField('testimonials', 'items', i, 'name', e.target.value)} style={inputStyle} /></div>
+                                <div><label style={{ ...labelStyle, marginBottom: 3 }}>Cargo/Função</label><input value={t.role || ''} onChange={e => updateNestedField('testimonials', 'items', i, 'role', e.target.value)} style={inputStyle} /></div>
+                            </div>
+                            <div><label style={{ ...labelStyle, marginBottom: 3 }}>Texto</label><textarea value={t.text || ''} onChange={e => updateNestedField('testimonials', 'items', i, 'text', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                        </div>
+                    ))}
+                </div>
+            </div>);
+            case 'faq': return (<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div><label style={labelStyle}>Label</label><input value={s.label || ''} onChange={e => updateField('faq', 'label', e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Título</label><input value={s.title || ''} onChange={e => updateField('faq', 'title', e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Subtítulo</label><textarea value={s.subtitle || ''} onChange={e => updateField('faq', 'subtitle', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div>
+                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+                        <label style={{ ...labelStyle, marginBottom: 0 }}>Perguntas ({(s.items || []).length})</label>
+                        <button onClick={() => addArrayItem('faq', 'items', { question: '', answer: '' })} style={btnGreen}>➕ Nova</button>
+                    </div>
+                    {(s.items || []).map((item: any, i: number) => (
+                        <div key={i} style={{ ...glass, padding: 14, position: 'relative', marginBottom: 10 }}>
+                            <button onClick={() => removeArrayItem('faq', 'items', i)} style={{ ...btnRed, position: 'absolute', top: 10, right: 10, padding: '4px 8px' }}>🗑️</button>
+                            <div style={{ marginBottom: 8 }}><label style={{ ...labelStyle, marginBottom: 3 }}>Pergunta</label><input value={item.question || ''} onChange={e => updateNestedField('faq', 'items', i, 'question', e.target.value)} style={inputStyle} /></div>
+                            <div><label style={{ ...labelStyle, marginBottom: 3 }}>Resposta</label><textarea value={item.answer || ''} onChange={e => updateNestedField('faq', 'items', i, 'answer', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
                         </div>
                     ))}
                 </div>

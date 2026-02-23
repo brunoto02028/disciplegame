@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     if (!requireAdmin(request)) return NextResponse.json({ success: false, error: 'Não autorizado' }, { status: 401 });
     try {
         const body = await request.json();
-        const { name, name_en, country, modern_name, description, biblical_context, latitude, longitude, flag, biblical_ref, image_url, active } = body;
+        const { name, name_en, country, modern_name, description, biblical_context, latitude, longitude, flag, biblical_ref, image_url, active, tourist_spots } = body;
         if (!name || !country) {
             return NextResponse.json({ success: false, error: 'Nome e país são obrigatórios' }, { status: 400 });
         }
@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
             flag: flag || '',
             biblical_ref: biblical_ref || '',
             active: active !== false,
+            tourist_spots: Array.isArray(tourist_spots) ? tourist_spots : [],
         });
         if (image_url) registerImageInBank(image_url, 'cities');
         persistAdminData();
