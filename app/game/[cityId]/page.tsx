@@ -31,7 +31,7 @@ function CrossIcon({ size = 24, color = '#c9a227' }: { size?: number; color?: st
 }
 
 const blockColors: Record<number, { bg: string; border: string; label: string; color: string }> = {
-    1: { bg: 'rgba(201,162,39,0.2)', border: 'rgba(201,162,39,0.5)', label: 'Contexto Biblico', color: '#d4b84a' },
+    1: { bg: 'rgba(201,162,39,0.2)', border: 'rgba(201,162,39,0.5)', label: 'Contexto Bíblico', color: '#d4b84a' },
     2: { bg: 'rgba(255,255,255,0.1)', border: 'rgba(255,255,255,0.3)', label: 'Geografia Atual', color: 'rgba(255,255,255,0.7)' },
     3: { bg: 'rgba(201,162,39,0.2)', border: 'rgba(201,162,39,0.5)', label: 'Turismo e Economia', color: '#c9a227' },
 };

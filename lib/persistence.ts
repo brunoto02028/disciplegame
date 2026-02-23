@@ -89,10 +89,16 @@ export function applyPersistedData(store: {
         console.log(`[Persistence] Restored ${store.questions.size} questions`);
     }
 
-    // Restore site settings
+    // Restore site settings (deep merge to preserve new default fields like _en translations)
     if (data.siteSettings) {
-        Object.assign(store.siteSettings, data.siteSettings);
-        console.log('[Persistence] Restored site settings');
+        for (const [section, sectionData] of Object.entries(data.siteSettings)) {
+            if (store.siteSettings[section] && typeof sectionData === 'object' && sectionData !== null) {
+                store.siteSettings[section] = { ...store.siteSettings[section], ...sectionData };
+            } else {
+                store.siteSettings[section] = sectionData;
+            }
+        }
+        console.log('[Persistence] Restored site settings (deep merged)');
     }
 
     // Restore game rules

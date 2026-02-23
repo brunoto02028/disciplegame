@@ -9,14 +9,14 @@ const inputStyle: React.CSSProperties = { width: '100%', padding: '10px 14px', f
 const SAMPLE_CAMPAIGNS = [
     { id: '1', name: 'Boas-vindas', status: 'active', sent: 142, opened: 89, clicked: 34, date: '2026-02-01' },
     { id: '2', name: 'Desafio Semanal #12', status: 'sent', sent: 89, opened: 52, clicked: 21, date: '2026-02-15' },
-    { id: '3', name: 'Novo Circuito disponivel', status: 'draft', sent: 0, opened: 0, clicked: 0, date: '2026-02-18' },
+    { id: '3', name: 'Novo Circuito disponível', status: 'draft', sent: 0, opened: 0, clicked: 0, date: '2026-02-18' },
 ];
 
 export default function EmailPage() {
     const [tab, setTab] = useState<'campaigns' | 'compose' | 'settings'>('campaigns');
     const [campaigns] = useState(SAMPLE_CAMPAIGNS);
     const [composeData, setComposeData] = useState({ subject: '', body: '', segment: 'all' });
-    const [settings, setSettings] = useState({ provider: 'resend', apiKey: '', fromEmail: 'noreply@odiscipulo.app', fromName: 'O Discipulo' });
+    const [settings, setSettings] = useState({ provider: 'resend', apiKey: '', fromEmail: 'noreply@odiscipulo.app', fromName: 'O Discípulo' });
     const [saving, setSaving] = useState(false);
     const [saved, setSaved] = useState('');
 
@@ -99,11 +99,11 @@ export default function EmailPage() {
                         </div>
                         <div>
                             <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#c9a227', marginBottom: 6, textTransform: 'uppercase' }}>Assunto</label>
-                            <input value={composeData.subject} onChange={e => setComposeData({ ...composeData, subject: e.target.value })} placeholder="Ex: Novo desafio semanal disponivel!" style={inputStyle} />
+                            <input value={composeData.subject} onChange={e => setComposeData({ ...composeData, subject: e.target.value })} placeholder="Ex: Novo desafio semanal disponível!" style={inputStyle} />
                         </div>
                         <div>
                             <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#c9a227', marginBottom: 6, textTransform: 'uppercase' }}>Corpo do Email</label>
-                            <textarea value={composeData.body} onChange={e => setComposeData({ ...composeData, body: e.target.value })} rows={8} placeholder="Escreva o conteudo do email... Use {name} para nome do usuario, {points} para pontos." style={{ ...inputStyle, resize: 'vertical' }} />
+                            <textarea value={composeData.body} onChange={e => setComposeData({ ...composeData, body: e.target.value })} rows={8} placeholder="Escreva o conteúdo do email... Use {name} para nome do usuário, {points} para pontos." style={{ ...inputStyle, resize: 'vertical' }} />
                             <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginTop: 6 }}>Variaveis: {'{name}'}, {'{email}'}, {'{points}'}, {'{rank}'}, {'{city}'}</p>
                         </div>
                         <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>

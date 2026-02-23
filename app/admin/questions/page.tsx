@@ -233,6 +233,7 @@ export default function AdminQuestionsPage() {
 
     const glass: React.CSSProperties = { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 16 };
     const inputStyle: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, background: 'rgba(255,255,255,0.06)', color: '#fff', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' };
+    const selectStyle: React.CSSProperties = { ...inputStyle, appearance: 'none' as const, WebkitAppearance: 'none' as const, backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23c9a227' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center', paddingRight: 28, cursor: 'pointer' };
     const labelStyle: React.CSSProperties = { display: 'block', fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.5)', marginBottom: 5, textTransform: 'uppercase', letterSpacing: 0.8 };
     const aiBtn: React.CSSProperties = { padding: '10px 20px', borderRadius: 10, background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', color: '#fff', fontWeight: 700, fontSize: 13, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 16px rgba(124,58,237,0.3)' };
 
@@ -260,11 +261,11 @@ export default function AdminQuestionsPage() {
 
             {/* Filters */}
             <div style={{ ...glass, padding: '14px 18px', marginBottom: 20, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' as const }}>
-                <select value={filterCity} onChange={e => setFilterCity(e.target.value)} style={{ ...inputStyle, width: 'auto', minWidth: 160 }}>
+                <select value={filterCity} onChange={e => setFilterCity(e.target.value)} style={{ ...selectStyle, width: 'auto', minWidth: 160 }}>
                     <option value="">Todas as cidades</option>
                     {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                 </select>
-                <select value={filterBlock} onChange={e => setFilterBlock(e.target.value)} style={{ ...inputStyle, width: 'auto', minWidth: 160 }}>
+                <select value={filterBlock} onChange={e => setFilterBlock(e.target.value)} style={{ ...selectStyle, width: 'auto', minWidth: 160 }}>
                     <option value="">Todos os blocos</option>
                     {Object.entries(BLOCKS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                 </select>
@@ -287,7 +288,7 @@ export default function AdminQuestionsPage() {
                                     <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8, flexWrap: 'wrap' as const }}>
                                         <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(201,162,39,0.15)', border: '1px solid rgba(201,162,39,0.4)', borderRadius: 20, padding: '2px 10px', color: '#c9a227' }}>{city?.name || '?'}</span>
                                         <span style={{ fontSize: 11, fontWeight: 700, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', borderRadius: 20, padding: '2px 10px', color: 'rgba(255,255,255,0.6)' }}>{BLOCKS[q.block as keyof typeof BLOCKS]}</span>
-                                        <span style={{ fontSize: 11, fontWeight: 700, color: DIFF_COLORS[q.difficulty as keyof typeof DIFF_COLORS] }}>{DIFFICULTIES[q.difficulty as keyof typeof DIFFICULTIES]}</span>
+                                        <span style={{ fontSize: 11, fontWeight: 700, color: DIFF_COLORS[q.difficulty as keyof typeof DIFF_COLORS], background: `${DIFF_COLORS[q.difficulty as keyof typeof DIFF_COLORS]}20`, border: `1px solid ${DIFF_COLORS[q.difficulty as keyof typeof DIFF_COLORS]}40`, borderRadius: 20, padding: '2px 10px' }}>{DIFFICULTIES[q.difficulty as keyof typeof DIFFICULTIES]}</span>
                                     </div>
                                     <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 8, lineHeight: 1.4 }}>{q.question_text}</p>
                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
@@ -345,21 +346,26 @@ export default function AdminQuestionsPage() {
                             <div className="admin-q-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 12 }}>
                                 <div>
                                     <label style={labelStyle}>Cidade *</label>
-                                    <select value={form.city_id} onChange={e => setForm(f => ({ ...f, city_id: e.target.value }))} style={inputStyle}>
+                                    <select value={form.city_id} onChange={e => setForm(f => ({ ...f, city_id: e.target.value }))} style={selectStyle}>
                                         {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                                     </select>
                                 </div>
                                 <div>
                                     <label style={labelStyle}>Bloco *</label>
-                                    <select value={form.block} onChange={e => setForm(f => ({ ...f, block: e.target.value }))} style={inputStyle}>
+                                    <select value={form.block} onChange={e => setForm(f => ({ ...f, block: e.target.value }))} style={selectStyle}>
                                         {Object.entries(BLOCKS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                                     </select>
                                 </div>
                                 <div>
                                     <label style={labelStyle}>Dificuldade *</label>
-                                    <select value={form.difficulty} onChange={e => setForm(f => ({ ...f, difficulty: e.target.value }))} style={inputStyle}>
-                                        {Object.entries(DIFFICULTIES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-                                    </select>
+                                    <div style={{ display: 'flex', gap: 6 }}>
+                                        {Object.entries(DIFFICULTIES).map(([k, v]) => (
+                                            <button key={k} type="button" onClick={() => setForm(f => ({ ...f, difficulty: k }))}
+                                                style={{ flex: 1, padding: '9px 8px', borderRadius: 8, fontSize: 12, fontWeight: 700, cursor: 'pointer', border: form.difficulty === k ? `2px solid ${DIFF_COLORS[Number(k) as keyof typeof DIFF_COLORS]}` : '1px solid rgba(255,255,255,0.12)', background: form.difficulty === k ? `${DIFF_COLORS[Number(k) as keyof typeof DIFF_COLORS]}20` : 'rgba(255,255,255,0.06)', color: form.difficulty === k ? DIFF_COLORS[Number(k) as keyof typeof DIFF_COLORS] : 'rgba(255,255,255,0.5)', transition: 'all 0.2s' }}>
+                                                {v}
+                                            </button>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                             <div>
@@ -429,25 +435,25 @@ export default function AdminQuestionsPage() {
                                 <div className="admin-q-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                                     <div>
                                         <label style={labelStyle}>Cidade *</label>
-                                        <select value={aiConfig.city_id} onChange={e => setAiConfig(f => ({ ...f, city_id: e.target.value }))} style={inputStyle}>
+                                        <select value={aiConfig.city_id} onChange={e => setAiConfig(f => ({ ...f, city_id: e.target.value }))} style={selectStyle}>
                                             {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
                                         </select>
                                     </div>
                                     <div>
                                         <label style={labelStyle}>Bloco Temático *</label>
-                                        <select value={aiConfig.block} onChange={e => setAiConfig(f => ({ ...f, block: e.target.value }))} style={inputStyle}>
+                                        <select value={aiConfig.block} onChange={e => setAiConfig(f => ({ ...f, block: e.target.value }))} style={selectStyle}>
                                             {Object.entries(BLOCKS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                                         </select>
                                     </div>
                                     <div>
                                         <label style={labelStyle}>Dificuldade *</label>
-                                        <select value={aiConfig.difficulty} onChange={e => setAiConfig(f => ({ ...f, difficulty: e.target.value }))} style={inputStyle}>
+                                        <select value={aiConfig.difficulty} onChange={e => setAiConfig(f => ({ ...f, difficulty: e.target.value }))} style={selectStyle}>
                                             {Object.entries(DIFFICULTIES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
                                         </select>
                                     </div>
                                     <div>
                                         <label style={labelStyle}>Quantidade *</label>
-                                        <select value={aiConfig.quantity} onChange={e => setAiConfig(f => ({ ...f, quantity: e.target.value }))} style={inputStyle}>
+                                        <select value={aiConfig.quantity} onChange={e => setAiConfig(f => ({ ...f, quantity: e.target.value }))} style={selectStyle}>
                                             {QUANTITIES.map(n => <option key={n} value={String(n)}>{n} perguntas</option>)}
                                         </select>
                                     </div>

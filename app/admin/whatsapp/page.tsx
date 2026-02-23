@@ -7,9 +7,9 @@ const glass: React.CSSProperties = { background: 'rgba(255,255,255,0.04)', borde
 const inputStyle: React.CSSProperties = { width: '100%', padding: '10px 14px', fontSize: 13, border: goldBorder, borderRadius: 8, background: 'rgba(255,255,255,0.04)', color: '#fff', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' as const };
 
 const SAMPLE_MESSAGES = [
-    { id: '1', phone: '+5511999001234', name: 'Maria Silva', message: 'Parabens! Voce completou Jerusalem!', status: 'delivered', date: '2026-02-18 14:30' },
-    { id: '2', phone: '+5511998005678', name: 'Joao Santos', message: 'Novo desafio semanal disponivel!', status: 'sent', date: '2026-02-18 10:00' },
-    { id: '3', phone: '+5511997009012', name: 'Ana Costa', message: 'Bem-vindo ao O Discipulo!', status: 'read', date: '2026-02-17 09:15' },
+    { id: '1', phone: '+5511999001234', name: 'Maria Silva', message: 'Parabéns! Você completou Jerusalém!', status: 'delivered', date: '2026-02-18 14:30' },
+    { id: '2', phone: '+5511998005678', name: 'João Santos', message: 'Novo desafio semanal disponível!', status: 'sent', date: '2026-02-18 10:00' },
+    { id: '3', phone: '+5511997009012', name: 'Ana Costa', message: 'Bem-vindo ao O Discípulo!', status: 'read', date: '2026-02-17 09:15' },
 ];
 
 export default function WhatsAppPage() {
@@ -122,7 +122,7 @@ export default function WhatsAppPage() {
                         )}
                         <div>
                             <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#c9a227', marginBottom: 6, textTransform: 'uppercase' }}>Mensagem</label>
-                            <textarea value={sendData.message} onChange={e => setSendData({ ...sendData, message: e.target.value })} rows={4} placeholder="Ola {name}! Novo desafio disponivel..." style={{ ...inputStyle, resize: 'vertical' }} />
+                            <textarea value={sendData.message} onChange={e => setSendData({ ...sendData, message: e.target.value })} rows={4} placeholder="Olá {name}! Novo desafio disponível..." style={{ ...inputStyle, resize: 'vertical' }} />
                             <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginTop: 4 }}>Variaveis: {'{name}'}, {'{points}'}, {'{rank}'}, {'{city}'}</p>
                         </div>
                         <div style={{ display: 'flex', gap: 10 }}>

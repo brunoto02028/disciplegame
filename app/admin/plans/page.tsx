@@ -19,10 +19,10 @@ interface Plan {
 }
 
 const DEFAULT_PLANS: Plan[] = [
-    { id: 'free', name: 'Gratis', price: 0, currency: 'BRL', interval: 'month', features: ['3 cidades iniciais', '9 perguntas por cidade', 'Ranking global', 'Conquistas basicas'], stripePriceId: '', active: true, subscribers: 142 },
-    { id: 'premium', name: 'Premium', price: 19.90, currency: 'BRL', interval: 'month', features: ['Todas as cidades', '27+ perguntas por cidade', 'Desafios exclusivos', 'Sem anuncios', 'Conteudo historico extra', 'Certificado de conclusao', 'Suporte prioritario'], stripePriceId: 'price_xxxx', active: true, subscribers: 23 },
-    { id: 'premium_annual', name: 'Premium Anual', price: 149.90, currency: 'BRL', interval: 'year', features: ['Tudo do Premium', '2 meses gratis', 'Acesso antecipado a novos circuitos', 'Badge exclusivo no perfil'], stripePriceId: 'price_yyyy', active: true, subscribers: 8 },
-    { id: 'church', name: 'Igreja / Grupo', price: 49.90, currency: 'BRL', interval: 'month', features: ['Ate 50 membros', 'Dashboard do grupo', 'Ranking interno', 'Relatorios de progresso', 'Desafios personalizados', 'Suporte dedicado'], stripePriceId: 'price_zzzz', active: false, subscribers: 0 },
+    { id: 'free', name: 'Grátis', price: 0, currency: 'BRL', interval: 'month', features: ['3 cidades iniciais', '9 perguntas por cidade', 'Ranking global', 'Conquistas básicas'], stripePriceId: '', active: true, subscribers: 142 },
+    { id: 'premium', name: 'Premium', price: 19.90, currency: 'BRL', interval: 'month', features: ['Todas as cidades', '27+ perguntas por cidade', 'Desafios exclusivos', 'Sem anúncios', 'Conteúdo histórico extra', 'Certificado de conclusão', 'Suporte prioritário'], stripePriceId: 'price_xxxx', active: true, subscribers: 23 },
+    { id: 'premium_annual', name: 'Premium Anual', price: 149.90, currency: 'BRL', interval: 'year', features: ['Tudo do Premium', '2 meses grátis', 'Acesso antecipado a novos circuitos', 'Badge exclusivo no perfil'], stripePriceId: 'price_yyyy', active: true, subscribers: 8 },
+    { id: 'church', name: 'Igreja / Grupo', price: 49.90, currency: 'BRL', interval: 'month', features: ['Até 50 membros', 'Dashboard do grupo', 'Ranking interno', 'Relatórios de progresso', 'Desafios personalizados', 'Suporte dedicado'], stripePriceId: 'price_zzzz', active: false, subscribers: 0 },
 ];
 
 export default function PlansPage() {
