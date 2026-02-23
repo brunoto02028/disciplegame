@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
-const BLOCKS: Record<number, string> = { 1: 'Contexto Bíblico', 2: 'Geografia Atual', 3: 'Turismo & Economia' };
+const DEFAULT_BLOCKS: Record<number, string> = { 1: 'Contexto Bíblico', 2: 'Geografia Atual', 3: 'Turismo & Economia' };
 const DIFFICULTIES: Record<number, string> = { 1: 'Fácil', 2: 'Médio', 3: 'Difícil' };
 const DIFF_COLORS: Record<number, string> = { 1: '#27ae60', 2: '#f5c518', 3: '#e74c3c' };
 const QUANTITIES = [5, 10, 15, 20, 30, 50];
@@ -39,17 +39,26 @@ export default function AdminQuestionsPage() {
     const [aiSaving, setAiSaving] = useState(false);
     const [aiSaveProgress, setAiSaveProgress] = useState({ saved: 0, total: 0 });
     const [improvingId, setImprovingId] = useState<string | null>(null);
+    const [gameBlocks, setGameBlocks] = useState<Array<{id: number; name: string; description?: string}>>([]);
+
+    // Dynamic blocks from game rules, fallback to defaults
+    const BLOCKS: Record<number, string> = gameBlocks.length > 0
+        ? Object.fromEntries(gameBlocks.map(b => [b.id, b.name]))
+        : DEFAULT_BLOCKS;
 
     const fetchData = useCallback(async () => {
-        const [qRes, cRes] = await Promise.all([
+        const [qRes, cRes, grRes] = await Promise.all([
             fetch('/api/admin/questions'),
             fetch('/api/admin/cities'),
+            fetch('/api/admin/game-rules'),
         ]);
         if (qRes.status === 401) { router.push('/admin/login'); return; }
         const qData = await qRes.json();
         const cData = await cRes.json();
+        const grData = await grRes.json();
         if (qData.success) setQuestions(qData.data);
         if (cData.success) setCities(cData.data);
+        if (grData.success && grData.data?.blocks) setGameBlocks(grData.data.blocks);
         setLoading(false);
     }, [router]);
 
