@@ -93,8 +93,8 @@ export async function POST(request: NextRequest) {
                 const response = NextResponse.json({ success: true, message: 'Login realizado!' });
                 response.cookies.set('admin_session', sessionToken, {
                     httpOnly: true,
-                    secure: true,
-                    sameSite: 'strict',
+                    secure: process.env.NODE_ENV === 'production',
+                    sameSite: 'lax',
                     maxAge: remember ? 30 * 24 * 60 * 60 : 8 * 60 * 60,
                     path: '/',
                 });
@@ -141,8 +141,8 @@ export async function POST(request: NextRequest) {
             const response = NextResponse.json({ success: true, message: 'Login realizado com sucesso!' });
             response.cookies.set('admin_session', sessionToken, {
                 httpOnly: true,
-                secure: true,
-                sameSite: 'strict',
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'lax',
                 maxAge: remember ? 30 * 24 * 60 * 60 : 8 * 60 * 60,
                 path: '/',
             });

@@ -33,6 +33,10 @@ export default function AdminSettingsPage() {
     const [uploading, setUploading] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [uploadTarget, setUploadTarget] = useState('');
+    const [editLang, setEditLang] = useState<'pt' | 'en'>('pt');
+
+    // Field name helper: appends _en suffix when editing English
+    const fn = (field: string) => editLang === 'en' ? `${field}_en` : field;
 
     // ── Chat AI states ──
     const [showChat, setShowChat] = useState(false);
@@ -270,13 +274,14 @@ export default function AdminSettingsPage() {
         switch (activeTab) {
             case 'hero': return (<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 <ImageField section="hero" field="image_url" label="Imagem de Fundo do Hero" context="Hero banner épico, cidade antiga, pôr do sol dramático" />
-                <div><label style={labelStyle}>Título Principal</label><input value={s.title || ''} onChange={e => updateField('hero', 'title', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Subtítulo</label><input value={s.subtitle || ''} onChange={e => updateField('hero', 'subtitle', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Descrição</label><textarea value={s.description || ''} onChange={e => updateField('hero', 'description', e.target.value)} rows={3} style={{ ...inputStyle, resize: 'vertical' }} /></div>
-                <div><label style={labelStyle}>Texto do Badge</label><input value={s.badge_text || ''} onChange={e => updateField('hero', 'badge_text', e.target.value)} style={inputStyle} /></div>
+                {editLang === 'en' && <div style={{ padding: '10px 14px', borderRadius: 8, background: 'rgba(52,152,219,0.1)', border: '1px solid rgba(52,152,219,0.3)', color: '#3498db', fontSize: 11, marginBottom: 4 }}>🇺🇸 Editando versão em inglês. Campos de imagem e estatísticas são compartilhados.</div>}
+                <div><label style={labelStyle}>Título Principal</label><input value={s[fn('title')] || ''} onChange={e => updateField('hero', fn('title'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Subtítulo</label><input value={s[fn('subtitle')] || ''} onChange={e => updateField('hero', fn('subtitle'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Descrição</label><textarea value={s[fn('description')] || ''} onChange={e => updateField('hero', fn('description'), e.target.value)} rows={3} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div><label style={labelStyle}>Texto do Badge</label><input value={s[fn('badge_text')] || ''} onChange={e => updateField('hero', fn('badge_text'), e.target.value)} style={inputStyle} /></div>
                 <div className="settings-grid-2" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                    <div><label style={labelStyle}>Botão Principal</label><input value={s.cta_primary || ''} onChange={e => updateField('hero', 'cta_primary', e.target.value)} style={inputStyle} /></div>
-                    <div><label style={labelStyle}>Botão Secundário</label><input value={s.cta_secondary || ''} onChange={e => updateField('hero', 'cta_secondary', e.target.value)} style={inputStyle} /></div>
+                    <div><label style={labelStyle}>Botão Principal</label><input value={s[fn('cta_primary')] || ''} onChange={e => updateField('hero', fn('cta_primary'), e.target.value)} style={inputStyle} /></div>
+                    <div><label style={labelStyle}>Botão Secundário</label><input value={s[fn('cta_secondary')] || ''} onChange={e => updateField('hero', fn('cta_secondary'), e.target.value)} style={inputStyle} /></div>
                 </div>
                 <div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
@@ -296,15 +301,15 @@ export default function AdminSettingsPage() {
                 <div style={{ padding: '14px 16px', borderRadius: 10, background: 'rgba(201,162,39,0.06)', border: '1px solid rgba(201,162,39,0.2)' }}>
                     <p style={{ fontSize: 12, color: '#c9a227' }}>💡 Fotos das cidades: <strong>Gerenciar Cidades</strong>. Aqui edite os textos da seção.</p>
                 </div>
-                <div><label style={labelStyle}>Label</label><input value={s.label || ''} onChange={e => updateField('cities_section', 'label', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Título</label><input value={s.title || ''} onChange={e => updateField('cities_section', 'title', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Subtítulo</label><textarea value={s.subtitle || ''} onChange={e => updateField('cities_section', 'subtitle', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div><label style={labelStyle}>Label</label><input value={s[fn('label')] || ''} onChange={e => updateField('cities_section', fn('label'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Título</label><input value={s[fn('title')] || ''} onChange={e => updateField('cities_section', fn('title'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Subtítulo</label><textarea value={s[fn('subtitle')] || ''} onChange={e => updateField('cities_section', fn('subtitle'), e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
             </div>);
             case 'map_section': return (<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                 <ImageField section="map_section" field="image_url" label="Imagem do Mapa" context="Mapa antigo viagens Paulo, Mediterrâneo, rotas antigas" />
-                <div><label style={labelStyle}>Label</label><input value={s.label || ''} onChange={e => updateField('map_section', 'label', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Título</label><input value={s.title || ''} onChange={e => updateField('map_section', 'title', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Subtítulo</label><textarea value={s.subtitle || ''} onChange={e => updateField('map_section', 'subtitle', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div><label style={labelStyle}>Label</label><input value={s[fn('label')] || ''} onChange={e => updateField('map_section', fn('label'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Título</label><input value={s[fn('title')] || ''} onChange={e => updateField('map_section', fn('title'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Subtítulo</label><textarea value={s[fn('subtitle')] || ''} onChange={e => updateField('map_section', fn('subtitle'), e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
                 <div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                         <label style={{ ...labelStyle, marginBottom: 0 }}>Estatísticas ({(s.stats || []).length})</label>
@@ -335,9 +340,9 @@ export default function AdminSettingsPage() {
                 </div>
             </div>);
             case 'how_it_works': return (<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div><label style={labelStyle}>Label</label><input value={s.label || ''} onChange={e => updateField('how_it_works', 'label', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Título</label><input value={s.title || ''} onChange={e => updateField('how_it_works', 'title', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Subtítulo</label><textarea value={s.subtitle || ''} onChange={e => updateField('how_it_works', 'subtitle', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div><label style={labelStyle}>Label</label><input value={s[fn('label')] || ''} onChange={e => updateField('how_it_works', fn('label'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Título</label><input value={s[fn('title')] || ''} onChange={e => updateField('how_it_works', fn('title'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Subtítulo</label><textarea value={s[fn('subtitle')] || ''} onChange={e => updateField('how_it_works', fn('subtitle'), e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
                 <div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                         <label style={{ ...labelStyle, marginBottom: 0 }}>Cards ({(s.items || []).length})</label>
@@ -356,9 +361,9 @@ export default function AdminSettingsPage() {
                 </div>
             </div>);
             case 'about': return (<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div><label style={labelStyle}>Label</label><input value={s.label || ''} onChange={e => updateField('about', 'label', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Título</label><input value={s.title || ''} onChange={e => updateField('about', 'title', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Subtítulo</label><textarea value={s.subtitle || ''} onChange={e => updateField('about', 'subtitle', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div><label style={labelStyle}>Label</label><input value={s[fn('label')] || ''} onChange={e => updateField('about', fn('label'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Título</label><input value={s[fn('title')] || ''} onChange={e => updateField('about', fn('title'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Subtítulo</label><textarea value={s[fn('subtitle')] || ''} onChange={e => updateField('about', fn('subtitle'), e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
                 <div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                         <label style={{ ...labelStyle, marginBottom: 0 }}>Parágrafos ({(s.paragraphs || []).length})</label>
@@ -393,9 +398,9 @@ export default function AdminSettingsPage() {
                 </div>
             </div>);
             case 'testimonials': return (<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div><label style={labelStyle}>Label</label><input value={s.label || ''} onChange={e => updateField('testimonials', 'label', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Título</label><input value={s.title || ''} onChange={e => updateField('testimonials', 'title', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Subtítulo</label><textarea value={s.subtitle || ''} onChange={e => updateField('testimonials', 'subtitle', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div><label style={labelStyle}>Label</label><input value={s[fn('label')] || ''} onChange={e => updateField('testimonials', fn('label'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Título</label><input value={s[fn('title')] || ''} onChange={e => updateField('testimonials', fn('title'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Subtítulo</label><textarea value={s[fn('subtitle')] || ''} onChange={e => updateField('testimonials', fn('subtitle'), e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
                 <div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                         <label style={{ ...labelStyle, marginBottom: 0 }}>Estatísticas ({(s.stats || []).length})</label>
@@ -428,9 +433,9 @@ export default function AdminSettingsPage() {
                 </div>
             </div>);
             case 'faq': return (<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div><label style={labelStyle}>Label</label><input value={s.label || ''} onChange={e => updateField('faq', 'label', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Título</label><input value={s.title || ''} onChange={e => updateField('faq', 'title', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Subtítulo</label><textarea value={s.subtitle || ''} onChange={e => updateField('faq', 'subtitle', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div><label style={labelStyle}>Label</label><input value={s[fn('label')] || ''} onChange={e => updateField('faq', fn('label'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Título</label><input value={s[fn('title')] || ''} onChange={e => updateField('faq', fn('title'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Subtítulo</label><textarea value={s[fn('subtitle')] || ''} onChange={e => updateField('faq', fn('subtitle'), e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
                 <div>
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
                         <label style={{ ...labelStyle, marginBottom: 0 }}>Perguntas ({(s.items || []).length})</label>
@@ -446,12 +451,12 @@ export default function AdminSettingsPage() {
                 </div>
             </div>);
             case 'cta_section': return (<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div><label style={labelStyle}>Título</label><input value={s.title || ''} onChange={e => updateField('cta_section', 'title', e.target.value)} style={inputStyle} /></div>
-                <div><label style={labelStyle}>Subtítulo</label><textarea value={s.subtitle || ''} onChange={e => updateField('cta_section', 'subtitle', e.target.value)} rows={3} style={{ ...inputStyle, resize: 'vertical' }} /></div>
-                <div><label style={labelStyle}>Texto do Botão</label><input value={s.button_text || ''} onChange={e => updateField('cta_section', 'button_text', e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Título</label><input value={s[fn('title')] || ''} onChange={e => updateField('cta_section', fn('title'), e.target.value)} style={inputStyle} /></div>
+                <div><label style={labelStyle}>Subtítulo</label><textarea value={s[fn('subtitle')] || ''} onChange={e => updateField('cta_section', fn('subtitle'), e.target.value)} rows={3} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div><label style={labelStyle}>Texto do Botão</label><input value={s[fn('button_text')] || ''} onChange={e => updateField('cta_section', fn('button_text'), e.target.value)} style={inputStyle} /></div>
             </div>);
             case 'footer': return (<div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div><label style={labelStyle}>Texto do Copyright</label><textarea value={s.text || ''} onChange={e => updateField('footer', 'text', e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
+                <div><label style={labelStyle}>Texto do Copyright</label><textarea value={s[fn('text')] || ''} onChange={e => updateField('footer', fn('text'), e.target.value)} rows={2} style={{ ...inputStyle, resize: 'vertical' }} /></div>
             </div>);
             default: return null;
         }
@@ -589,7 +594,11 @@ export default function AdminSettingsPage() {
                             <h2 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 18, fontWeight: 700 }}>
                                 {TABS.find(t => t.id === activeTab)?.icon} {TABS.find(t => t.id === activeTab)?.label}
                             </h2>
-                            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
+                                <div style={{ display: 'flex', borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(201,162,39,0.3)' }}>
+                                    <button onClick={() => setEditLang('pt')} style={{ padding: '6px 14px', fontSize: 11, fontWeight: 700, border: 'none', cursor: 'pointer', background: editLang === 'pt' ? 'rgba(201,162,39,0.25)' : 'transparent', color: editLang === 'pt' ? '#c9a227' : 'rgba(255,255,255,0.4)' }}>🇧🇷 PT</button>
+                                    <button onClick={() => setEditLang('en')} style={{ padding: '6px 14px', fontSize: 11, fontWeight: 700, border: 'none', cursor: 'pointer', borderLeft: '1px solid rgba(201,162,39,0.3)', background: editLang === 'en' ? 'rgba(201,162,39,0.25)' : 'transparent', color: editLang === 'en' ? '#c9a227' : 'rgba(255,255,255,0.4)' }}>🇺🇸 EN</button>
+                                </div>
                                 <button onClick={() => setShowChat(!showChat)}
                                     style={{ ...btnAI, padding: '8px 16px', fontSize: 12, background: showChat ? 'rgba(139,69,255,0.25)' : btnAI.background }}>
                                     {showChat ? '💬 Fechar Chat IA' : '🤖 Chat com IA'}

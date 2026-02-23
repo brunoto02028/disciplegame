@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 const navSections = [
     {
@@ -38,9 +38,30 @@ function CrossIcon({ size = 24, color = '#c9a227' }: { size?: number; color?: st
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
+    const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
+    const [authChecked, setAuthChecked] = useState(false);
+    const isLoginPage = pathname === '/admin/login';
 
-    if (pathname === '/admin/login') return <>{children}</>;
+    // Centralized session check (skip for login page)
+    useEffect(() => {
+        if (isLoginPage) { setAuthChecked(true); return; }
+        fetch('/api/admin/stats', { credentials: 'include' }).then(r => {
+            if (r.status === 401) { router.replace('/admin/login'); return; }
+            setAuthChecked(true);
+        }).catch(() => router.replace('/admin/login'));
+    }, [router, isLoginPage]);
+
+    if (isLoginPage) return <>{children}</>;
+
+    if (!authChecked) {
+        return (
+            <div style={{ minHeight: '100vh', background: '#0a0820', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: 40, height: 40, border: '3px solid rgba(255,255,255,0.1)', borderTopColor: '#c9a227', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+            </div>
+        );
+    }
 
     const sidebar = (
         <aside style={{ width: 240, background: 'rgba(13,11,46,0.98)', borderRight: goldBorder, display: 'flex', flexDirection: 'column', position: 'fixed', top: 0, left: 0, height: '100vh', zIndex: 60, backdropFilter: 'blur(20px)' }}>
@@ -52,7 +73,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                     </div>
                     <div>
                         <p style={{ fontFamily: "'Playfair Display','Georgia',serif", fontWeight: 700, fontSize: 14, lineHeight: 1, color: '#fff' }}>Admin Panel</p>
-                        <p style={{ fontSize: 10, color: '#c9a227', marginTop: 2 }}>O Discipulo</p>
+                        <p style={{ fontSize: 10, color: '#c9a227', marginTop: 2 }}>O Discípulo</p>
                     </div>
                 </div>
                 {/* Close button (mobile) */}

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const goldBorder = '1px solid rgba(201,162,39,0.45)';
 const goldBg = 'rgba(201,162,39,0.08)';
@@ -40,6 +41,7 @@ export default function HomePage() {
   const [siteData, setSiteData] = useState<any>(null);
   const [expandedCity, setExpandedCity] = useState<string | null>(null);
   const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const { t, lf, locale, toggleLocale } = useLanguage();
 
   useEffect(() => {
     fetch('/api/site').then(r => r.json()).then(d => { if (d.success) setSiteData(d.data); });
@@ -67,11 +69,14 @@ export default function HomePage() {
             <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#c9a227,#8b6914)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 16px rgba(201,162,39,0.5)' }}>
               <CrossIcon size={18} color="#fff" />
             </div>
-            <span style={{ fontFamily: "'Playfair Display','Georgia',serif", fontWeight: 700, fontSize: 19, color: '#fff', letterSpacing: 0.5 }}>O Discipulo</span>
+            <span style={{ fontFamily: "'Playfair Display','Georgia',serif", fontWeight: 700, fontSize: 19, color: '#fff', letterSpacing: 0.5 }}>O Discípulo</span>
           </div>
-          <div style={{ display: 'flex', gap: 10 }}>
-            <Link href="/auth/login" className="nav-btn-login" style={{ padding: '8px 20px', borderRadius: 10, border: '1.5px solid rgba(201,162,39,0.4)', color: '#c9a227', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>Entrar</Link>
-            <Link href="/auth/register" style={{ padding: '8px 20px', borderRadius: 10, background: 'linear-gradient(135deg,#c9a227,#8b6914)', color: '#1a0a4a', fontWeight: 700, fontSize: 14, textDecoration: 'none', boxShadow: '0 4px 14px rgba(201,162,39,0.4)' }}>Começar Grátis</Link>
+          <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+            <button onClick={toggleLocale} style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.7)', fontWeight: 600, fontSize: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
+              {locale === 'pt-BR' ? '🇺🇸' : '🇧🇷'} {t('nav.language')}
+            </button>
+            <Link href="/auth/login" className="nav-btn-login" style={{ padding: '8px 20px', borderRadius: 10, border: '1.5px solid rgba(201,162,39,0.4)', color: '#c9a227', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>{t('nav.enter')}</Link>
+            <Link href="/auth/register" style={{ padding: '8px 20px', borderRadius: 10, background: 'linear-gradient(135deg,#c9a227,#8b6914)', color: '#1a0a4a', fontWeight: 700, fontSize: 14, textDecoration: 'none', boxShadow: '0 4px 14px rgba(201,162,39,0.4)' }}>{t('nav.start_free')}</Link>
           </div>
         </div>
       </nav>
@@ -81,21 +86,21 @@ export default function HomePage() {
         <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', padding: '80px 48px 80px 64px', position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: goldBg, border: goldBorder, borderRadius: 100, padding: '6px 18px', marginBottom: 36, fontSize: 13, fontWeight: 600, color: '#c9a227', width: 'fit-content' }}>
             <CrossIcon size={12} />
-            {hero.badge_text || 'As Viagens de Paulo'}
+            {lf(hero, 'badge_text') || t('hero.badge')}
           </div>
           <h1 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 'clamp(42px,6vw,76px)', fontWeight: 800, lineHeight: 1.05, marginBottom: 20, color: '#fff' }}>
-            {hero.title || 'O Discipulo'}
+            {lf(hero, 'title') || t('hero.title')}
           </h1>
-          <p style={{ fontSize: 20, fontWeight: 500, color: 'rgba(255,255,255,0.85)', marginBottom: 10, fontStyle: 'italic' }}>{hero.subtitle || 'Onde Historia e Aventura se Encontram'}</p>
+          <p style={{ fontSize: 20, fontWeight: 500, color: 'rgba(255,255,255,0.85)', marginBottom: 10, fontStyle: 'italic' }}>{lf(hero, 'subtitle') || t('hero.subtitle')}</p>
           <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.5)', lineHeight: 1.8, marginBottom: 44, maxWidth: 440 }}>
-            {hero.description || 'Uma jornada interativa de conhecimento biblico, geografia atual e turismo religioso.'}
+            {lf(hero, 'description') || t('hero.description')}
           </p>
           <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', marginBottom: 48 }}>
             <Link href="/auth/register" style={{ padding: '15px 36px', borderRadius: 12, background: 'linear-gradient(135deg,#c9a227,#8b6914)', color: '#1a0a4a', fontWeight: 700, fontSize: 16, textDecoration: 'none', boxShadow: '0 4px 24px rgba(201,162,39,0.5)', display: 'inline-block' }}>
-              {hero.cta_primary || 'Começar Jornada'}
+              {lf(hero, 'cta_primary') || t('hero.cta_primary')}
             </Link>
             <Link href="/demo" style={{ padding: '15px 36px', borderRadius: 12, background: 'rgba(39,174,96,0.15)', color: '#2ecc71', fontWeight: 700, fontSize: 16, textDecoration: 'none', border: '1px solid rgba(39,174,96,0.4)', display: 'inline-block' }}>
-              ▶ Experimentar Grátis
+              {t('hero.cta_demo')}
             </Link>
           </div>
           <div style={{ display: 'flex', gap: 24 }}>
@@ -117,14 +122,14 @@ export default function HomePage() {
       {/* ── SOBRE O JOGO ── */}
       <section style={{ padding: '100px 24px' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <SectionHeader label={aboutSec.label || 'Sobre o Jogo'} title={aboutSec.title || 'O que é O Discípulo?'} subtitle={aboutSec.subtitle} />
+          <SectionHeader label={lf(aboutSec, 'label') || aboutSec.label} title={lf(aboutSec, 'title') || aboutSec.title} subtitle={lf(aboutSec, 'subtitle') || aboutSec.subtitle} />
           <div className="home-about-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, marginTop: 48, alignItems: 'center' }}>
             <div>
               {(aboutSec.paragraphs || []).map((p: string, i: number) => (
                 <p key={i} style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', lineHeight: 1.9, marginBottom: 20 }}>{p}</p>
               ))}
               <Link href="/demo" style={{ display: 'inline-block', marginTop: 8, padding: '12px 28px', borderRadius: 10, background: 'rgba(39,174,96,0.15)', border: '1px solid rgba(39,174,96,0.4)', color: '#2ecc71', fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
-                ▶ Experimentar Agora — Sem Cadastro
+                {t('about.try_now')}
               </Link>
             </div>
             <div className="home-about-features" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
@@ -144,7 +149,7 @@ export default function HomePage() {
       {cities.length > 0 && (
       <section style={{ padding: '100px 24px', background: 'rgba(201,162,39,0.02)', borderTop: goldBorder, borderBottom: goldBorder }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <SectionHeader label={citiesSec.label || 'Destinos Históricos'} title={citiesSec.title || 'Explore as Cidades Bíblicas'} subtitle={citiesSec.subtitle} />
+          <SectionHeader label={lf(citiesSec, 'label') || citiesSec.label} title={lf(citiesSec, 'title') || citiesSec.title} subtitle={lf(citiesSec, 'subtitle') || citiesSec.subtitle} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 40, marginTop: 48 }}>
             {cities.map((city: any, idx: number) => {
               const isExpanded = expandedCity === city.id;
@@ -177,14 +182,14 @@ export default function HomePage() {
 
                       {spots.length > 0 && (
                         <button onClick={() => setExpandedCity(isExpanded ? null : city.id)} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'none', border: goldBorder, borderRadius: 10, padding: '8px 16px', color: '#c9a227', fontWeight: 600, fontSize: 13, cursor: 'pointer', width: 'fit-content', marginBottom: isExpanded ? 16 : 0 }}>
-                          � {isExpanded ? 'Fechar' : `Ver ${spots.length} Pontos Turísticos`}
+                          🗺 {isExpanded ? t('cities.close') : t('cities.view_spots', { count: spots.length })}
                           <span style={{ transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.3s', display: 'inline-block' }}>▼</span>
                         </button>
                       )}
 
                       <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
-                        <Link href="/auth/register" style={{ padding: '10px 24px', borderRadius: 10, background: 'linear-gradient(135deg,#c9a227,#8b6914)', color: '#1a0a4a', fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>Jogar Agora</Link>
-                        <Link href="/demo" style={{ padding: '10px 24px', borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: goldBorder, color: '#c9a227', fontWeight: 600, fontSize: 13, textDecoration: 'none' }}>Demo Grátis</Link>
+                        <Link href="/auth/register" style={{ padding: '10px 24px', borderRadius: 10, background: 'linear-gradient(135deg,#c9a227,#8b6914)', color: '#1a0a4a', fontWeight: 700, fontSize: 13, textDecoration: 'none' }}>{t('cities.play_now')}</Link>
+                        <Link href="/demo" style={{ padding: '10px 24px', borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: goldBorder, color: '#c9a227', fontWeight: 600, fontSize: 13, textDecoration: 'none' }}>{t('cities.demo')}</Link>
                       </div>
                     </div>
                   </div>
@@ -192,7 +197,7 @@ export default function HomePage() {
                   {/* Tourist Spots (expandable) */}
                   {isExpanded && spots.length > 0 && (
                     <div style={{ padding: '0 32px 32px', borderTop: goldBorder }}>
-                      <p style={{ fontSize: 11, fontWeight: 700, color: '#c9a227', letterSpacing: 2, textTransform: 'uppercase', padding: '20px 0 16px' }}>📍 Pontos Turísticos — {city.name}</p>
+                      <p style={{ fontSize: 11, fontWeight: 700, color: '#c9a227', letterSpacing: 2, textTransform: 'uppercase', padding: '20px 0 16px' }}>{t('cities.spots_label', { city: city.name })}</p>
                       <div className="home-spots-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
                         {spots.map((spot: any, si: number) => (
                           <div key={si} style={{ borderRadius: 14, overflow: 'hidden', border: goldBorder, background: 'rgba(255,255,255,0.03)' }}>
@@ -223,7 +228,7 @@ export default function HomePage() {
       {/* ── MAPA ── */}
       <section style={{ padding: '80px 24px' }}>
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
-          <SectionHeader label={mapSec.label || 'Viagens Missionárias'} title={mapSec.title || 'As Rotas do Apóstolo Paulo'} subtitle={mapSec.subtitle} />
+          <SectionHeader label={lf(mapSec, 'label') || mapSec.label} title={lf(mapSec, 'title') || mapSec.title} subtitle={lf(mapSec, 'subtitle') || mapSec.subtitle} />
           <div className="home-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, margin: '36px auto 32px', maxWidth: 800 }}>
             {(mapSec.stats || [{ label: 'DISTÂNCIA', value: '16.000+ km' }, { label: 'DURAÇÃO', value: '~12 anos' }, { label: 'PAÍSES', value: '10 visitados' }, { label: 'CIDADES', value: '50+ cidades' }]).map((st: any) => (
               <div key={st.label} style={{ background: goldBg, border: goldBorder, borderRadius: 12, padding: '14px 16px', textAlign: 'center' }}>
@@ -253,9 +258,9 @@ export default function HomePage() {
       {/* ── COMO FUNCIONA ── */}
       <section style={{ padding: '100px 24px', background: 'rgba(201,162,39,0.02)', borderTop: goldBorder, borderBottom: goldBorder }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <SectionHeader label={howSec.label || 'Como Funciona'} title={howSec.title || 'Uma experiência única de aprendizado'} subtitle={howSec.subtitle} />
+          <SectionHeader label={lf(howSec, 'label') || howSec.label} title={lf(howSec, 'title') || howSec.title} subtitle={lf(howSec, 'subtitle') || howSec.subtitle} />
           <div className="home-how-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 48 }}>
-            {(howSec.items || [{ icon: '📖', title: 'Aprenda', desc: 'Mergulhe em perguntas sobre contexto bíblico.' }, { icon: '⚔️', title: 'Compete', desc: 'Responda com precisão e velocidade.' }, { icon: '🏆', title: 'Ganhe', desc: 'Ganhe prêmios reais.' }]).map((item: any, i: number) => (
+            {(howSec.items || [{ icon: '📖', title: 'Aprenda', desc: 'Mergulhe em perguntas sobre contexto bíblico.' }, { icon: '⚔️', title: 'Compita', desc: 'Responda com precisão e velocidade.' }, { icon: '🏆', title: 'Ganhe', desc: 'Ganhe prêmios reais.' }]).map((item: any, i: number) => (
               <div key={i} style={{ background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 20, padding: '36px 28px', textAlign: 'center' }}>
                 <div style={{ width: 72, height: 72, borderRadius: '50%', background: goldBg, border: goldBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 22px', fontSize: 32, boxShadow: '0 0 24px rgba(201,162,39,0.2)' }}>{item.icon}</div>
                 <h3 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 22, fontWeight: 700, marginBottom: 12, color: '#c9a227' }}>{item.title}</h3>
@@ -269,7 +274,7 @@ export default function HomePage() {
       {/* ── DEPOIMENTOS / NÚMEROS ── */}
       <section style={{ padding: '100px 24px' }}>
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
-          <SectionHeader label={testSec.label || 'O que Dizem'} title={testSec.title || 'Jogadores ao Redor do Mundo'} subtitle={testSec.subtitle} />
+          <SectionHeader label={lf(testSec, 'label') || testSec.label} title={lf(testSec, 'title') || testSec.title} subtitle={lf(testSec, 'subtitle') || testSec.subtitle} />
           {/* Stats bar */}
           <div className="home-test-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 16, margin: '36px auto 48px', maxWidth: 700 }}>
             {(testSec.stats || []).map((st: any, i: number) => (
@@ -301,7 +306,7 @@ export default function HomePage() {
       {/* ── FAQ ── */}
       <section style={{ padding: '100px 24px', background: 'rgba(201,162,39,0.02)', borderTop: goldBorder, borderBottom: goldBorder }}>
         <div style={{ maxWidth: 720, margin: '0 auto' }}>
-          <SectionHeader label={faqSec.label || 'Dúvidas Frequentes'} title={faqSec.title || 'Perguntas Frequentes'} subtitle={faqSec.subtitle} />
+          <SectionHeader label={lf(faqSec, 'label') || faqSec.label} title={lf(faqSec, 'title') || faqSec.title} subtitle={lf(faqSec, 'subtitle') || faqSec.subtitle} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginTop: 36 }}>
             {(faqSec.items || []).map((item: any, i: number) => {
               const isOpen = openFaq === i;
@@ -331,10 +336,10 @@ export default function HomePage() {
           <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'linear-gradient(135deg,#c9a227,#8b6914)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', boxShadow: '0 0 40px rgba(201,162,39,0.4)' }}>
             <CrossIcon size={32} color="#fff" />
           </div>
-          <h2 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 'clamp(28px,5vw,48px)', fontWeight: 800, color: '#fff', marginBottom: 16 }}>{ctaSec.title || 'Pronto para Começar sua Jornada?'}</h2>
-          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 17, lineHeight: 1.8, marginBottom: 44 }}>{ctaSec.subtitle || ''}</p>
+          <h2 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 'clamp(28px,5vw,48px)', fontWeight: 800, color: '#fff', marginBottom: 16 }}>{lf(ctaSec, 'title') || t('cta.title')}</h2>
+          <p style={{ color: 'rgba(255,255,255,0.55)', fontSize: 17, lineHeight: 1.8, marginBottom: 44 }}>{lf(ctaSec, 'subtitle') || ctaSec.subtitle || ''}</p>
           <Link href="/auth/register" style={{ display: 'inline-block', padding: '16px 48px', borderRadius: 14, background: 'linear-gradient(135deg,#c9a227,#8b6914)', color: '#1a0a4a', fontWeight: 700, fontSize: 17, textDecoration: 'none', boxShadow: '0 4px 32px rgba(201,162,39,0.5)' }}>
-            {ctaSec.button_text || 'Criar Conta Gratuita'}
+            {lf(ctaSec, 'button_text') || t('cta.button')}
           </Link>
         </div>
       </section>
@@ -345,9 +350,9 @@ export default function HomePage() {
           <div style={{ width: 28, height: 28, borderRadius: '50%', background: 'linear-gradient(135deg,#c9a227,#8b6914)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <CrossIcon size={14} color="#fff" />
           </div>
-          <span style={{ fontFamily: "'Playfair Display','Georgia',serif", fontWeight: 700, fontSize: 15, color: 'rgba(255,255,255,0.7)' }}>O Discipulo</span>
+          <span style={{ fontFamily: "'Playfair Display','Georgia',serif", fontWeight: 700, fontSize: 15, color: 'rgba(255,255,255,0.7)' }}>{t('footer.brand')}</span>
         </div>
-        <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 13 }}>{footerSec.text || '© 2026 O Discipulo - Todos os direitos reservados'}</p>
+        <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 13 }}>{lf(footerSec, 'text') || footerSec.text || '© 2026 O Discípulo — Todos os direitos reservados'}</p>
       </footer>
 
       <style>{`
