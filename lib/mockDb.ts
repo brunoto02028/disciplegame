@@ -191,8 +191,13 @@ if (!globalForMock.__mockStore) {
     // Load persisted admin data from disk (survives pm2 restart / deploys)
     if (typeof window === 'undefined') {
         try {
-            const { applyPersistedData } = require('./persistence');
-            applyPersistedData(globalForMock.__mockStore);
+            const { applyPersistedData, savePersistedData, loadPersistedData } = require('./persistence');
+            const loaded = applyPersistedData(globalForMock.__mockStore);
+            if (!loaded) {
+                // First boot: save defaults so they survive the next restart
+                savePersistedData(globalForMock.__mockStore);
+                console.log('[MockDb] First boot — saved defaults to disk');
+            }
         } catch (e) {
             console.log('[MockDb] Persistence not available, using defaults');
         }
