@@ -54,6 +54,9 @@ export default function GamePage({ params }: { params: Promise<{ cityId: string 
     const [streak, setStreak] = useState(0);
     const [pointsEarned, setPointsEarned] = useState<number | null>(null);
     const [totalPoints, setTotalPoints] = useState(0);
+    const [powerups, setPowerups] = useState<any[]>([]);
+    const [hiddenOptions, setHiddenOptions] = useState<string[]>([]);
+    const [doubleXP, setDoubleXP] = useState(false);
 
     useEffect(() => {
         const initGame = async () => {
@@ -78,6 +81,12 @@ export default function GamePage({ params }: { params: Promise<{ cityId: string 
                     if (found) setCity(found);
                 }
                 setQuestions(questionsData.data);
+                // Fetch powerups
+                try {
+                    const puRes = await fetch('/api/powerups', { credentials: 'include' });
+                    const puData = await puRes.json();
+                    if (puData.success) setPowerups(puData.data.inventory);
+                } catch {}
                 setLoading(false);
                 setQuestionStartTime(Date.now());
             } catch { router.push('/dashboard'); }
@@ -268,6 +277,28 @@ export default function GamePage({ params }: { params: Promise<{ cityId: string 
                         </div>
                     )}
                 </div>
+
+                {/* Power-ups */}
+                {!showFeedback && powerups.length > 0 && (
+                    <div style={{ display: 'flex', gap: 8, marginTop: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
+                        {powerups.filter((p: any) => p.count > 0 && p.id !== 'double_xp').map((p: any) => (
+                            <button key={p.id} onClick={async () => {
+                                const res = await fetch('/api/powerups', { method: 'POST', headers: {'Content-Type':'application/json'}, credentials: 'include', body: JSON.stringify({ action: 'use', powerupId: p.id }) });
+                                const data = await res.json();
+                                if (!data.success) return;
+                                setPowerups(prev => prev.map((x: any) => x.id === p.id ? {...x, count: x.count - 1} : x));
+                                if (p.id === 'eliminate2') {
+                                    const q = questions[currentQuestion];
+                                    const opts = (q.options || [{letter:'A'},{letter:'B'},{letter:'C'},{letter:'D'}]).filter((o: any) => o.letter !== correctOption);
+                                    const toHide = opts.sort(() => Math.random() - 0.5).slice(0, 2).map((o: any) => o.letter);
+                                    setHiddenOptions(toHide);
+                                }
+                            }} style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(201,162,39,0.1)', border: goldBorder, color: '#c9a227', fontSize: 11, fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
+                                <span>{p.icon}</span> {p.name} <span style={{ opacity: 0.5 }}>({p.count})</span>
+                            </button>
+                        ))}
+                    </div>
+                )}
 
                 {!showFeedback && (
                     <button onClick={confirmAnswer} disabled={!selectedAnswer}

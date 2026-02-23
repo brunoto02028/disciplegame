@@ -120,6 +120,23 @@ function ResultsContent() {
                     </p>
                 </div>
 
+                {/* XP Earned */}
+                {results.xpEarned > 0 && (
+                    <div style={{ background: results.levelUp ? 'linear-gradient(135deg,rgba(201,162,39,0.2),rgba(139,105,20,0.15))' : 'rgba(201,162,39,0.06)', border: results.levelUp ? '2px solid rgba(201,162,39,0.6)' : goldBorder, borderRadius: 16, padding: '14px 20px', marginBottom: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <div>
+                            <p style={{ fontSize: 11, color: '#c9a227', fontWeight: 700, letterSpacing: 1.2, marginBottom: 4 }}>XP GANHOS</p>
+                            <p style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 28, fontWeight: 800, color: '#c9a227' }}>+{results.xpEarned} XP</p>
+                        </div>
+                        {results.levelUp && (
+                            <div style={{ textAlign: 'right' }}>
+                                <div style={{ fontSize: 28, marginBottom: 2 }}>🎉</div>
+                                <p style={{ fontSize: 12, color: '#2ecc71', fontWeight: 700 }}>Nível {results.newLevel}!</p>
+                                <p style={{ fontSize: 11, color: '#c9a227' }}>{results.newLevelName}</p>
+                            </div>
+                        )}
+                    </div>
+                )}
+
                 {/* Rank */}
                 <div style={{ background: 'rgba(201,162,39,0.06)', border: goldBorder, borderRadius: 16, padding: '16px 20px', marginBottom: 14, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div>
@@ -167,9 +184,32 @@ function ResultsContent() {
                         {shareMsg || '↗ Compartilhar'}
                     </button>
                 </div>
-                <Link href="/ranking" style={{ display: 'block', textAlign: 'center', fontSize: 13, color: '#c9a227', textDecoration: 'none', fontWeight: 600 }}>
-                    Ver Ranking Completo →
-                </Link>
+                {/* Share Card Preview */}
+                <div style={{ ...glass, padding: 14, marginBottom: 14, textAlign: 'center' }}>
+                    <p style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.5)', letterSpacing: 1.2, marginBottom: 10 }}>SEU CARD DE RESULTADO</p>
+                    <img
+                        src={`/api/share-card?name=${encodeURIComponent('Jogador')}&points=${results.totalPoints}&accuracy=${results.accuracyPercentage}&rank=${results.rank || '-'}&level=${results.newLevel || 1}&levelName=${encodeURIComponent(results.newLevelName || 'Ouvinte')}`}
+                        alt="Share Card"
+                        style={{ width: '100%', maxWidth: 400, borderRadius: 12, border: goldBorder }}
+                    />
+                    <button onClick={() => {
+                        const url = `/api/share-card?name=${encodeURIComponent('Jogador')}&points=${results.totalPoints}&accuracy=${results.accuracyPercentage}&rank=${results.rank || '-'}&level=${results.newLevel || 1}&levelName=${encodeURIComponent(results.newLevelName || 'Ouvinte')}`;
+                        const fullUrl = window.location.origin + url;
+                        navigator.clipboard.writeText(fullUrl).then(() => setShareMsg('Link do card copiado!'));
+                        setTimeout(() => setShareMsg(''), 2000);
+                    }} style={{ marginTop: 10, padding: '8px 20px', borderRadius: 8, background: 'rgba(201,162,39,0.12)', border: goldBorder, color: '#c9a227', fontWeight: 600, fontSize: 12, cursor: 'pointer' }}>
+                        📋 Copiar Link do Card
+                    </button>
+                </div>
+
+                <div style={{ display: 'flex', gap: 12, justifyContent: 'center' }}>
+                    <Link href="/ranking" style={{ fontSize: 13, color: '#c9a227', textDecoration: 'none', fontWeight: 600 }}>
+                        Ver Ranking →
+                    </Link>
+                    <Link href="/certificate" style={{ fontSize: 13, color: '#2ecc71', textDecoration: 'none', fontWeight: 600 }}>
+                        Certificado →
+                    </Link>
+                </div>
             </div>
         </div>
     );

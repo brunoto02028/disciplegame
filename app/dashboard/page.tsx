@@ -179,6 +179,21 @@ export default function DashboardPage() {
                             ))}
                         </div>
 
+                        {/* Quick Actions */}
+                        <div style={{ display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap' }}>
+                            {[
+                                { href: '/room', icon: '🏠', label: 'Sala/Grupo' },
+                                { href: '/checkin', icon: '📍', label: 'Check-in' },
+                                { href: '/certificate', icon: '📜', label: 'Certificado' },
+                                { href: '/plans', icon: '⭐', label: 'Premium' },
+                            ].map(a => (
+                                <Link key={a.href} href={a.href} style={{ flex: '1 1 0', minWidth: 80, padding: '10px 8px', borderRadius: 10, background: 'rgba(255,255,255,0.03)', border: goldBorder, textDecoration: 'none', textAlign: 'center', color: '#fff' }}>
+                                    <div style={{ fontSize: 18, marginBottom: 2 }}>{a.icon}</div>
+                                    <p style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.5)' }}>{a.label}</p>
+                                </Link>
+                            ))}
+                        </div>
+
                         {/* Pilgrimage Path — City Cards with Photos */}
                         <div style={{ ...glass, padding: 24 }}>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
