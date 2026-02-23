@@ -36,6 +36,9 @@ yarn-error.log*
 # uploaded/generated files
 /public/uploads/generated/
 
+# persisted admin data (survives deploys)
+/data/
+
 # vercel
 .vercel
 

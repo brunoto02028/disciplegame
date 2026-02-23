@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { mockStore } from '@/lib/mockDb';
+import { mockStore, persistAdminData } from '@/lib/mockDb';
 import { isValidSession } from '@/lib/adminSession';
 
 function requireAdmin(req: NextRequest) {
@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
         } else {
             mockStore.siteSettings[section] = data;
         }
+        persistAdminData();
         return NextResponse.json({ success: true, data: mockStore.siteSettings[section] });
     } catch {
         return NextResponse.json({ success: false, error: 'Erro ao salvar configurações' }, { status: 500 });

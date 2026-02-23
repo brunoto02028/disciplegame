@@ -187,8 +187,30 @@ const _defaultStore = {
 // Persist across hot reloads in dev mode
 if (!globalForMock.__mockStore) {
     globalForMock.__mockStore = _defaultStore;
+
+    // Load persisted admin data from disk (survives pm2 restart / deploys)
+    if (typeof window === 'undefined') {
+        try {
+            const { applyPersistedData } = require('./persistence');
+            applyPersistedData(globalForMock.__mockStore);
+        } catch (e) {
+            console.log('[MockDb] Persistence not available, using defaults');
+        }
+    }
 }
 export const mockStore = globalForMock.__mockStore;
+
+// Call this after any admin write operation to persist to disk
+export function persistAdminData() {
+    if (typeof window === 'undefined') {
+        try {
+            const { savePersistedData } = require('./persistence');
+            savePersistedData(mockStore);
+        } catch (e) {
+            console.error('[MockDb] Failed to persist:', e);
+        }
+    }
+}
 
 export function generateId(): string {
     return Math.random().toString(36).substring(2, 9) + Date.now().toString(36);

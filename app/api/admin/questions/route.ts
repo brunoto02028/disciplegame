@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { mockStore, generateId } from '@/lib/mockDb';
+import { mockStore, generateId, persistAdminData } from '@/lib/mockDb';
 import { isValidSession } from '@/lib/adminSession';
 
 function requireAdmin(req: NextRequest) {
@@ -25,6 +25,7 @@ export async function POST(request: NextRequest) {
         }
         const id = 'q-' + generateId();
         mockStore.questions.set(id, { id, city_id, block: Number(block), difficulty: Number(difficulty), question_text, option_a, option_b, option_c, option_d, correct_option: correct_option.toUpperCase(), explanation: explanation || '', image_url: null });
+        persistAdminData();
         return NextResponse.json({ success: true, data: { id } });
     } catch {
         return NextResponse.json({ success: false, error: 'Erro ao criar pergunta' }, { status: 500 });

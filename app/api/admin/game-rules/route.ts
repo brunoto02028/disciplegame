@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { mockStore } from '@/lib/mockDb';
+import { mockStore, persistAdminData } from '@/lib/mockDb';
 import { isValidSession } from '@/lib/adminSession';
 
 function requireAdmin(req: NextRequest) {
@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
     try {
         const body = await request.json();
         mockStore.gameRules = { ...mockStore.gameRules, ...body };
+        persistAdminData();
         return NextResponse.json({ success: true, data: mockStore.gameRules });
     } catch {
         return NextResponse.json({ success: false, error: 'Erro ao salvar regras' }, { status: 500 });

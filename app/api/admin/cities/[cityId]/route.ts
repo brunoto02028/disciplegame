@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { mockStore } from '@/lib/mockDb';
+import { mockStore, persistAdminData } from '@/lib/mockDb';
 import { isValidSession } from '@/lib/adminSession';
 
 function requireAdmin(req: NextRequest) {
@@ -31,6 +31,7 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
             active: body.active !== undefined ? body.active : city.active,
         };
         mockStore.cities.set(cityId, updated);
+        persistAdminData();
         return NextResponse.json({ success: true, data: updated });
     } catch {
         return NextResponse.json({ success: false, error: 'Erro ao atualizar cidade' }, { status: 500 });
@@ -51,6 +52,7 @@ export async function DELETE(request: NextRequest, { params }: { params: Promise
         for (const q of linkedQuestions) {
             mockStore.questions.delete(q.id);
         }
+        persistAdminData();
         return NextResponse.json({ success: true, deletedQuestions: linkedQuestions.length });
     } catch {
         return NextResponse.json({ success: false, error: 'Erro ao deletar cidade' }, { status: 500 });
