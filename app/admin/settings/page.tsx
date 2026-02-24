@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import AIImageGenerator from '../components/AIImageGenerator';
 
 const TABS = [
     { id: 'hero', label: 'Hero', icon: '🏠' },
@@ -263,6 +264,13 @@ export default function AdminSettingsPage() {
                             <button onClick={() => updateField(section, field, '')} style={btnRed}>🗑️ Remover</button>
                         )}
                     </div>
+                    <AIImageGenerator
+                        compact
+                        currentUrl={settings[section]?.[field]}
+                        context={context}
+                        onImageGenerated={(url) => updateField(section, field, url)}
+                        buttonLabel="Gerar Rápido"
+                    />
                 </div>
             </div>
         </div>

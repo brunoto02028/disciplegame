@@ -23,6 +23,13 @@ const navSections = [
             { href: '/admin/image-bank', label: 'Banco de Imagens', icon: '🖼️' },
         ],
     },
+    {
+        title: 'INTELIGÊNCIA ARTIFICIAL',
+        items: [
+            { href: '/admin/ai-providers', label: 'Provedores de IA', icon: '🤖' },
+            { href: '/admin/media', label: 'Mídia / Geração', icon: '🎨' },
+        ],
+    },
 ];
 
 const goldBorder = '1px solid rgba(201,162,39,0.3)';

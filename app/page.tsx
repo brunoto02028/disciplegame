@@ -59,6 +59,24 @@ export default function HomePage() {
   const faqSec = s.faq || {};
   const cities = siteData?.cities || [];
 
+  // Loading skeleton while data is being fetched
+  if (!siteData) {
+    return (
+      <div style={{ fontFamily: "'Inter',system-ui,sans-serif", color: '#fff', background: 'linear-gradient(160deg,#0d0b2e 0%,#1a0a4a 40%,#0d1b4a 100%)', minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        <style>{`
+          @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+          @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+          .skel { background: linear-gradient(90deg, rgba(201,162,39,0.05) 25%, rgba(201,162,39,0.15) 50%, rgba(201,162,39,0.05) 75%); background-size: 200% 100%; animation: shimmer 1.8s ease-in-out infinite; border-radius: 12px; }
+        `}</style>
+        <div style={{ width: 48, height: 48, borderRadius: '50%', background: 'linear-gradient(135deg,#c9a227,#8b6914)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20, animation: 'pulse 1.5s ease-in-out infinite' }}>
+          <CrossIcon size={24} color="#fff" />
+        </div>
+        <div className="skel" style={{ width: 280, height: 28, marginBottom: 12 }} />
+        <div className="skel" style={{ width: 180, height: 16 }} />
+      </div>
+    );
+  }
+
   return (
     <div style={{ fontFamily: "'Inter',system-ui,sans-serif", color: '#fff', background: 'linear-gradient(160deg,#0d0b2e 0%,#1a0a4a 40%,#0d1b4a 100%)', overflowX: 'hidden', minHeight: '100vh' }}>
 

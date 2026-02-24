@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { mockStore, persistAdminData, registerImageInBank } from '@/lib/mockDb';
 import { isValidSession } from '@/lib/adminSession';
+import { deleteImageFile } from '@/lib/ai-providers';
 
 function requireAdmin(req: NextRequest) {
     return isValidSession(req.cookies.get('admin_session')?.value);
@@ -13,6 +14,23 @@ export async function PUT(request: NextRequest, { params }: { params: Promise<{ 
         const city = mockStore.cities.get(cityId);
         if (!city) return NextResponse.json({ success: false, error: 'Cidade não encontrada' }, { status: 404 });
         const body = await request.json();
+
+        // Delete old city image if being replaced
+        if (body.image_url && city.image_url && body.image_url !== city.image_url) {
+            deleteImageFile(city.image_url);
+        }
+
+        // Delete old tourist spot images if being replaced
+        if (body.tourist_spots && city.tourist_spots) {
+            const oldUrls = new Set(city.tourist_spots.map((s: any) => s.image_url).filter(Boolean));
+            const newUrls = new Set(body.tourist_spots.map((s: any) => s.image_url).filter(Boolean));
+            for (const oldUrl of oldUrls) {
+                if (!newUrls.has(oldUrl)) {
+                    deleteImageFile(oldUrl);
+                }
+            }
+        }
+
         const updated = {
             ...city,
             name: body.name ?? city.name,

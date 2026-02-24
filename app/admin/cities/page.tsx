@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import AIImageGenerator from '../components/AIImageGenerator';
 
 interface ChatMsg { role: 'user' | 'assistant'; content: string }
 
@@ -492,11 +493,19 @@ export default function AdminCitiesPage() {
                                             <label style={{ ...labelStyle, fontSize: 10 }}>Descrição</label>
                                             <textarea value={spot.description} onChange={e => setForm(f => { const ts = [...f.tourist_spots]; ts[si] = { ...ts[si], description: e.target.value }; return { ...f, tourist_spots: ts }; })} rows={2} style={{ ...inputStyle, resize: 'vertical' as const }} placeholder="Breve descrição do ponto turístico..." />
                                         </div>
-                                        {spot.image_url && (
-                                            <div style={{ marginTop: 6, width: 80, height: 50, borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)' }}>
-                                                <img src={spot.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                                            </div>
-                                        )}
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6 }}>
+                                            {spot.image_url && (
+                                                <div style={{ width: 80, height: 50, borderRadius: 6, overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)', flexShrink: 0 }}>
+                                                    <img src={spot.image_url} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                                                </div>
+                                            )}
+                                            <AIImageGenerator
+                                                compact
+                                                currentUrl={spot.image_url}
+                                                context={`${spot.name || 'Tourist spot'} in ${form.name || 'biblical city'}, ${form.country || 'Middle East'}. ${spot.description || ''}`}
+                                                onImageGenerated={(url) => setForm(f => { const ts = [...f.tourist_spots]; ts[si] = { ...ts[si], image_url: url }; return { ...f, tourist_spots: ts }; })}
+                                            />
+                                        </div>
                                     </div>
                                 ))}
                             </div>

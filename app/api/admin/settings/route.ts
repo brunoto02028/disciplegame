@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { mockStore, persistAdminData, registerImageInBank } from '@/lib/mockDb';
 import { isValidSession } from '@/lib/adminSession';
+import { deleteImageFile } from '@/lib/ai-providers';
 
 function requireAdmin(req: NextRequest) {
     return isValidSession(req.cookies.get('admin_session')?.value);
@@ -19,6 +20,13 @@ export async function POST(request: NextRequest) {
         if (!section || !data) {
             return NextResponse.json({ success: false, error: 'section e data são obrigatórios' }, { status: 400 });
         }
+
+        // Delete old image if being replaced
+        const oldData = mockStore.siteSettings[section] || {};
+        if (data.image_url && oldData.image_url && data.image_url !== oldData.image_url) {
+            deleteImageFile(oldData.image_url);
+        }
+
         // Deep merge the section data
         if (mockStore.siteSettings[section]) {
             mockStore.siteSettings[section] = { ...mockStore.siteSettings[section], ...data };
