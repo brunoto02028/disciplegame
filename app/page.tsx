@@ -69,11 +69,11 @@ export default function HomePage() {
             <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#c9a227,#8b6914)', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 0 16px rgba(201,162,39,0.5)' }}>
               <CrossIcon size={18} color="#fff" />
             </div>
-            <span style={{ fontFamily: "'Playfair Display','Georgia',serif", fontWeight: 700, fontSize: 19, color: '#fff', letterSpacing: 0.5 }}>O Discípulo</span>
+            <span style={{ fontFamily: "'Playfair Display','Georgia',serif", fontWeight: 700, fontSize: 19, color: '#fff', letterSpacing: 0.5 }}>{t('footer.brand')}</span>
           </div>
           <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
             <button onClick={toggleLocale} style={{ padding: '6px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: 'rgba(255,255,255,0.7)', fontWeight: 600, fontSize: 12, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 4 }}>
-              {locale === 'pt-BR' ? '🇺🇸' : '🇧🇷'} {t('nav.language')}
+              {locale === 'pt-BR' ? '��' : '🇧🇷'} {t('nav.language')}
             </button>
             <Link href="/auth/login" className="nav-btn-login" style={{ padding: '8px 20px', borderRadius: 10, border: '1.5px solid rgba(201,162,39,0.4)', color: '#c9a227', fontWeight: 600, fontSize: 14, textDecoration: 'none' }}>{t('nav.enter')}</Link>
             <Link href="/auth/register" style={{ padding: '8px 20px', borderRadius: 10, background: 'linear-gradient(135deg,#c9a227,#8b6914)', color: '#1a0a4a', fontWeight: 700, fontSize: 14, textDecoration: 'none', boxShadow: '0 4px 14px rgba(201,162,39,0.4)' }}>{t('nav.start_free')}</Link>
@@ -134,7 +134,7 @@ export default function HomePage() {
             </div>
             <div className="home-about-features" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16 }}>
               {(aboutSec.features || []).map((f: any, i: number) => (
-                <div key={i} style={{ background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 16, padding: '24px 20px', textAlign: 'center' }}>
+                <div key={i} className="card-hover" style={{ background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 16, padding: '24px 20px', textAlign: 'center' }}>
                   <div style={{ fontSize: 32, marginBottom: 12 }}>{f.icon}</div>
                   <h4 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 16, fontWeight: 700, color: '#c9a227', marginBottom: 8 }}>{lf(f, 'title')}</h4>
                   <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>{lf(f, 'desc')}</p>
@@ -155,7 +155,7 @@ export default function HomePage() {
               const isExpanded = expandedCity === city.id;
               const spots = city.tourist_spots || [];
               return (
-                <div key={city.id} className="home-city-card" style={{ borderRadius: 24, overflow: 'hidden', border: goldBorder, background: '#0d0b2e' }}>
+                <div key={city.id} className="home-city-card card-hover-city" style={{ borderRadius: 24, overflow: 'hidden', border: goldBorder, background: '#0d0b2e' }}>
                   <div className="home-city-inner" style={{ display: 'grid', gridTemplateColumns: idx % 2 === 0 ? '1fr 1fr' : '1fr 1fr', gap: 0 }}>
                     {/* Image side */}
                     <div className={idx % 2 !== 0 ? 'home-city-img-right' : ''} style={{ position: 'relative', minHeight: 320, overflow: 'hidden', order: idx % 2 !== 0 ? 2 : 1 }}>
@@ -200,7 +200,7 @@ export default function HomePage() {
                       <p style={{ fontSize: 11, fontWeight: 700, color: '#c9a227', letterSpacing: 2, textTransform: 'uppercase', padding: '20px 0 16px' }}>{t('cities.spots_label', { city: city.name })}</p>
                       <div className="home-spots-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16 }}>
                         {spots.map((spot: any, si: number) => (
-                          <div key={si} style={{ borderRadius: 14, overflow: 'hidden', border: goldBorder, background: 'rgba(255,255,255,0.03)' }}>
+                          <div key={si} className="card-hover" style={{ borderRadius: 14, overflow: 'hidden', border: goldBorder, background: 'rgba(255,255,255,0.03)' }}>
                             <div style={{ height: 140, overflow: 'hidden', background: '#1a1040' }}>
                               {spot.image_url ? (
                                 <img src={spot.image_url} alt={spot.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -231,7 +231,7 @@ export default function HomePage() {
           <SectionHeader label={lf(mapSec, 'label') || mapSec.label} title={lf(mapSec, 'title') || mapSec.title} subtitle={lf(mapSec, 'subtitle') || mapSec.subtitle} />
           <div className="home-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, margin: '36px auto 32px', maxWidth: 800 }}>
             {(mapSec.stats || [{ label: 'DISTÂNCIA', label_en: 'DISTANCE', value: '16.000+ km', value_en: '16,000+ km' }, { label: 'DURAÇÃO', label_en: 'DURATION', value: '~12 anos', value_en: '~12 years' }, { label: 'PAÍSES', label_en: 'COUNTRIES', value: '10 visitados', value_en: '10 visited' }, { label: 'CIDADES', label_en: 'CITIES', value: '50+ cidades', value_en: '50+ cities' }]).map((st: any) => (
-              <div key={st.label} style={{ background: goldBg, border: goldBorder, borderRadius: 12, padding: '14px 16px', textAlign: 'center' }}>
+              <div key={st.label} className="card-hover-sm" style={{ background: goldBg, border: goldBorder, borderRadius: 12, padding: '14px 16px', textAlign: 'center' }}>
                 <p style={{ fontSize: 10, fontWeight: 700, color: '#c9a227', letterSpacing: 1.2, marginBottom: 4 }}>{lf(st, 'label')}</p>
                 <p style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 18, fontWeight: 800 }}>{lf(st, 'value')}</p>
               </div>
@@ -243,7 +243,7 @@ export default function HomePage() {
           </div>
           <div className="home-journeys-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginTop: 24 }}>
             {(mapSec.journeys || [{ num: '1ª', title: 'Primeira Viagem', title_en: 'First Journey', route: 'Chipre, Turquia', route_en: 'Cyprus, Turkey', date: '46-48 d.C.', date_en: '46-48 AD' }, { num: '2ª', title: 'Segunda Viagem', title_en: 'Second Journey', route: 'Grécia, Macedônia', route_en: 'Greece, Macedonia', date: '49-52 d.C.', date_en: '49-52 AD' }, { num: '3ª', title: 'Terceira Viagem', title_en: 'Third Journey', route: 'Éfeso, Jerusalém', route_en: 'Ephesus, Jerusalem', date: '53-58 d.C.', date_en: '53-58 AD' }]).map((j: any) => (
-              <div key={j.num} style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 12, padding: '14px 16px' }}>
+              <div key={j.num} className="card-hover-sm" style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 12, padding: '14px 16px' }}>
                 <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#c9a227,#8b6914)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 12, color: '#1a0a4a', flexShrink: 0 }}>{j.num}</div>
                 <div>
                   <p style={{ fontWeight: 700, fontSize: 13, marginBottom: 2 }}>{lf(j, 'title')}</p>
@@ -261,8 +261,8 @@ export default function HomePage() {
           <SectionHeader label={lf(howSec, 'label') || howSec.label} title={lf(howSec, 'title') || howSec.title} subtitle={lf(howSec, 'subtitle') || howSec.subtitle} />
           <div className="home-how-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 48 }}>
             {(howSec.items || [{ icon: '📖', title: 'Aprenda', title_en: 'Learn', desc: 'Mergulhe em perguntas sobre contexto bíblico.', desc_en: 'Dive into questions about biblical context.' }, { icon: '⚔️', title: 'Compita', title_en: 'Compete', desc: 'Responda com precisão e velocidade.', desc_en: 'Answer with precision and speed.' }, { icon: '🏆', title: 'Ganhe', title_en: 'Win', desc: 'Ganhe prêmios reais.', desc_en: 'Win real prizes.' }]).map((item: any, i: number) => (
-              <div key={i} style={{ background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 20, padding: '36px 28px', textAlign: 'center' }}>
-                <div style={{ width: 72, height: 72, borderRadius: '50%', background: goldBg, border: goldBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 22px', fontSize: 32, boxShadow: '0 0 24px rgba(201,162,39,0.2)' }}>{item.icon}</div>
+              <div key={i} className="card-hover" style={{ background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 20, padding: '36px 28px', textAlign: 'center' }}>
+                <div className="icon-glow" style={{ width: 72, height: 72, borderRadius: '50%', background: goldBg, border: goldBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 22px', fontSize: 32, boxShadow: '0 0 24px rgba(201,162,39,0.2)' }}>{item.icon}</div>
                 <h3 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 22, fontWeight: 700, marginBottom: 12, color: '#c9a227' }}>{lf(item, 'title')}</h3>
                 <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 15, lineHeight: 1.7 }}>{lf(item, 'desc')}</p>
               </div>
@@ -287,7 +287,7 @@ export default function HomePage() {
           {/* Testimonial cards */}
           <div className="home-test-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }}>
             {(testSec.items || []).map((ti: any, i: number) => (
-              <div key={i} style={{ background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 20, padding: '28px 24px', position: 'relative' }}>
+              <div key={i} className="card-hover" style={{ background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 20, padding: '28px 24px', position: 'relative' }}>
                 <div style={{ fontSize: 40, position: 'absolute', top: -8, left: 20, color: 'rgba(201,162,39,0.15)' }}>"</div>
                 <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, marginBottom: 20, fontStyle: 'italic' }}>{lf(ti, 'text')}</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -311,7 +311,7 @@ export default function HomePage() {
             {(faqSec.items || []).map((item: any, i: number) => {
               const isOpen = openFaq === i;
               return (
-                <div key={i} style={{ background: 'rgba(255,255,255,0.04)', border: isOpen ? goldBorder : '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden', transition: 'all 0.2s' }}>
+                <div key={i} className="card-hover-faq" style={{ background: 'rgba(255,255,255,0.04)', border: isOpen ? goldBorder : '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden', transition: 'all 0.3s' }}>
                   <button onClick={() => setOpenFaq(isOpen ? null : i)} style={{ width: '100%', padding: '18px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'none', border: 'none', color: isOpen ? '#c9a227' : '#fff', fontSize: 15, fontWeight: 600, cursor: 'pointer', textAlign: 'left' }}>
                     {lf(item, 'question')}
                     <span style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.3s', fontSize: 12, color: '#c9a227', flexShrink: 0, marginLeft: 12 }}>▼</span>
@@ -333,7 +333,7 @@ export default function HomePage() {
         <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg,rgba(201,162,39,0.08) 0%,rgba(201,162,39,0.04) 100%)', pointerEvents: 'none' }} />
         <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', width: 500, height: 500, borderRadius: '50%', background: 'radial-gradient(circle,rgba(201,162,39,0.15) 0%,transparent 65%)', pointerEvents: 'none' }} />
         <div style={{ position: 'relative', zIndex: 1, maxWidth: 640, margin: '0 auto' }}>
-          <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'linear-gradient(135deg,#c9a227,#8b6914)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', boxShadow: '0 0 40px rgba(201,162,39,0.4)' }}>
+          <div style={{ width: 72, height: 72, borderRadius: '50%', background: 'linear-gradient(135deg,#c9a227,#8b6914)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', boxShadow: '0 0 40px rgba(201,162,39,0.4)', animation: 'goldPulse 3s ease-in-out infinite' }}>
             <CrossIcon size={32} color="#fff" />
           </div>
           <h2 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 'clamp(28px,5vw,48px)', fontWeight: 800, color: '#fff', marginBottom: 16 }}>{lf(ctaSec, 'title') || t('cta.title')}</h2>
@@ -356,6 +356,78 @@ export default function HomePage() {
       </footer>
 
       <style>{`
+        /* ── HOVER EFFECTS ── */
+        .card-hover {
+          transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+          cursor: default;
+        }
+        .card-hover:hover {
+          transform: translateY(-6px) scale(1.02);
+          border-color: rgba(201,162,39,0.7) !important;
+          box-shadow: 0 0 20px rgba(201,162,39,0.25), 0 8px 32px rgba(0,0,0,0.3), inset 0 0 20px rgba(201,162,39,0.05) !important;
+          background: rgba(201,162,39,0.06) !important;
+        }
+        .card-hover-sm {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          cursor: default;
+        }
+        .card-hover-sm:hover {
+          transform: translateY(-3px) scale(1.03);
+          border-color: rgba(201,162,39,0.7) !important;
+          box-shadow: 0 0 16px rgba(201,162,39,0.3), 0 4px 20px rgba(0,0,0,0.2) !important;
+          background: rgba(201,162,39,0.1) !important;
+        }
+        .card-hover-city {
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover-city:hover {
+          border-color: rgba(201,162,39,0.6) !important;
+          box-shadow: 0 0 30px rgba(201,162,39,0.2), 0 12px 48px rgba(0,0,0,0.4) !important;
+          transform: translateY(-4px);
+        }
+        .card-hover-faq {
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-hover-faq:hover {
+          border-color: rgba(201,162,39,0.5) !important;
+          box-shadow: 0 0 14px rgba(201,162,39,0.15), 0 4px 16px rgba(0,0,0,0.2) !important;
+          background: rgba(201,162,39,0.04) !important;
+        }
+        .icon-glow {
+          transition: all 0.35s ease;
+        }
+        .card-hover:hover .icon-glow {
+          box-shadow: 0 0 28px rgba(201,162,39,0.5), 0 0 56px rgba(201,162,39,0.2) !important;
+          border-color: rgba(201,162,39,0.8) !important;
+        }
+
+        /* ── BUTTON HOVER EFFECTS ── */
+        a[href='/auth/register'], a[href='/demo'], button[type='submit'] {
+          transition: all 0.3s ease !important;
+        }
+        a[href='/auth/register']:hover {
+          box-shadow: 0 0 24px rgba(201,162,39,0.6), 0 6px 20px rgba(201,162,39,0.3) !important;
+          transform: translateY(-2px);
+        }
+        a[href='/demo']:hover {
+          box-shadow: 0 0 20px rgba(46,204,113,0.3), 0 4px 16px rgba(0,0,0,0.2) !important;
+          transform: translateY(-2px);
+          border-color: rgba(46,204,113,0.7) !important;
+        }
+
+        /* ── LANGUAGE TOGGLE HOVER ── */
+        nav button:hover {
+          border-color: rgba(201,162,39,0.5) !important;
+          box-shadow: 0 0 12px rgba(201,162,39,0.3) !important;
+          color: #c9a227 !important;
+        }
+
+        /* ── GOLDEN PULSE on CTA section ── */
+        @keyframes goldPulse {
+          0%, 100% { box-shadow: 0 0 40px rgba(201,162,39,0.4); }
+          50% { box-shadow: 0 0 60px rgba(201,162,39,0.6), 0 0 100px rgba(201,162,39,0.2); }
+        }
+
         @media (max-width: 900px) {
           .home-hero-grid { grid-template-columns: 1fr !important; min-height: auto !important; }
           .home-hero-grid > div:first-child { padding: 48px 24px !important; }

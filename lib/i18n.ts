@@ -8,7 +8,7 @@ const dictionaries: Record<Locale, Record<string, string>> = {
         // Nav
         'nav.enter': 'Entrar',
         'nav.start_free': 'Começar Grátis',
-        'nav.language': 'EN',
+        'nav.language': 'UK',
 
         // Hero
         'hero.badge': 'As Viagens de Paulo',
@@ -124,7 +124,7 @@ const dictionaries: Record<Locale, Record<string, string>> = {
         // Nav
         'nav.enter': 'Sign In',
         'nav.start_free': 'Start Free',
-        'nav.language': 'PT',
+        'nav.language': 'BR',
 
         // Hero
         'hero.badge': "Paul's Journeys",

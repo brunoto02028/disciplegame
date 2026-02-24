@@ -89,16 +89,32 @@ export function applyPersistedData(store: {
         console.log(`[Persistence] Restored ${store.questions.size} questions`);
     }
 
-    // Restore site settings (deep merge to preserve new default fields like _en translations)
+    // Restore site settings (deep merge preserving new _en fields in nested arrays)
     if (data.siteSettings) {
         for (const [section, sectionData] of Object.entries(data.siteSettings)) {
             if (store.siteSettings[section] && typeof sectionData === 'object' && sectionData !== null) {
-                store.siteSettings[section] = { ...store.siteSettings[section], ...sectionData };
+                const defaults = store.siteSettings[section];
+                const persisted = sectionData as Record<string, any>;
+                const merged: Record<string, any> = { ...defaults };
+                for (const [key, val] of Object.entries(persisted)) {
+                    if (Array.isArray(val)) {
+                        // For arrays: only use persisted if items contain _en fields,
+                        // otherwise keep the code defaults which have _en translations
+                        const hasEnFields = val.length > 0 && Object.keys(val[0]).some(k => k.endsWith('_en'));
+                        if (hasEnFields) {
+                            merged[key] = val;
+                        }
+                        // else: keep defaults[key] which already has _en fields
+                    } else {
+                        merged[key] = val;
+                    }
+                }
+                store.siteSettings[section] = merged;
             } else {
                 store.siteSettings[section] = sectionData;
             }
         }
-        console.log('[Persistence] Restored site settings (deep merged)');
+        console.log('[Persistence] Restored site settings (deep merged with _en preservation)');
     }
 
     // Restore game rules

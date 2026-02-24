@@ -6,11 +6,9 @@ export async function GET() {
     const activeCities = Array.from(mockStore.cities.values())
         .filter(c => c.active)
         .sort((a, b) => a.order_index - b.order_index)
-        .map(c => ({
-            id: c.id, name: c.name, country: c.country, flag: c.flag,
-            image_url: c.image_url, description: c.description,
-            biblical_ref: c.biblical_ref, biblical_context: c.biblical_context,
-            order_index: c.order_index, tourist_spots: c.tourist_spots || [],
+        .map(({ circuit_id, ...rest }) => ({
+            ...rest,
+            tourist_spots: rest.tourist_spots || [],
         }));
 
     return NextResponse.json({
