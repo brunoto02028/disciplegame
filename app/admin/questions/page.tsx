@@ -244,6 +244,7 @@ export default function AdminQuestionsPage() {
     const inputStyle: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, background: 'rgba(255,255,255,0.06)', color: '#fff', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' };
     const selectStyle: React.CSSProperties = { ...inputStyle, appearance: 'none' as const, WebkitAppearance: 'none' as const, backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23c9a227' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 10px center', paddingRight: 28, cursor: 'pointer' };
     const labelStyle: React.CSSProperties = { display: 'block', fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.5)', marginBottom: 5, textTransform: 'uppercase', letterSpacing: 0.8 };
+    const optStyle: React.CSSProperties = { background: '#1a1045', color: '#fff' };
     const aiBtn: React.CSSProperties = { padding: '10px 20px', borderRadius: 10, background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', color: '#fff', fontWeight: 700, fontSize: 13, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, boxShadow: '0 4px 16px rgba(124,58,237,0.3)' };
 
     const selectedCount = aiQuestions.filter(q => q.selected).length;
@@ -271,12 +272,12 @@ export default function AdminQuestionsPage() {
             {/* Filters */}
             <div style={{ ...glass, padding: '14px 18px', marginBottom: 20, display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' as const }}>
                 <select value={filterCity} onChange={e => setFilterCity(e.target.value)} style={{ ...selectStyle, width: 'auto', minWidth: 160 }}>
-                    <option value="">Todas as cidades</option>
-                    {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                    <option value="" style={optStyle}>Todas as cidades</option>
+                    {cities.map(c => <option key={c.id} value={c.id} style={optStyle}>{c.name}</option>)}
                 </select>
                 <select value={filterBlock} onChange={e => setFilterBlock(e.target.value)} style={{ ...selectStyle, width: 'auto', minWidth: 160 }}>
-                    <option value="">Todos os blocos</option>
-                    {Object.entries(BLOCKS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                    <option value="" style={optStyle}>Todos os blocos</option>
+                    {Object.entries(BLOCKS).map(([k, v]) => <option key={k} value={k} style={optStyle}>{v}</option>)}
                 </select>
                 <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.35)', marginLeft: 'auto' }}>{filtered.length} resultado(s)</span>
             </div>
@@ -356,13 +357,13 @@ export default function AdminQuestionsPage() {
                                 <div>
                                     <label style={labelStyle}>Cidade *</label>
                                     <select value={form.city_id} onChange={e => setForm(f => ({ ...f, city_id: e.target.value }))} style={selectStyle}>
-                                        {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                        {cities.map(c => <option key={c.id} value={c.id} style={optStyle}>{c.name}</option>)}
                                     </select>
                                 </div>
                                 <div>
                                     <label style={labelStyle}>Bloco *</label>
                                     <select value={form.block} onChange={e => setForm(f => ({ ...f, block: e.target.value }))} style={selectStyle}>
-                                        {Object.entries(BLOCKS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                                        {Object.entries(BLOCKS).map(([k, v]) => <option key={k} value={k} style={optStyle}>{v}</option>)}
                                     </select>
                                 </div>
                                 <div>
@@ -445,25 +446,25 @@ export default function AdminQuestionsPage() {
                                     <div>
                                         <label style={labelStyle}>Cidade *</label>
                                         <select value={aiConfig.city_id} onChange={e => setAiConfig(f => ({ ...f, city_id: e.target.value }))} style={selectStyle}>
-                                            {cities.map(c => <option key={c.id} value={c.id}>{c.name}</option>)}
+                                            {cities.map(c => <option key={c.id} value={c.id} style={optStyle}>{c.name}</option>)}
                                         </select>
                                     </div>
                                     <div>
                                         <label style={labelStyle}>Bloco Temático *</label>
                                         <select value={aiConfig.block} onChange={e => setAiConfig(f => ({ ...f, block: e.target.value }))} style={selectStyle}>
-                                            {Object.entries(BLOCKS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                                            {Object.entries(BLOCKS).map(([k, v]) => <option key={k} value={k} style={optStyle}>{v}</option>)}
                                         </select>
                                     </div>
                                     <div>
                                         <label style={labelStyle}>Dificuldade *</label>
                                         <select value={aiConfig.difficulty} onChange={e => setAiConfig(f => ({ ...f, difficulty: e.target.value }))} style={selectStyle}>
-                                            {Object.entries(DIFFICULTIES).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
+                                            {Object.entries(DIFFICULTIES).map(([k, v]) => <option key={k} value={k} style={optStyle}>{v}</option>)}
                                         </select>
                                     </div>
                                     <div>
                                         <label style={labelStyle}>Quantidade *</label>
                                         <select value={aiConfig.quantity} onChange={e => setAiConfig(f => ({ ...f, quantity: e.target.value }))} style={selectStyle}>
-                                            {QUANTITIES.map(n => <option key={n} value={String(n)}>{n} perguntas</option>)}
+                                            {QUANTITIES.map(n => <option key={n} value={String(n)} style={optStyle}>{n} perguntas</option>)}
                                         </select>
                                     </div>
                                 </div>

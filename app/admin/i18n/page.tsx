@@ -199,7 +199,7 @@ export default function I18nPage() {
                         <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                             <select value={editLang} onChange={e => setEditLang(e.target.value)} style={{ padding: '7px 12px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: goldBorder, color: '#fff', fontSize: 12, cursor: 'pointer', outline: 'none' }}>
                                 {languages.filter(l => l.code !== 'pt').map(l => (
-                                    <option key={l.code} value={l.code} style={{ background: '#1a0a4a' }}>{l.flag} {l.label}</option>
+                                    <option key={l.code} value={l.code} style={{ background: '#1a1045', color: '#fff' }}>{l.flag} {l.label}</option>
                                 ))}
                             </select>
                             {saved && <span style={{ fontSize: 12, color: '#27ae60', fontWeight: 600 }}>Salvo!</span>}

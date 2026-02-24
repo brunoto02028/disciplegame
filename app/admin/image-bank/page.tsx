@@ -28,6 +28,7 @@ export default function ImageBankPage() {
     const [urlName, setUrlName] = useState('');
     const [urlCategory, setUrlCategory] = useState('general');
     const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
+    const [syncing, setSyncing] = useState(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const fetchImages = async () => {
@@ -65,6 +66,21 @@ export default function ImageBankPage() {
         } catch { showMsg('Erro no upload', 'error'); }
         setUploading(false);
         if (fileInputRef.current) fileInputRef.current.value = '';
+    };
+
+    const handleSync = async () => {
+        setSyncing(true);
+        try {
+            const res = await fetch('/api/admin/image-bank/sync', { method: 'POST', credentials: 'include' });
+            const data = await res.json();
+            if (data.success) {
+                showMsg(`Sincronizado! ${data.data.added} imagem(ns) adicionada(s). Total: ${data.data.total}`, 'success');
+                fetchImages();
+            } else {
+                showMsg(data.error || 'Erro ao sincronizar', 'error');
+            }
+        } catch { showMsg('Erro ao sincronizar', 'error'); }
+        setSyncing(false);
     };
 
     const handleAddUrl = async () => {
@@ -148,7 +164,11 @@ export default function ImageBankPage() {
                     <h1 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 26, fontWeight: 800, marginBottom: 4 }}>🖼️ Banco de Imagens</h1>
                     <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.45)' }}>{images.length} imagem(ns) registrada(s)</p>
                 </div>
-                <div style={{ display: 'flex', gap: 8 }}>
+                <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                    <button onClick={handleSync} disabled={syncing}
+                        style={{ padding: '10px 16px', borderRadius: 10, background: 'rgba(39,174,96,0.12)', border: '1px solid rgba(39,174,96,0.3)', color: '#2ecc71', fontWeight: 600, fontSize: 12, cursor: syncing ? 'wait' : 'pointer', opacity: syncing ? 0.7 : 1 }}>
+                        {syncing ? '⏳ Sincronizando...' : '🔄 Sincronizar do Site'}
+                    </button>
                     <button onClick={() => setShowAddUrl(!showAddUrl)}
                         style={{ padding: '10px 16px', borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: goldBorder, color: '#c9a227', fontWeight: 600, fontSize: 12, cursor: 'pointer' }}>
                         🔗 Adicionar URL
@@ -182,11 +202,11 @@ export default function ImageBankPage() {
                         </div>
                         <div style={{ display: 'flex', gap: 8 }}>
                             <select value={urlCategory} onChange={e => setUrlCategory(e.target.value)} style={{ padding: '10px 8px', borderRadius: 8, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.12)', color: '#fff', fontSize: 12 }}>
-                                <option value="general">Geral</option>
-                                <option value="cities">Cidades</option>
-                                <option value="settings">Settings</option>
-                                <option value="heroes">Heroes</option>
-                                <option value="maps">Mapas</option>
+                                <option value="general" style={{ background: '#1a1045', color: '#fff' }}>Geral</option>
+                                <option value="cities" style={{ background: '#1a1045', color: '#fff' }}>Cidades</option>
+                                <option value="settings" style={{ background: '#1a1045', color: '#fff' }}>Settings</option>
+                                <option value="heroes" style={{ background: '#1a1045', color: '#fff' }}>Heroes</option>
+                                <option value="maps" style={{ background: '#1a1045', color: '#fff' }}>Mapas</option>
                             </select>
                             <button onClick={handleAddUrl} style={{ padding: '10px 16px', borderRadius: 8, background: 'linear-gradient(135deg,#c9a227,#8b6914)', border: 'none', color: '#1a0a4a', fontWeight: 700, fontSize: 12, cursor: 'pointer', whiteSpace: 'nowrap' }}>
                                 Adicionar

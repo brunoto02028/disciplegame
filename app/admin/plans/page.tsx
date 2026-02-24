@@ -131,8 +131,8 @@ export default function PlansPage() {
                             <div>
                                 <label style={{ display: 'block', fontSize: 10, color: '#c9a227', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase' }}>Periodo</label>
                                 <select value={newPlan.interval} onChange={e => setNewPlan({ ...newPlan, interval: e.target.value as any })} style={{ ...inputStyle, cursor: 'pointer' }}>
-                                    <option value="month" style={{ background: '#1a0a4a' }}>Mensal</option>
-                                    <option value="year" style={{ background: '#1a0a4a' }}>Anual</option>
+                                    <option value="month" style={{ background: '#1a1045', color: '#fff' }}>Mensal</option>
+                                    <option value="year" style={{ background: '#1a1045', color: '#fff' }}>Anual</option>
                                 </select>
                             </div>
                             <div>
@@ -172,8 +172,8 @@ export default function PlansPage() {
                                 <div style={{ display: 'flex', gap: 8 }}>
                                     <input type="number" value={editData.price} onChange={e => setEditData({ ...editData, price: parseFloat(e.target.value) || 0 })} style={{ ...inputStyle, flex: 1 }} />
                                     <select value={editData.interval} onChange={e => setEditData({ ...editData, interval: e.target.value as any })} style={{ ...inputStyle, flex: 1, cursor: 'pointer' }}>
-                                        <option value="month" style={{ background: '#1a0a4a' }}>Mensal</option>
-                                        <option value="year" style={{ background: '#1a0a4a' }}>Anual</option>
+                                        <option value="month" style={{ background: '#1a1045', color: '#fff' }}>Mensal</option>
+                                        <option value="year" style={{ background: '#1a1045', color: '#fff' }}>Anual</option>
                                     </select>
                                 </div>
                                 <input value={editData.stripePriceId} onChange={e => setEditData({ ...editData, stripePriceId: e.target.value })} placeholder="Stripe Price ID" style={inputStyle} />

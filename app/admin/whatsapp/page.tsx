@@ -107,11 +107,11 @@ export default function WhatsAppPage() {
                         <div>
                             <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#c9a227', marginBottom: 6, textTransform: 'uppercase' }}>Tipo de Envio</label>
                             <select value={sendData.segment} onChange={e => setSendData({ ...sendData, segment: e.target.value })} style={{ ...inputStyle, cursor: 'pointer' }}>
-                                <option value="individual" style={{ background: '#1a0a4a' }}>Individual</option>
-                                <option value="all" style={{ background: '#1a0a4a' }}>Todos os usuarios</option>
-                                <option value="active" style={{ background: '#1a0a4a' }}>Usuarios ativos</option>
-                                <option value="inactive" style={{ background: '#1a0a4a' }}>Usuarios inativos</option>
-                                <option value="premium" style={{ background: '#1a0a4a' }}>Membros Premium</option>
+                                <option value="individual" style={{ background: '#1a1045', color: '#fff' }}>Individual</option>
+                                <option value="all" style={{ background: '#1a1045', color: '#fff' }}>Todos os usuarios</option>
+                                <option value="active" style={{ background: '#1a1045', color: '#fff' }}>Usuarios ativos</option>
+                                <option value="inactive" style={{ background: '#1a1045', color: '#fff' }}>Usuarios inativos</option>
+                                <option value="premium" style={{ background: '#1a1045', color: '#fff' }}>Membros Premium</option>
                             </select>
                         </div>
                         {sendData.segment === 'individual' && (
@@ -142,10 +142,10 @@ export default function WhatsAppPage() {
                         <div>
                             <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#c9a227', marginBottom: 6, textTransform: 'uppercase' }}>Provedor</label>
                             <select value={settings.provider} onChange={e => setSettings({ ...settings, provider: e.target.value })} style={{ ...inputStyle, cursor: 'pointer' }}>
-                                <option value="twilio" style={{ background: '#1a0a4a' }}>Twilio (WhatsApp Business API)</option>
-                                <option value="zapi" style={{ background: '#1a0a4a' }}>Z-API</option>
-                                <option value="wapi" style={{ background: '#1a0a4a' }}>WAPI.js</option>
-                                <option value="meta" style={{ background: '#1a0a4a' }}>Meta Cloud API (Oficial)</option>
+                                <option value="twilio" style={{ background: '#1a1045', color: '#fff' }}>Twilio (WhatsApp Business API)</option>
+                                <option value="zapi" style={{ background: '#1a1045', color: '#fff' }}>Z-API</option>
+                                <option value="wapi" style={{ background: '#1a1045', color: '#fff' }}>WAPI.js</option>
+                                <option value="meta" style={{ background: '#1a1045', color: '#fff' }}>Meta Cloud API (Oficial)</option>
                             </select>
                         </div>
                         <div>

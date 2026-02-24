@@ -90,11 +90,11 @@ export default function EmailPage() {
                         <div>
                             <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#c9a227', marginBottom: 6, textTransform: 'uppercase' }}>Segmento</label>
                             <select value={composeData.segment} onChange={e => setComposeData({ ...composeData, segment: e.target.value })} style={{ ...inputStyle, cursor: 'pointer' }}>
-                                <option value="all" style={{ background: '#1a0a4a' }}>Todos os usuarios</option>
-                                <option value="active" style={{ background: '#1a0a4a' }}>Usuarios ativos (30 dias)</option>
-                                <option value="inactive" style={{ background: '#1a0a4a' }}>Usuarios inativos</option>
-                                <option value="premium" style={{ background: '#1a0a4a' }}>Membros Premium</option>
-                                <option value="new" style={{ background: '#1a0a4a' }}>Novos usuarios (7 dias)</option>
+                                <option value="all" style={{ background: '#1a1045', color: '#fff' }}>Todos os usuarios</option>
+                                <option value="active" style={{ background: '#1a1045', color: '#fff' }}>Usuarios ativos (30 dias)</option>
+                                <option value="inactive" style={{ background: '#1a1045', color: '#fff' }}>Usuarios inativos</option>
+                                <option value="premium" style={{ background: '#1a1045', color: '#fff' }}>Membros Premium</option>
+                                <option value="new" style={{ background: '#1a1045', color: '#fff' }}>Novos usuarios (7 dias)</option>
                             </select>
                         </div>
                         <div>
@@ -129,10 +129,10 @@ export default function EmailPage() {
                         <div>
                             <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#c9a227', marginBottom: 6, textTransform: 'uppercase' }}>Provedor</label>
                             <select value={settings.provider} onChange={e => setSettings({ ...settings, provider: e.target.value })} style={{ ...inputStyle, cursor: 'pointer' }}>
-                                <option value="resend" style={{ background: '#1a0a4a' }}>Resend</option>
-                                <option value="sendgrid" style={{ background: '#1a0a4a' }}>SendGrid</option>
-                                <option value="ses" style={{ background: '#1a0a4a' }}>Amazon SES</option>
-                                <option value="smtp" style={{ background: '#1a0a4a' }}>SMTP Custom</option>
+                                <option value="resend" style={{ background: '#1a1045', color: '#fff' }}>Resend</option>
+                                <option value="sendgrid" style={{ background: '#1a1045', color: '#fff' }}>SendGrid</option>
+                                <option value="ses" style={{ background: '#1a1045', color: '#fff' }}>Amazon SES</option>
+                                <option value="smtp" style={{ background: '#1a1045', color: '#fff' }}>SMTP Custom</option>
                             </select>
                         </div>
                         <div>

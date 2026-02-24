@@ -98,9 +98,9 @@ export default function TemplatesPage() {
                                     <div>
                                         <label style={{ display: 'block', fontSize: 10, color: '#c9a227', marginBottom: 4, fontWeight: 600, textTransform: 'uppercase' }}>Canal</label>
                                         <select value={editData.channel} onChange={e => setEditData({ ...editData, channel: e.target.value as any })} style={{ ...inputStyle, cursor: 'pointer' }}>
-                                            <option value="email" style={{ background: '#1a0a4a' }}>Email</option>
-                                            <option value="whatsapp" style={{ background: '#1a0a4a' }}>WhatsApp</option>
-                                            <option value="both" style={{ background: '#1a0a4a' }}>Ambos</option>
+                                            <option value="email" style={{ background: '#1a1045', color: '#fff' }}>Email</option>
+                                            <option value="whatsapp" style={{ background: '#1a1045', color: '#fff' }}>WhatsApp</option>
+                                            <option value="both" style={{ background: '#1a1045', color: '#fff' }}>Ambos</option>
                                         </select>
                                     </div>
                                 </div>
