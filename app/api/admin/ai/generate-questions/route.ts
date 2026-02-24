@@ -80,7 +80,7 @@ Retorne SOMENTE um JSON válido no seguinte formato (sem markdown, sem \`\`\`, a
             generationConfig: {
                 temperature: 0.8,
                 topP: 0.95,
-                maxOutputTokens: 8192,
+                maxOutputTokens: 65536,
                 responseMimeType: 'application/json',
             },
         });
@@ -92,11 +92,24 @@ Retorne SOMENTE um JSON válido no seguinte formato (sem markdown, sem \`\`\`, a
         try {
             parsed = JSON.parse(responseText);
         } catch {
+            // Try extracting JSON object
             const jsonMatch = responseText.match(/\{[\s\S]*\}/);
             if (jsonMatch) {
-                parsed = JSON.parse(jsonMatch[0]);
-            } else {
-                return NextResponse.json({ success: false, error: 'Erro ao interpretar resposta da IA. Tente novamente.' }, { status: 500 });
+                try {
+                    parsed = JSON.parse(jsonMatch[0]);
+                } catch {
+                    // JSON truncated — try to repair by closing open arrays/objects
+                    let repaired = jsonMatch[0];
+                    // Find last complete question object (ends with })
+                    const lastComplete = repaired.lastIndexOf('}');
+                    if (lastComplete > 0) {
+                        repaired = repaired.substring(0, lastComplete + 1) + ']}';
+                        try { parsed = JSON.parse(repaired); } catch { /* fallthrough */ }
+                    }
+                }
+            }
+            if (!parsed) {
+                return NextResponse.json({ success: false, error: 'Erro ao interpretar resposta da IA. Tente gerar menos perguntas (máx 20).' }, { status: 500 });
             }
         }
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 
 const DEFAULT_BLOCKS: Record<number, string> = { 1: 'Contexto Bíblico', 2: 'Geografia Atual', 3: 'Turismo & Economia' };
@@ -40,6 +40,16 @@ export default function AdminQuestionsPage() {
     const [aiSaveProgress, setAiSaveProgress] = useState({ saved: 0, total: 0 });
     const [improvingId, setImprovingId] = useState<string | null>(null);
     const [gameBlocks, setGameBlocks] = useState<Array<{id: number; name: string; description?: string}>>([]);
+
+    // Voice Chat States
+    const [aiTab, setAiTab] = useState<'fast' | 'chat'>('chat');
+    const [chatMsgs, setChatMsgs] = useState<Array<{role: 'user' | 'assistant'; content: string}>>([]);
+    const [chatInput, setChatInput] = useState('');
+    const [chatLoading, setChatLoading] = useState(false);
+    const [isListening, setIsListening] = useState(false);
+    const [voiceSupported, setVoiceSupported] = useState(false);
+    const chatEndRef = useRef<HTMLDivElement>(null);
+    const recognitionRef = useRef<any>(null);
 
     // Dynamic blocks from game rules, fallback to defaults
     const BLOCKS: Record<number, string> = gameBlocks.length > 0
@@ -107,6 +117,9 @@ export default function AdminQuestionsPage() {
         setAiError('');
         setAiQuestions([]);
         setShowAIPreview(false);
+        setChatMsgs([]);
+        setChatInput('');
+        setAiTab('chat');
         setShowAIModal(true);
     };
 
@@ -239,6 +252,108 @@ export default function AdminQuestionsPage() {
     const updateAIQuestion = (index: number, field: string, value: string) => {
         setAiQuestions(prev => prev.map((q, i) => i === index ? { ...q, [field]: value } : q));
     };
+
+    // ─── Voice: Check support + setup ───
+    useEffect(() => {
+        const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+        if (SR) {
+            setVoiceSupported(true);
+            const recognition = new SR();
+            recognition.lang = 'pt-BR';
+            recognition.continuous = false;
+            recognition.interimResults = true;
+            recognition.maxAlternatives = 1;
+            recognition.onresult = (e: any) => {
+                let final = '';
+                let interim = '';
+                for (let i = 0; i < e.results.length; i++) {
+                    if (e.results[i].isFinal) {
+                        final += e.results[i][0].transcript;
+                    } else {
+                        interim += e.results[i][0].transcript;
+                    }
+                }
+                if (final) {
+                    setChatInput(prev => (prev ? prev + ' ' : '') + final);
+                }
+            };
+            recognition.onerror = () => setIsListening(false);
+            recognition.onend = () => setIsListening(false);
+            recognitionRef.current = recognition;
+        }
+    }, []);
+
+    useEffect(() => {
+        if (chatEndRef.current) {
+            chatEndRef.current.scrollIntoView({ behavior: 'smooth' });
+        }
+    }, [chatMsgs, chatLoading]);
+
+    const toggleVoice = () => {
+        if (!recognitionRef.current) return;
+        if (isListening) {
+            recognitionRef.current.stop();
+            setIsListening(false);
+        } else {
+            recognitionRef.current.start();
+            setIsListening(true);
+        }
+    };
+
+    // ─── Voice Chat: Send message ───
+    const sendChatMsg = async (text?: string) => {
+        const content = (text || chatInput).trim();
+        if (!content || chatLoading) return;
+        
+        const city = cities.find(c => c.id === aiConfig.city_id);
+        const newMsgs = [...chatMsgs, { role: 'user' as const, content }];
+        setChatMsgs(newMsgs);
+        setChatInput('');
+        setChatLoading(true);
+        setAiError('');
+
+        // Stop listening if active
+        if (isListening && recognitionRef.current) {
+            recognitionRef.current.stop();
+            setIsListening(false);
+        }
+
+        try {
+            const res = await fetch('/api/admin/ai/question-chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    messages: newMsgs,
+                    cityName: city?.name || 'Cidade bíblica',
+                    cityContext: city?.description || '',
+                    block: aiConfig.block,
+                    difficulty: aiConfig.difficulty,
+                }),
+            });
+            const data = await res.json();
+            if (data.success) {
+                setChatMsgs(prev => [...prev, { role: 'assistant', content: data.data.message }]);
+                // If AI returned questions, show them in preview
+                if (data.data.questions && data.data.questions.length > 0) {
+                    setAiQuestions(data.data.questions.map((q: any) => ({ ...q, selected: true })));
+                    setShowAIPreview(true);
+                }
+            } else {
+                setChatMsgs(prev => [...prev, { role: 'assistant', content: `❌ Erro: ${data.error}` }]);
+            }
+        } catch (e: any) {
+            setChatMsgs(prev => [...prev, { role: 'assistant', content: `❌ Erro de conexão: ${e?.message || 'Falha'}` }]);
+        }
+        setChatLoading(false);
+    };
+
+    // ─── Quick suggestion chips ───
+    const chatSuggestions = [
+        `Sugira temas para perguntas sobre ${cities.find(c => c.id === aiConfig.city_id)?.name || 'esta cidade'}`,
+        'Gere 10 perguntas sobre os temas que sugeriu',
+        'Quero perguntas sobre curiosidades e fatos pouco conhecidos',
+        'Crie perguntas desafiadoras com pegadinhas sutis',
+    ];
 
     const glass: React.CSSProperties = { background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 16 };
     const inputStyle: React.CSSProperties = { width: '100%', padding: '9px 12px', fontSize: 13, border: '1px solid rgba(255,255,255,0.15)', borderRadius: 8, background: 'rgba(255,255,255,0.06)', color: '#fff', outline: 'none', fontFamily: 'inherit', boxSizing: 'border-box' };
@@ -421,10 +536,10 @@ export default function AdminQuestionsPage() {
             {/* ═══════════ MODAL: AI Generation ═══════════ */}
             {showAIModal && (
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 100, padding: 20 }}>
-                    <div style={{ background: '#1a1a2e', border: '1px solid rgba(124,58,237,0.3)', borderRadius: 20, padding: '28px', width: '100%', maxWidth: showAIPreview ? 900 : 560, maxHeight: '92vh', overflowY: 'auto', transition: 'max-width 0.3s' }}>
+                    <div style={{ background: '#1a1a2e', border: '1px solid rgba(124,58,237,0.3)', borderRadius: 20, padding: '24px 28px', width: '100%', maxWidth: showAIPreview ? 900 : 680, maxHeight: '94vh', overflowY: 'auto', transition: 'max-width 0.3s', display: 'flex', flexDirection: 'column' }}>
 
                         {/* Header */}
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16, flexShrink: 0 }}>
                             <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                                 <div style={{ width: 40, height: 40, borderRadius: 12, background: 'linear-gradient(135deg,#7c3aed,#4f46e5)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>🤖</div>
                                 <div>
@@ -432,51 +547,149 @@ export default function AdminQuestionsPage() {
                                         {showAIPreview ? 'Revisar Perguntas Geradas' : 'Gerar Perguntas com IA'}
                                     </h2>
                                     <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>
-                                        {showAIPreview ? `${aiQuestions.length} perguntas geradas · ${selectedCount} selecionadas` : 'Google Gemini · Geração inteligente'}
+                                        {showAIPreview ? `${aiQuestions.length} perguntas geradas · ${selectedCount} selecionadas` : 'Converse ou gere diretamente'}
                                     </p>
                                 </div>
                             </div>
                             <button onClick={() => { setShowAIModal(false); setShowAIPreview(false); }} style={{ background: 'none', border: 'none', color: 'rgba(255,255,255,0.4)', fontSize: 20, cursor: 'pointer' }}>✕</button>
                         </div>
 
-                        {/* ── Step 1: Configuration ── */}
+                        {/* ── Config Bar (always visible, compact) ── */}
                         {!showAIPreview && (
+                            <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14, padding: '10px 14px', borderRadius: 12, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', flexShrink: 0 }}>
+                                <div style={{ minWidth: 120, flex: 1 }}>
+                                    <label style={{ ...labelStyle, fontSize: 9, marginBottom: 3 }}>CIDADE</label>
+                                    <select value={aiConfig.city_id} onChange={e => setAiConfig(f => ({ ...f, city_id: e.target.value }))} style={{ ...selectStyle, padding: '6px 10px', fontSize: 12 }}>
+                                        {cities.map(c => <option key={c.id} value={c.id} style={optStyle}>{c.name}</option>)}
+                                    </select>
+                                </div>
+                                <div style={{ minWidth: 100, flex: 1 }}>
+                                    <label style={{ ...labelStyle, fontSize: 9, marginBottom: 3 }}>BLOCO</label>
+                                    <select value={aiConfig.block} onChange={e => setAiConfig(f => ({ ...f, block: e.target.value }))} style={{ ...selectStyle, padding: '6px 10px', fontSize: 12 }}>
+                                        {Object.entries(BLOCKS).map(([k, v]) => <option key={k} value={k} style={optStyle}>{v}</option>)}
+                                    </select>
+                                </div>
+                                <div style={{ minWidth: 80, flex: 1 }}>
+                                    <label style={{ ...labelStyle, fontSize: 9, marginBottom: 3 }}>DIFICULDADE</label>
+                                    <select value={aiConfig.difficulty} onChange={e => setAiConfig(f => ({ ...f, difficulty: e.target.value }))} style={{ ...selectStyle, padding: '6px 10px', fontSize: 12 }}>
+                                        {Object.entries(DIFFICULTIES).map(([k, v]) => <option key={k} value={k} style={optStyle}>{v}</option>)}
+                                    </select>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* ── Tabs ── */}
+                        {!showAIPreview && (
+                            <div style={{ display: 'flex', gap: 4, marginBottom: 14, flexShrink: 0 }}>
+                                <button onClick={() => setAiTab('chat')} style={{ flex: 1, padding: '10px 16px', borderRadius: '10px 10px 4px 4px', background: aiTab === 'chat' ? 'rgba(124,58,237,0.15)' : 'rgba(255,255,255,0.03)', border: aiTab === 'chat' ? '1px solid rgba(124,58,237,0.4)' : '1px solid rgba(255,255,255,0.06)', borderBottom: aiTab === 'chat' ? '2px solid #7c3aed' : '1px solid rgba(255,255,255,0.06)', color: aiTab === 'chat' ? '#a78bfa' : 'rgba(255,255,255,0.4)', fontWeight: 700, fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center' }}>
+                                    💬 Conversar com IA
+                                    {voiceSupported && <span style={{ fontSize: 10, opacity: 0.7 }}>🎤</span>}
+                                </button>
+                                <button onClick={() => setAiTab('fast')} style={{ flex: 1, padding: '10px 16px', borderRadius: '10px 10px 4px 4px', background: aiTab === 'fast' ? 'rgba(124,58,237,0.15)' : 'rgba(255,255,255,0.03)', border: aiTab === 'fast' ? '1px solid rgba(124,58,237,0.4)' : '1px solid rgba(255,255,255,0.06)', borderBottom: aiTab === 'fast' ? '2px solid #7c3aed' : '1px solid rgba(255,255,255,0.06)', color: aiTab === 'fast' ? '#a78bfa' : 'rgba(255,255,255,0.4)', fontWeight: 700, fontSize: 13, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 8, justifyContent: 'center' }}>
+                                    ⚡ Geração Rápida
+                                </button>
+                            </div>
+                        )}
+
+                        {/* ══════ TAB: Chat + Voice ══════ */}
+                        {!showAIPreview && aiTab === 'chat' && (
+                            <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0 }}>
+                                {/* Chat messages */}
+                                <div style={{ flex: 1, minHeight: 280, maxHeight: 420, overflowY: 'auto', padding: '12px 4px', display: 'flex', flexDirection: 'column', gap: 10, borderRadius: 12, background: 'rgba(0,0,0,0.15)', border: '1px solid rgba(255,255,255,0.06)', marginBottom: 10 }}>
+                                    {chatMsgs.length === 0 && (
+                                        <div style={{ textAlign: 'center', padding: '32px 20px', color: 'rgba(255,255,255,0.3)' }}>
+                                            <div style={{ fontSize: 40, marginBottom: 12 }}>💬</div>
+                                            <p style={{ fontSize: 14, fontWeight: 600, marginBottom: 6, color: 'rgba(255,255,255,0.5)' }}>Converse com a IA sobre as perguntas</p>
+                                            <p style={{ fontSize: 12, lineHeight: 1.6 }}>
+                                                Peça sugestões de temas, discuta ideias, ou diga<br/>
+                                                <strong style={{ color: '#a78bfa' }}>&quot;gera 10 perguntas&quot;</strong> quando estiver pronto.
+                                                {voiceSupported && <><br/>Clique no 🎤 para falar em vez de digitar!</>}
+                                            </p>
+                                        </div>
+                                    )}
+                                    {chatMsgs.map((m, i) => (
+                                        <div key={i} style={{ display: 'flex', justifyContent: m.role === 'user' ? 'flex-end' : 'flex-start', padding: '0 8px' }}>
+                                            <div style={{ maxWidth: '85%', padding: '10px 14px', borderRadius: m.role === 'user' ? '14px 14px 4px 14px' : '14px 14px 14px 4px', background: m.role === 'user' ? 'rgba(124,58,237,0.25)' : 'rgba(255,255,255,0.06)', border: '1px solid ' + (m.role === 'user' ? 'rgba(124,58,237,0.4)' : 'rgba(255,255,255,0.1)'), fontSize: 13, lineHeight: 1.6, color: 'rgba(255,255,255,0.85)', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                                                {m.role === 'assistant' && <span style={{ fontSize: 10, fontWeight: 700, color: '#a78bfa', display: 'block', marginBottom: 4 }}>🤖 IA</span>}
+                                                {m.content}
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {chatLoading && (
+                                        <div style={{ display: 'flex', padding: '0 8px' }}>
+                                            <div style={{ padding: '12px 18px', borderRadius: '14px 14px 14px 4px', background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                <div style={{ width: 14, height: 14, border: '2px solid rgba(167,139,250,0.3)', borderTopColor: '#a78bfa', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />
+                                                <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)' }}>Pensando...</span>
+                                            </div>
+                                        </div>
+                                    )}
+                                    <div ref={chatEndRef} />
+                                </div>
+
+                                {/* Suggestion chips */}
+                                {chatMsgs.length === 0 && (
+                                    <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 10 }}>
+                                        {chatSuggestions.map((s, i) => (
+                                            <button key={i} onClick={() => sendChatMsg(s)} style={{ padding: '6px 12px', borderRadius: 20, background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.25)', color: '#a78bfa', fontSize: 11, fontWeight: 500, cursor: 'pointer', whiteSpace: 'nowrap' }}>
+                                                {s.length > 45 ? s.slice(0, 45) + '...' : s}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Input bar */}
+                                <div style={{ display: 'flex', gap: 8, alignItems: 'flex-end', flexShrink: 0 }}>
+                                    {/* Voice button */}
+                                    {voiceSupported && (
+                                        <button onClick={toggleVoice} style={{ width: 44, height: 44, borderRadius: 12, background: isListening ? 'rgba(231,76,60,0.25)' : 'rgba(124,58,237,0.1)', border: `2px solid ${isListening ? 'rgba(231,76,60,0.6)' : 'rgba(124,58,237,0.3)'}`, color: isListening ? '#e74c3c' : '#a78bfa', fontSize: 20, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, animation: isListening ? 'pulse 1.5s ease-in-out infinite' : 'none', transition: 'all 0.3s' }} title={isListening ? 'Parar de ouvir' : 'Falar com a IA'}>
+                                            {isListening ? '⏹️' : '🎤'}
+                                        </button>
+                                    )}
+                                    <div style={{ flex: 1, position: 'relative' }}>
+                                        <textarea
+                                            value={chatInput}
+                                            onChange={e => setChatInput(e.target.value)}
+                                            onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChatMsg(); } }}
+                                            rows={1}
+                                            placeholder={isListening ? '🎤 Ouvindo... fale agora' : 'Digite ou fale com a IA...'}
+                                            style={{ ...inputStyle, paddingRight: 50, resize: 'none', minHeight: 44, borderColor: isListening ? 'rgba(231,76,60,0.4)' : 'rgba(124,58,237,0.3)', background: isListening ? 'rgba(231,76,60,0.05)' : 'rgba(255,255,255,0.06)' }}
+                                        />
+                                    </div>
+                                    <button onClick={() => sendChatMsg()} disabled={chatLoading || !chatInput.trim()} style={{ width: 44, height: 44, borderRadius: 12, background: chatInput.trim() ? 'linear-gradient(135deg,#7c3aed,#4f46e5)' : 'rgba(255,255,255,0.06)', border: 'none', color: chatInput.trim() ? '#fff' : 'rgba(255,255,255,0.2)', fontSize: 18, cursor: chatInput.trim() ? 'pointer' : 'not-allowed', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                                        ➤
+                                    </button>
+                                </div>
+
+                                {/* Voice indicator */}
+                                {isListening && (
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 6, padding: '6px 12px', borderRadius: 8, background: 'rgba(231,76,60,0.1)', border: '1px solid rgba(231,76,60,0.2)' }}>
+                                        <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#e74c3c', animation: 'pulse 1s ease-in-out infinite' }} />
+                                        <span style={{ fontSize: 11, color: '#e74c3c', fontWeight: 600 }}>Ouvindo... fale agora</span>
+                                        <button onClick={toggleVoice} style={{ marginLeft: 'auto', fontSize: 10, color: '#e74c3c', background: 'none', border: 'none', cursor: 'pointer', fontWeight: 700 }}>Parar</button>
+                                    </div>
+                                )}
+                            </div>
+                        )}
+
+                        {/* ══════ TAB: Fast Generation (existing form) ══════ */}
+                        {!showAIPreview && aiTab === 'fast' && (
                             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
                                 <div className="admin-q-form-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-                                    <div>
-                                        <label style={labelStyle}>Cidade *</label>
-                                        <select value={aiConfig.city_id} onChange={e => setAiConfig(f => ({ ...f, city_id: e.target.value }))} style={selectStyle}>
-                                            {cities.map(c => <option key={c.id} value={c.id} style={optStyle}>{c.name}</option>)}
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label style={labelStyle}>Bloco Temático *</label>
-                                        <select value={aiConfig.block} onChange={e => setAiConfig(f => ({ ...f, block: e.target.value }))} style={selectStyle}>
-                                            {Object.entries(BLOCKS).map(([k, v]) => <option key={k} value={k} style={optStyle}>{v}</option>)}
-                                        </select>
-                                    </div>
-                                    <div>
-                                        <label style={labelStyle}>Dificuldade *</label>
-                                        <select value={aiConfig.difficulty} onChange={e => setAiConfig(f => ({ ...f, difficulty: e.target.value }))} style={selectStyle}>
-                                            {Object.entries(DIFFICULTIES).map(([k, v]) => <option key={k} value={k} style={optStyle}>{v}</option>)}
-                                        </select>
-                                    </div>
                                     <div>
                                         <label style={labelStyle}>Quantidade *</label>
                                         <select value={aiConfig.quantity} onChange={e => setAiConfig(f => ({ ...f, quantity: e.target.value }))} style={selectStyle}>
                                             {QUANTITIES.map(n => <option key={n} value={String(n)} style={optStyle}>{n} perguntas</option>)}
                                         </select>
                                     </div>
-                                </div>
-                                <div>
-                                    <label style={labelStyle}>Tema Específico (opcional)</label>
-                                    <input
-                                        value={aiConfig.theme}
-                                        onChange={e => setAiConfig(f => ({ ...f, theme: e.target.value }))}
-                                        style={inputStyle}
-                                        placeholder='Ex: "milagres de Paulo", "gastronomia local", "arqueologia moderna"...'
-                                    />
-                                    <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.3)', marginTop: 4 }}>Deixe vazio para tema geral do bloco selecionado</p>
+                                    <div>
+                                        <label style={labelStyle}>Tema Específico (opcional)</label>
+                                        <input
+                                            value={aiConfig.theme}
+                                            onChange={e => setAiConfig(f => ({ ...f, theme: e.target.value }))}
+                                            style={inputStyle}
+                                            placeholder='Ex: "milagres de Paulo"...'
+                                        />
+                                    </div>
                                 </div>
 
                                 {aiError && (
@@ -485,19 +698,18 @@ export default function AdminQuestionsPage() {
 
                                 <button onClick={handleAIGenerate} disabled={aiGenerating} style={{ ...aiBtn, width: '100%', justifyContent: 'center', padding: '14px', fontSize: 15, opacity: aiGenerating ? 0.7 : 1, cursor: aiGenerating ? 'wait' : 'pointer' }}>
                                     {aiGenerating ? (
-                                        <><div style={{ width: 18, height: 18, border: '2.5px solid rgba(255,255,255,0.2)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /> Gerando {aiConfig.quantity} perguntas com Gemini...</>
+                                        <><div style={{ width: 18, height: 18, border: '2.5px solid rgba(255,255,255,0.2)', borderTopColor: '#fff', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} /> Gerando {aiConfig.quantity} perguntas...</>
                                     ) : (
-                                        <>🤖 Gerar {aiConfig.quantity} Perguntas</>
+                                        <>⚡ Gerar {aiConfig.quantity} Perguntas</>
                                     )}
                                 </button>
 
                                 <div style={{ background: 'rgba(124,58,237,0.08)', border: '1px solid rgba(124,58,237,0.2)', borderRadius: 12, padding: '14px 16px' }}>
-                                    <p style={{ fontSize: 12, fontWeight: 700, color: '#a78bfa', marginBottom: 6 }}>💡 Dicas para melhores resultados:</p>
+                                    <p style={{ fontSize: 12, fontWeight: 700, color: '#a78bfa', marginBottom: 6 }}>💡 Dicas:</p>
                                     <ul style={{ fontSize: 12, color: 'rgba(255,255,255,0.5)', lineHeight: 1.8, margin: 0, paddingLeft: 16 }}>
-                                        <li>Use o campo &quot;Tema Específico&quot; para perguntas mais focadas</li>
                                         <li>Gere em lotes de 10-20 para melhor qualidade</li>
+                                        <li>Use a aba &quot;Conversar&quot; para discutir ideias antes</li>
                                         <li>Sempre revise as perguntas antes de salvar</li>
-                                        <li>Combine diferentes blocos e dificuldades para variedade</li>
                                     </ul>
                                 </div>
                             </div>
@@ -579,6 +791,13 @@ export default function AdminQuestionsPage() {
             <style>{`
                 @media (max-width: 640px) {
                     .admin-q-form-grid { grid-template-columns: 1fr !important; }
+                }
+                @keyframes pulse {
+                    0%, 100% { opacity: 1; transform: scale(1); }
+                    50% { opacity: 0.7; transform: scale(1.05); }
+                }
+                @keyframes spin {
+                    to { transform: rotate(360deg); }
                 }
             `}</style>
         </div>
