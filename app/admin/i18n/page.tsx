@@ -6,17 +6,17 @@ const goldBorder = '1px solid rgba(201,162,39,0.3)';
 const glass: React.CSSProperties = { background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 14 };
 
 const LANGUAGES = [
-    { code: 'pt', label: 'Portugues', flag: '🇧🇷', enabled: true },
+    { code: 'pt', label: 'Português', flag: '🇧🇷', enabled: true },
     { code: 'en', label: 'English', flag: '🇺🇸', enabled: false },
-    { code: 'tr', label: 'Turkce', flag: '🇹🇷', enabled: false },
+    { code: 'tr', label: 'Türkçe', flag: '🇹🇷', enabled: false },
 ];
 
 const TRANSLATION_SECTIONS = [
     {
         id: 'nav',
-        label: 'Navegacao',
+        label: 'Navegação',
         keys: [
-            { key: 'home', pt: 'Inicio', en: 'Home', tr: 'Ana Sayfa' },
+            { key: 'home', pt: 'Início', en: 'Home', tr: 'Ana Sayfa' },
             { key: 'dashboard', pt: 'Dashboard', en: 'Dashboard', tr: 'Kontrol Paneli' },
             { key: 'ranking', pt: 'Ranking', en: 'Ranking', tr: 'Siralama' },
             { key: 'profile', pt: 'Perfil', en: 'Profile', tr: 'Profil' },
@@ -30,10 +30,10 @@ const TRANSLATION_SECTIONS = [
             { key: 'confirm_answer', pt: 'Confirmar Resposta', en: 'Confirm Answer', tr: 'Cevabi Onayla' },
             { key: 'correct', pt: 'Correto!', en: 'Correct!', tr: 'Dogru!' },
             { key: 'incorrect', pt: 'Incorreto', en: 'Incorrect', tr: 'Yanlis' },
-            { key: 'next_question', pt: 'Proxima Pergunta', en: 'Next Question', tr: 'Sonraki Soru' },
+            { key: 'next_question', pt: 'Próxima Pergunta', en: 'Next Question', tr: 'Sonraki Soru' },
             { key: 'time', pt: 'Tempo', en: 'Time', tr: 'Zaman' },
             { key: 'points', pt: 'Pontos', en: 'Points', tr: 'Puan' },
-            { key: 'streak', pt: 'Sequencia', en: 'Streak', tr: 'Seri' },
+            { key: 'streak', pt: 'Sequência', en: 'Streak', tr: 'Seri' },
         ],
     },
     {
@@ -41,8 +41,8 @@ const TRANSLATION_SECTIONS = [
         label: 'Resultados',
         keys: [
             { key: 'city_complete', pt: 'Cidade Completa!', en: 'City Complete!', tr: 'Sehir Tamamlandi!' },
-            { key: 'total_score', pt: 'Pontuacao Total', en: 'Total Score', tr: 'Toplam Puan' },
-            { key: 'accuracy', pt: 'Precisao', en: 'Accuracy', tr: 'Dogruluk' },
+            { key: 'total_score', pt: 'Pontuação Total', en: 'Total Score', tr: 'Toplam Puan' },
+            { key: 'accuracy', pt: 'Precisão', en: 'Accuracy', tr: 'Doğruluk' },
             { key: 'total_time', pt: 'Tempo Total', en: 'Total Time', tr: 'Toplam Sure' },
             { key: 'share', pt: 'Compartilhar', en: 'Share', tr: 'Paylas' },
             { key: 'view_ranking', pt: 'Ver Ranking', en: 'View Ranking', tr: 'Siralamaya Bak' },
@@ -50,25 +50,25 @@ const TRANSLATION_SECTIONS = [
     },
     {
         id: 'auth',
-        label: 'Autenticacao',
+        label: 'Autenticação',
         keys: [
-            { key: 'login', pt: 'Entrar', en: 'Login', tr: 'Giris' },
-            { key: 'register', pt: 'Criar Conta', en: 'Create Account', tr: 'Hesap Olustur' },
+            { key: 'login', pt: 'Entrar', en: 'Login', tr: 'Giriş' },
+            { key: 'register', pt: 'Criar Conta', en: 'Create Account', tr: 'Hesap Oluştur' },
             { key: 'email', pt: 'Email', en: 'Email', tr: 'E-posta' },
             { key: 'password', pt: 'Senha', en: 'Password', tr: 'Sifre' },
-            { key: 'name', pt: 'Nome', en: 'Name', tr: 'Isim' },
-            { key: 'logout', pt: 'Sair', en: 'Logout', tr: 'Cikis' },
+            { key: 'name', pt: 'Nome', en: 'Name', tr: 'İsim' },
+            { key: 'logout', pt: 'Sair', en: 'Logout', tr: 'Çıkış' },
         ],
     },
     {
         id: 'homepage',
         label: 'Homepage',
         keys: [
-            { key: 'hero_title', pt: 'O Discipulo', en: 'The Disciple', tr: 'Murit' },
-            { key: 'hero_subtitle', pt: 'Uma jornada interativa pelas cidades biblicas', en: 'An interactive journey through biblical cities', tr: 'Kutsal kitap sehirleri arasinda interaktif bir yolculuk' },
-            { key: 'start_journey', pt: 'Comecar Jornada', en: 'Start Journey', tr: 'Yolculuga Basla' },
-            { key: 'biblical_cities', pt: 'Cidades Biblicas', en: 'Biblical Cities', tr: 'Kutsal Kitap Sehirleri' },
-            { key: 'pauls_routes', pt: 'As Rotas do Apostolo Paulo', en: "Paul the Apostle's Routes", tr: 'Havari Pavlusun Rotalari' },
+            { key: 'hero_title', pt: 'O Discípulo', en: 'The Disciple', tr: 'Mürit' },
+            { key: 'hero_subtitle', pt: 'Uma jornada interativa pelas cidades bíblicas', en: 'An interactive journey through biblical cities', tr: 'Kutsal kitap şehirleri arasında interaktif bir yolculuk' },
+            { key: 'start_journey', pt: 'Começar Jornada', en: 'Start Journey', tr: 'Yolculuğa Başla' },
+            { key: 'biblical_cities', pt: 'Cidades Bíblicas', en: 'Biblical Cities', tr: 'Kutsal Kitap Şehirleri' },
+            { key: 'pauls_routes', pt: 'As Rotas do Apóstolo Paulo', en: "Paul the Apostle's Routes", tr: 'Havari Pavlus\'un Rotaları' },
         ],
     },
 ];
@@ -130,14 +130,14 @@ export default function I18nPage() {
     return (
         <div>
             <div style={{ marginBottom: 24 }}>
-                <h1 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 26, fontWeight: 800, marginBottom: 6 }}>Idiomas & Traducoes</h1>
-                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>Gerencie idiomas e traducoes. O portugues e o idioma padrao.</p>
+                <h1 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 26, fontWeight: 800, marginBottom: 6 }}>Idiomas & Traduções</h1>
+                <p style={{ color: 'rgba(255,255,255,0.4)', fontSize: 13 }}>Gerencie idiomas e traduções. O português é o idioma padrão.</p>
             </div>
 
             {/* Languages overview */}
             <div style={{ ...glass, padding: 20, marginBottom: 24 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
-                    <p style={{ fontSize: 11, fontWeight: 700, color: '#c9a227', letterSpacing: 1.5, textTransform: 'uppercase' }}>Idiomas Disponiveis</p>
+                    <p style={{ fontSize: 11, fontWeight: 700, color: '#c9a227', letterSpacing: 1.5, textTransform: 'uppercase' }}>Idiomas Disponíveis</p>
                     <button onClick={() => setShowAddLang(!showAddLang)} style={{ padding: '6px 14px', borderRadius: 6, background: 'rgba(201,162,39,0.1)', border: goldBorder, color: '#c9a227', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
                         + Adicionar Idioma
                     </button>
@@ -149,7 +149,7 @@ export default function I18nPage() {
                             <span style={{ fontSize: 20 }}>{lang.flag}</span>
                             <div>
                                 <p style={{ fontSize: 13, fontWeight: 600, color: '#fff' }}>{lang.label}</p>
-                                <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)' }}>{lang.code.toUpperCase()}{lang.code === 'pt' ? ' (padrao)' : ''}</p>
+                                <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.4)' }}>{lang.code.toUpperCase()}{lang.code === 'pt' ? ' (padrão)' : ''}</p>
                             </div>
                             {lang.code !== 'pt' && (
                                 <button onClick={() => toggleLanguage(lang.code)} style={{ marginLeft: 8, padding: '4px 10px', borderRadius: 6, background: lang.enabled ? 'rgba(39,174,96,0.2)' : 'rgba(255,255,255,0.05)', border: lang.enabled ? '1px solid rgba(39,174,96,0.4)' : '1px solid rgba(255,255,255,0.1)', color: lang.enabled ? '#27ae60' : 'rgba(255,255,255,0.4)', fontSize: 11, fontWeight: 600, cursor: 'pointer' }}>
@@ -219,7 +219,7 @@ export default function I18nPage() {
                                 <input
                                     value={translations[k.key] || ''}
                                     onChange={e => setTranslations({ ...translations, [k.key]: e.target.value })}
-                                    placeholder={`Traducao ${editLang.toUpperCase()}`}
+                                    placeholder={`Tradução ${editLang.toUpperCase()}`}
                                     style={inputStyle}
                                 />
                             </div>

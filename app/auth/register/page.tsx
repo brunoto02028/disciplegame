@@ -3,9 +3,11 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function RegisterPage() {
     const router = useRouter();
+    const { t } = useLanguage();
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -30,12 +32,12 @@ export default function RegisterPage() {
 
         // Validation
         if (formData.password !== formData.confirmPassword) {
-            setError('As senhas não coincidem');
+            setError(t('auth.err_password_match'));
             return;
         }
 
         if (formData.password.length < 6) {
-            setError('A senha deve ter pelo menos 6 caracteres');
+            setError(t('auth.err_password_min'));
             return;
         }
 
@@ -59,7 +61,7 @@ export default function RegisterPage() {
             const data = await response.json();
 
             if (!response.ok || !data.success) {
-                setError(data.error || 'Erro ao criar conta');
+                setError(data.error || t('auth.err_create'));
                 setLoading(false);
                 return;
             }
@@ -83,7 +85,7 @@ export default function RegisterPage() {
                 router.push('/auth/login?registered=true');
             }
         } catch (err) {
-            setError('Erro ao conectar com o servidor');
+            setError(t('auth.err_server'));
             setLoading(false);
         }
     };
@@ -101,8 +103,8 @@ export default function RegisterPage() {
                     <Link href="/" style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', width: 64, height: 64, borderRadius: '50%', background: 'linear-gradient(135deg,#c9a227,#8b6914)', boxShadow: '0 0 32px rgba(201,162,39,0.4)', marginBottom: 16 }}>
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><rect x="10" y="2" width="4" height="20" rx="1" fill="#fff" /><rect x="4" y="7" width="16" height="4" rx="1" fill="#fff" /></svg>
                     </Link>
-                    <h1 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 28, fontWeight: 800, color: '#fff', marginBottom: 6 }}>Comece sua Jornada</h1>
-                    <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.45)' }}>Crie sua conta gratuita</p>
+                    <h1 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 28, fontWeight: 800, color: '#fff', marginBottom: 6 }}>{t('auth.start_journey')}</h1>
+                    <p style={{ fontSize: 15, color: 'rgba(255,255,255,0.45)' }}>{t('auth.create_free')}</p>
                 </div>
 
                 {/* Card */}
@@ -115,43 +117,43 @@ export default function RegisterPage() {
                         )}
 
                         <div>
-                            <label htmlFor="name" style={labelStyle}>Nome Completo *</label>
-                            <input id="name" name="name" type="text" required style={inputStyle} placeholder="João Silva" value={formData.name} onChange={handleChange} />
+                            <label htmlFor="name" style={labelStyle}>{t('auth.name')}</label>
+                            <input id="name" name="name" type="text" required style={inputStyle} placeholder={t('auth.name_placeholder')} value={formData.name} onChange={handleChange} />
                         </div>
                         <div>
-                            <label htmlFor="email" style={labelStyle}>E-mail *</label>
+                            <label htmlFor="email" style={labelStyle}>{t('auth.email')} *</label>
                             <input id="email" name="email" type="email" required style={inputStyle} placeholder="seu@email.com" value={formData.email} onChange={handleChange} />
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                             <div>
-                                <label htmlFor="password" style={labelStyle}>Senha *</label>
-                                <input id="password" name="password" type="password" required style={inputStyle} placeholder="Mín. 6 caracteres" value={formData.password} onChange={handleChange} />
+                                <label htmlFor="password" style={labelStyle}>{t('auth.password')} *</label>
+                                <input id="password" name="password" type="password" required style={inputStyle} placeholder={t('auth.password_min')} value={formData.password} onChange={handleChange} />
                             </div>
                             <div>
-                                <label htmlFor="confirmPassword" style={labelStyle}>Confirmar *</label>
-                                <input id="confirmPassword" name="confirmPassword" type="password" required style={inputStyle} placeholder="Repita a senha" value={formData.confirmPassword} onChange={handleChange} />
+                                <label htmlFor="confirmPassword" style={labelStyle}>{t('auth.confirm_password')}</label>
+                                <input id="confirmPassword" name="confirmPassword" type="password" required style={inputStyle} placeholder={t('auth.repeat_password')} value={formData.confirmPassword} onChange={handleChange} />
                             </div>
                         </div>
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
                             <div>
-                                <label htmlFor="country" style={labelStyle}>País</label>
-                                <input id="country" name="country" type="text" style={inputStyle} placeholder="Brasil" value={formData.country} onChange={handleChange} />
+                                <label htmlFor="country" style={labelStyle}>{t('auth.country')}</label>
+                                <input id="country" name="country" type="text" style={inputStyle} placeholder={t('auth.country_placeholder')} value={formData.country} onChange={handleChange} />
                             </div>
                             <div>
-                                <label htmlFor="church" style={labelStyle}>Igreja (opcional)</label>
-                                <input id="church" name="church" type="text" style={inputStyle} placeholder="Sua igreja" value={formData.church} onChange={handleChange} />
+                                <label htmlFor="church" style={labelStyle}>{t('auth.church')}</label>
+                                <input id="church" name="church" type="text" style={inputStyle} placeholder={t('auth.church_placeholder')} value={formData.church} onChange={handleChange} />
                             </div>
                         </div>
 
                         <button type="submit" disabled={loading} style={{ width: '100%', padding: '13px', borderRadius: 10, background: loading ? 'rgba(201,162,39,0.5)' : 'linear-gradient(135deg,#c9a227,#8b6914)', color: '#1a0a4a', fontWeight: 700, fontSize: 16, border: 'none', cursor: loading ? 'not-allowed' : 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginTop: 4 }}>
-                            {loading ? <><div style={{ width: 18, height: 18, border: '2px solid rgba(0,0,0,0.2)', borderTopColor: '#1a0a4a', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />Criando conta...</> : 'Criar Conta'}
+                            {loading ? <><div style={{ width: 18, height: 18, border: '2px solid rgba(0,0,0,0.2)', borderTopColor: '#1a0a4a', borderRadius: '50%', animation: 'spin 0.8s linear infinite' }} />{t('auth.registering')}</> : t('auth.register_btn')}
                         </button>
                     </form>
 
                     {/* Divider */}
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '20px 0' }}>
                         <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.1)' }} />
-                        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>ou</span>
+                        <span style={{ fontSize: 12, color: 'rgba(255,255,255,0.3)' }}>{t('auth.or')}</span>
                         <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.1)' }} />
                     </div>
 
@@ -187,19 +189,19 @@ export default function RegisterPage() {
                         } catch { setError('Erro ao iniciar Google'); setLoading(false); }
                     }} disabled={loading} style={{ width: '100%', padding: '12px', borderRadius: 10, background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.15)', color: '#fff', fontWeight: 600, fontSize: 14, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10 }}>
                         <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-                        Cadastrar com Google
+                        {t('auth.google_register')}
                     </button>
 
                     <p style={{ textAlign: 'center', marginTop: 20, fontSize: 14, color: 'rgba(255,255,255,0.45)' }}>
-                        Já tem uma conta?{' '}
-                        <Link href="/auth/login" style={{ color: '#c9a227', fontWeight: 600, textDecoration: 'none' }}>Fazer login</Link>
+                        {t('auth.has_account')}{' '}
+                        <Link href="/auth/login" style={{ color: '#c9a227', fontWeight: 600, textDecoration: 'none' }}>{t('auth.login_link')}</Link>
                     </p>
                 </div>
 
                 <div style={{ textAlign: 'center', marginTop: 24 }}>
                     <Link href="/" style={{ fontSize: 13, color: 'rgba(255,255,255,0.3)', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: 6 }}>
                         <svg width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
-                        Voltar para home
+                        {t('auth.back_home')}
                     </Link>
                 </div>
             </div>

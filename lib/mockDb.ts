@@ -4,13 +4,16 @@ export interface MockUser {
 }
 export interface TouristSpot {
     name: string;
+    name_en?: string;
     description: string;
+    description_en?: string;
     image_url: string;
 }
 export interface MockCity {
     id: string; circuit_id: string; name: string; name_en: string;
     country: string; modern_name: string; description: string;
     description_en: string; biblical_context: string;
+    biblical_context_en?: string;
     latitude: number; longitude: number; image_url: string | null; order_index: number;
     flag: string; biblical_ref: string; active: boolean;
     tourist_spots?: TouristSpot[];
@@ -70,12 +73,13 @@ const _defaultStore = {
             description: 'A cidade santa, centro do judaísmo e do cristianismo primitivo.',
             description_en: 'The holy city, center of Judaism and early Christianity.',
             biblical_context: 'Jerusalém foi o centro da missão apostólica. Foi aqui que Jesus foi crucificado, ressuscitou e onde a Igreja nasceu no Pentecostes (Atos 2). Paulo visitou Jerusalém várias vezes para se reunir com os apóstolos.',
+            biblical_context_en: 'Jerusalem was the center of the apostolic mission. It was here that Jesus was crucified, rose again, and where the Church was born at Pentecost (Acts 2). Paul visited Jerusalem several times to meet with the apostles.',
             latitude: 31.7683, longitude: 35.2137, image_url: 'https://images.unsplash.com/photo-1544967082-d9d25d867d66?auto=format&fit=crop&w=800&q=80', order_index: 1,
             flag: '🇮🇱', biblical_ref: 'Atos 1-7', active: true,
             tourist_spots: [
-                { name: 'Igreja do Santo Sepulcro', description: 'Local da crucificação e ressurreição de Jesus, o lugar mais sagrado do cristianismo.', image_url: 'https://images.unsplash.com/photo-1562979314-bee7453e911c?auto=format&fit=crop&w=600&q=80' },
-                { name: 'Muro das Lamentações', description: 'Remanescente do Segundo Templo, local de oração mais sagrado do judaísmo.', image_url: 'https://images.unsplash.com/photo-1547483238-2cbf881a559f?auto=format&fit=crop&w=600&q=80' },
-                { name: 'Via Dolorosa', description: 'O caminho percorrido por Jesus carregando a cruz até o Calvário.', image_url: 'https://images.unsplash.com/photo-1558284989-30e0f90b4703?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Igreja do Santo Sepulcro', name_en: 'Church of the Holy Sepulchre', description: 'Local da crucificação e ressurreição de Jesus, o lugar mais sagrado do cristianismo.', description_en: 'Site of the crucifixion and resurrection of Jesus, the holiest place in Christianity.', image_url: 'https://images.unsplash.com/photo-1562979314-bee7453e911c?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Muro das Lamentações', name_en: 'Western Wall', description: 'Remanescente do Segundo Templo, local de oração mais sagrado do judaísmo.', description_en: 'Remnant of the Second Temple, the holiest prayer site in Judaism.', image_url: 'https://images.unsplash.com/photo-1547483238-2cbf881a559f?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Via Dolorosa', name_en: 'Via Dolorosa', description: 'O caminho percorrido por Jesus carregando a cruz até o Calvário.', description_en: 'The path walked by Jesus carrying the cross to Calvary.', image_url: 'https://images.unsplash.com/photo-1558284989-30e0f90b4703?auto=format&fit=crop&w=600&q=80' },
             ],
         }],
         ['city-efeso-002', {
@@ -84,12 +88,13 @@ const _defaultStore = {
             description: 'Uma das maiores cidades do Império Romano, onde Paulo pregou por 3 anos.',
             description_en: 'One of the largest cities in the Roman Empire, where Paul preached for 3 years.',
             biblical_context: 'Paulo passou cerca de 3 anos em Éfeso (Atos 19-20), tornando-a base para a evangelização da Ásia Menor. A cidade era famosa pelo Templo de Ártemis, uma das Sete Maravilhas do Mundo Antigo.',
+            biblical_context_en: 'Paul spent about 3 years in Ephesus (Acts 19-20), making it a base for the evangelization of Asia Minor. The city was famous for the Temple of Artemis, one of the Seven Wonders of the Ancient World.',
             latitude: 37.9395, longitude: 27.3417, image_url: 'https://images.unsplash.com/photo-1589254065878-42c6b0e0a0bf?auto=format&fit=crop&w=800&q=80', order_index: 2,
             flag: '🇹🇷', biblical_ref: 'Atos 19-20', active: true,
             tourist_spots: [
-                { name: 'Biblioteca de Celso', description: 'Uma das bibliotecas mais antigas do mundo, símbolo icônico de Éfeso.', image_url: 'https://images.unsplash.com/photo-1590074072786-a66914d668f1?auto=format&fit=crop&w=600&q=80' },
-                { name: 'Grande Teatro', description: 'Teatro com capacidade para 25.000 pessoas onde houve o tumulto contra Paulo.', image_url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80' },
-                { name: 'Casa da Virgem Maria', description: 'Santuário no Monte Koressos, onde tradição diz que Maria viveu seus últimos dias.', image_url: 'https://images.unsplash.com/photo-1601922046210-47ac6e9e8fbb?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Biblioteca de Celso', name_en: 'Library of Celsus', description: 'Uma das bibliotecas mais antigas do mundo, símbolo icônico de Éfeso.', description_en: 'One of the oldest libraries in the world, an iconic symbol of Ephesus.', image_url: 'https://images.unsplash.com/photo-1590074072786-a66914d668f1?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Grande Teatro', name_en: 'Great Theatre', description: 'Teatro com capacidade para 25.000 pessoas onde houve o tumulto contra Paulo.', description_en: 'A theatre seating 25,000 people where the riot against Paul took place.', image_url: 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Casa da Virgem Maria', name_en: 'House of the Virgin Mary', description: 'Santuário no Monte Koressos, onde tradição diz que Maria viveu seus últimos dias.', description_en: 'Shrine on Mount Koressos, where tradition says Mary spent her last days.', image_url: 'https://images.unsplash.com/photo-1601922046210-47ac6e9e8fbb?auto=format&fit=crop&w=600&q=80' },
             ],
         }],
         ['city-malta-003', {
@@ -98,12 +103,13 @@ const _defaultStore = {
             description: 'Ilha mediterrânea onde Paulo naufragou e realizou milagres.',
             description_en: 'Mediterranean island where Paul was shipwrecked and performed miracles.',
             biblical_context: 'Paulo naufragou em Malta durante sua viagem a Roma (Atos 27-28). Na ilha, sobreviveu à picada de uma víbora e curou o pai do governador Públio, além de muitos outros habitantes.',
+            biblical_context_en: 'Paul was shipwrecked in Malta during his voyage to Rome (Acts 27-28). On the island, he survived a viper bite and healed the father of governor Publius, as well as many other inhabitants.',
             latitude: 35.9375, longitude: 14.3754, image_url: 'https://images.unsplash.com/photo-1514890547357-a9ee288728e0?auto=format&fit=crop&w=800&q=80', order_index: 3,
             flag: '🇲🇹', biblical_ref: 'Atos 27-28', active: true,
             tourist_spots: [
-                { name: 'Baía de São Paulo', description: 'Local tradicional do naufrágio do Apóstolo Paulo, com estátua comemorativa.', image_url: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=600&q=80' },
-                { name: 'Catedral de São João', description: 'Uma das catedrais mais impressionantes da Europa, com interior barroco em ouro.', image_url: 'https://images.unsplash.com/photo-1584466990297-eb0e1c40f0a1?auto=format&fit=crop&w=600&q=80' },
-                { name: 'Gruta de São Paulo', description: 'Caverna em Rabat onde a tradição diz que Paulo orou e pregou durante sua estadia.', image_url: 'https://images.unsplash.com/photo-1504512485720-7d83a16ee930?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Baía de São Paulo', name_en: "St. Paul's Bay", description: 'Local tradicional do naufrágio do Apóstolo Paulo, com estátua comemorativa.', description_en: 'Traditional site of the Apostle Paul\'s shipwreck, with a commemorative statue.', image_url: 'https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Catedral de São João', name_en: "St. John's Co-Cathedral", description: 'Uma das catedrais mais impressionantes da Europa, com interior barroco em ouro.', description_en: 'One of the most impressive cathedrals in Europe, with a golden Baroque interior.', image_url: 'https://images.unsplash.com/photo-1584466990297-eb0e1c40f0a1?auto=format&fit=crop&w=600&q=80' },
+                { name: 'Gruta de São Paulo', name_en: "St. Paul's Grotto", description: 'Caverna em Rabat onde a tradição diz que Paulo orou e pregou durante sua estadia.', description_en: 'A cave in Rabat where tradition says Paul prayed and preached during his stay.', image_url: 'https://images.unsplash.com/photo-1504512485720-7d83a16ee930?auto=format&fit=crop&w=600&q=80' },
             ],
         }],
     ]),
@@ -167,7 +173,7 @@ const _defaultStore = {
             cta_primary_en: 'Start Your Journey',
             cta_secondary: 'Já tenho conta',
             cta_secondary_en: 'I already have an account',
-            stats: [{ number: '10+', label: 'Cidades' }, { number: '270+', label: 'Perguntas' }, { number: '3', label: 'Blocos' }],
+            stats: [{ number: '10+', label: 'Cidades', label_en: 'Cities' }, { number: '270+', label: 'Perguntas', label_en: 'Questions' }, { number: '3', label: 'Blocos', label_en: 'Blocks' }],
         },
         cities_section: {
             label: 'Destinos Históricos',
@@ -185,11 +191,11 @@ const _defaultStore = {
             title_en: "The Apostle Paul's Routes",
             subtitle: 'Três jornadas que transformaram o mundo. Mais de 16.000 km percorridos em 12 anos.',
             subtitle_en: 'Three journeys that changed the world. Over 16,000 km traveled in 12 years.',
-            stats: [{ label: 'DISTÂNCIA', value: '16.000+ km' }, { label: 'DURAÇÃO', value: '~12 anos' }, { label: 'PAÍSES', value: '10 visitados' }, { label: 'CIDADES', value: '50+ cidades' }],
+            stats: [{ label: 'DISTÂNCIA', label_en: 'DISTANCE', value: '16.000+ km', value_en: '16,000+ km' }, { label: 'DURAÇÃO', label_en: 'DURATION', value: '~12 anos', value_en: '~12 years' }, { label: 'PAÍSES', label_en: 'COUNTRIES', value: '10 visitados', value_en: '10 visited' }, { label: 'CIDADES', label_en: 'CITIES', value: '50+ cidades', value_en: '50+ cities' }],
             journeys: [
-                { num: '1ª', title: 'Primeira Viagem', route: 'Chipre, Turquia', date: '46-48 d.C.' },
-                { num: '2ª', title: 'Segunda Viagem', route: 'Grécia, Macedônia', date: '49-52 d.C.' },
-                { num: '3ª', title: 'Terceira Viagem', route: 'Éfeso, Jerusalém', date: '53-58 d.C.' },
+                { num: '1ª', title: 'Primeira Viagem', title_en: 'First Journey', route: 'Chipre, Turquia', route_en: 'Cyprus, Turkey', date: '46-48 d.C.', date_en: '46-48 AD' },
+                { num: '2ª', title: 'Segunda Viagem', title_en: 'Second Journey', route: 'Grécia, Macedônia', route_en: 'Greece, Macedonia', date: '49-52 d.C.', date_en: '49-52 AD' },
+                { num: '3ª', title: 'Terceira Viagem', title_en: 'Third Journey', route: 'Éfeso, Jerusalém', route_en: 'Ephesus, Jerusalem', date: '53-58 d.C.', date_en: '53-58 AD' },
             ],
         },
         how_it_works: {
@@ -200,9 +206,9 @@ const _defaultStore = {
             subtitle: 'Aprenda, compita e ganhe prêmios reais explorando as cidades bíblicas.',
             subtitle_en: 'Learn, compete and win real prizes exploring the biblical cities.',
             items: [
-                { icon: '📖', title: 'Aprenda', desc: 'Mergulhe em perguntas sobre contexto bíblico, geografia moderna e turismo local de cada cidade histórica.' },
-                { icon: '⚔️', title: 'Compita', desc: 'Responda perguntas com precisão e velocidade. Suba no ranking global e desafie jogadores do mundo todo.' },
-                { icon: '🏆', title: 'Ganhe', desc: 'Os melhores colocados ganham viagens reais para explorar as cidades históricas do cristianismo.' },
+                { icon: '📖', title: 'Aprenda', title_en: 'Learn', desc: 'Mergulhe em perguntas sobre contexto bíblico, geografia moderna e turismo local de cada cidade histórica.', desc_en: 'Dive into questions about biblical context, modern geography and local tourism of each historic city.' },
+                { icon: '⚔️', title: 'Compita', title_en: 'Compete', desc: 'Responda perguntas com precisão e velocidade. Suba no ranking global e desafie jogadores do mundo todo.', desc_en: 'Answer questions with precision and speed. Rise in the global ranking and challenge players worldwide.' },
+                { icon: '🏆', title: 'Ganhe', title_en: 'Win', desc: 'Os melhores colocados ganham viagens reais para explorar as cidades históricas do cristianismo.', desc_en: 'Top players win real trips to explore the historic cities of Christianity.' },
             ],
         },
         cta_section: {
@@ -229,11 +235,16 @@ const _defaultStore = {
                 'Cada cidade é uma fase completa com 3 blocos de conhecimento: contexto bíblico, geografia atual e turismo local. São 9 perguntas por cidade, com dificuldade progressiva e timer — teste seus conhecimentos e suba no ranking!',
                 'Além de aprender, você pode desafiar amigos em duelos PvP, participar de desafios diários, ganhar XP para subir de nível e até fazer check-in GPS nas cidades reais para ganhar pontos extras.',
             ],
+            paragraphs_en: [
+                'The Disciple is an interactive educational game that takes you on a journey through the cities visited by the Apostle Paul. Answer questions about biblical history, modern geography and religious tourism while competing with players worldwide.',
+                'Each city is a complete stage with 3 knowledge blocks: biblical context, modern geography and local tourism. There are 9 questions per city, with progressive difficulty and a timer — test your knowledge and climb the rankings!',
+                'Besides learning, you can challenge friends in PvP duels, participate in daily challenges, earn XP to level up and even GPS check-in at real cities for extra points.',
+            ],
             features: [
-                { icon: '📖', title: 'Conteúdo Bíblico', desc: 'Perguntas baseadas nas Escrituras e no contexto histórico das viagens de Paulo.' },
-                { icon: '🌍', title: 'Geografia Real', desc: 'Aprenda sobre as cidades modernas que guardam a história do cristianismo primitivo.' },
-                { icon: '✈️', title: 'Turismo Religioso', desc: 'Descubra pontos turísticos, monumentos e locais sagrados de cada cidade.' },
-                { icon: '🏆', title: 'Competição Global', desc: 'Ranking mundial, duelos PvP, desafios diários e sistema de ligas.' },
+                { icon: '📖', title: 'Conteúdo Bíblico', title_en: 'Biblical Content', desc: 'Perguntas baseadas nas Escrituras e no contexto histórico das viagens de Paulo.', desc_en: 'Questions based on Scripture and the historical context of Paul\'s journeys.' },
+                { icon: '🌍', title: 'Geografia Real', title_en: 'Real Geography', desc: 'Aprenda sobre as cidades modernas que guardam a história do cristianismo primitivo.', desc_en: 'Learn about the modern cities that hold the history of early Christianity.' },
+                { icon: '✈️', title: 'Turismo Religioso', title_en: 'Religious Tourism', desc: 'Descubra pontos turísticos, monumentos e locais sagrados de cada cidade.', desc_en: 'Discover tourist spots, monuments and sacred sites in each city.' },
+                { icon: '🏆', title: 'Competição Global', title_en: 'Global Competition', desc: 'Ranking mundial, duelos PvP, desafios diários e sistema de ligas.', desc_en: 'World ranking, PvP duels, daily challenges and league system.' },
             ],
         },
         testimonials: {
@@ -244,15 +255,15 @@ const _defaultStore = {
             subtitle: 'Veja o que a comunidade está falando sobre O Discípulo.',
             subtitle_en: 'See what the community is saying about The Disciple.',
             items: [
-                { name: 'Ana Silva', role: 'Professora de EBD', text: 'Uso O Discípulo nas aulas da Escola Bíblica Dominical. Os jovens adoram competir enquanto aprendem!', avatar: '👩‍🏫' },
-                { name: 'Pastor Carlos', role: 'Igreja Batista Central', text: 'Uma ferramenta incrível para engajar a igreja no estudo bíblico de forma divertida e moderna.', avatar: '⛪' },
-                { name: 'Marcos Oliveira', role: 'Jogador desde 2026', text: 'Aprendi mais sobre as viagens de Paulo jogando do que em anos de estudo. Viciante e educativo!', avatar: '🎮' },
+                { name: 'Ana Silva', role: 'Professora de EBD', role_en: 'Sunday School Teacher', text: 'Uso O Discípulo nas aulas da Escola Bíblica Dominical. Os jovens adoram competir enquanto aprendem!', text_en: 'I use The Disciple in Sunday School classes. The youth love competing while learning!', avatar: '👩‍🏫' },
+                { name: 'Pastor Carlos', role: 'Igreja Batista Central', role_en: 'Central Baptist Church', text: 'Uma ferramenta incrível para engajar a igreja no estudo bíblico de forma divertida e moderna.', text_en: 'An incredible tool to engage the church in Bible study in a fun and modern way.', avatar: '⛪' },
+                { name: 'Marcos Oliveira', role: 'Jogador desde 2026', role_en: 'Player since 2026', text: 'Aprendi mais sobre as viagens de Paulo jogando do que em anos de estudo. Viciante e educativo!', text_en: 'I learned more about Paul\'s journeys playing than in years of study. Addictive and educational!', avatar: '🎮' },
             ],
             stats: [
-                { number: '1.200+', label: 'Jogadores Ativos' },
-                { number: '45.000+', label: 'Perguntas Respondidas' },
-                { number: '98%', label: 'Aprovação' },
-                { number: '15+', label: 'Países' },
+                { number: '1.200+', label: 'Jogadores Ativos', label_en: 'Active Players' },
+                { number: '45.000+', label: 'Perguntas Respondidas', label_en: 'Questions Answered' },
+                { number: '98%', label: 'Aprovação', label_en: 'Approval' },
+                { number: '15+', label: 'Países', label_en: 'Countries' },
             ],
         },
         faq: {
@@ -263,12 +274,12 @@ const _defaultStore = {
             subtitle: 'Tudo que você precisa saber sobre O Discípulo.',
             subtitle_en: 'Everything you need to know about The Disciple.',
             items: [
-                { question: 'O jogo é gratuito?', answer: 'Sim! O Discípulo é gratuito para jogar. Temos um plano Premium opcional com power-ups extras e conteúdo exclusivo.' },
-                { question: 'Preciso instalar um aplicativo?', answer: 'Não! O Discípulo funciona direto no navegador do celular ou computador. Basta acessar disciplegame.com.' },
-                { question: 'Como funciona o sistema de pontos?', answer: 'Cada pergunta vale pontos baseados na dificuldade: fácil (100 pts), médio (200 pts) e difícil (300 pts). Você tem 30 segundos por pergunta.' },
-                { question: 'Posso jogar com amigos?', answer: 'Sim! Você pode criar salas privadas, desafiar amigos em duelos PvP e compartilhar seus resultados.' },
-                { question: 'Quais cidades estão disponíveis?', answer: 'Atualmente temos Jerusalém, Éfeso e Malta. Novas cidades são adicionadas regularmente seguindo as viagens do Apóstolo Paulo.' },
-                { question: 'O conteúdo é biblicamente preciso?', answer: 'Sim! Todas as perguntas são baseadas em fontes bíblicas e históricas confiáveis, com explicações detalhadas após cada resposta.' },
+                { question: 'O jogo é gratuito?', question_en: 'Is the game free?', answer: 'Sim! O Discípulo é gratuito para jogar. Temos um plano Premium opcional com power-ups extras e conteúdo exclusivo.', answer_en: 'Yes! The Disciple is free to play. We have an optional Premium plan with extra power-ups and exclusive content.' },
+                { question: 'Preciso instalar um aplicativo?', question_en: 'Do I need to install an app?', answer: 'Não! O Discípulo funciona direto no navegador do celular ou computador. Basta acessar disciplegame.com.', answer_en: 'No! The Disciple works directly in your phone or computer browser. Just visit disciplegame.com.' },
+                { question: 'Como funciona o sistema de pontos?', question_en: 'How does the scoring system work?', answer: 'Cada pergunta vale pontos baseados na dificuldade: fácil (100 pts), médio (200 pts) e difícil (300 pts). Você tem 30 segundos por pergunta.', answer_en: 'Each question is worth points based on difficulty: easy (100 pts), medium (200 pts) and hard (300 pts). You have 30 seconds per question.' },
+                { question: 'Posso jogar com amigos?', question_en: 'Can I play with friends?', answer: 'Sim! Você pode criar salas privadas, desafiar amigos em duelos PvP e compartilhar seus resultados.', answer_en: 'Yes! You can create private rooms, challenge friends in PvP duels and share your results.' },
+                { question: 'Quais cidades estão disponíveis?', question_en: 'Which cities are available?', answer: 'Atualmente temos Jerusalém, Éfeso e Malta. Novas cidades são adicionadas regularmente seguindo as viagens do Apóstolo Paulo.', answer_en: 'Currently we have Jerusalem, Ephesus and Malta. New cities are added regularly following the Apostle Paul\'s journeys.' },
+                { question: 'O conteúdo é biblicamente preciso?', question_en: 'Is the content biblically accurate?', answer: 'Sim! Todas as perguntas são baseadas em fontes bíblicas e históricas confiáveis, com explicações detalhadas após cada resposta.', answer_en: 'Yes! All questions are based on reliable biblical and historical sources, with detailed explanations after each answer.' },
             ],
         },
     } as Record<string, any>,

@@ -104,10 +104,10 @@ export default function HomePage() {
             </Link>
           </div>
           <div style={{ display: 'flex', gap: 24 }}>
-            {(hero.stats || [{ number: '10+', label: 'Cidades' }, { number: '270+', label: 'Perguntas' }, { number: '3', label: 'Blocos' }]).map((st: any) => (
+            {(hero.stats || [{ number: '10+', label: 'Cidades', label_en: 'Cities' }, { number: '270+', label: 'Perguntas', label_en: 'Questions' }, { number: '3', label: 'Blocos', label_en: 'Blocks' }]).map((st: any) => (
               <div key={st.label}>
                 <div style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 28, fontWeight: 800, color: '#c9a227' }}>{st.number}</div>
-                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>{st.label}</div>
+                <div style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', fontWeight: 500 }}>{lf(st, 'label')}</div>
               </div>
             ))}
           </div>
@@ -125,7 +125,7 @@ export default function HomePage() {
           <SectionHeader label={lf(aboutSec, 'label') || aboutSec.label} title={lf(aboutSec, 'title') || aboutSec.title} subtitle={lf(aboutSec, 'subtitle') || aboutSec.subtitle} />
           <div className="home-about-layout" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 48, marginTop: 48, alignItems: 'center' }}>
             <div>
-              {(aboutSec.paragraphs || []).map((p: string, i: number) => (
+              {(locale === 'en' && aboutSec.paragraphs_en ? aboutSec.paragraphs_en : aboutSec.paragraphs || []).map((p: string, i: number) => (
                 <p key={i} style={{ fontSize: 15, color: 'rgba(255,255,255,0.6)', lineHeight: 1.9, marginBottom: 20 }}>{p}</p>
               ))}
               <Link href="/demo" style={{ display: 'inline-block', marginTop: 8, padding: '12px 28px', borderRadius: 10, background: 'rgba(39,174,96,0.15)', border: '1px solid rgba(39,174,96,0.4)', color: '#2ecc71', fontWeight: 700, fontSize: 14, textDecoration: 'none' }}>
@@ -136,8 +136,8 @@ export default function HomePage() {
               {(aboutSec.features || []).map((f: any, i: number) => (
                 <div key={i} style={{ background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 16, padding: '24px 20px', textAlign: 'center' }}>
                   <div style={{ fontSize: 32, marginBottom: 12 }}>{f.icon}</div>
-                  <h4 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 16, fontWeight: 700, color: '#c9a227', marginBottom: 8 }}>{f.title}</h4>
-                  <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>{f.desc}</p>
+                  <h4 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 16, fontWeight: 700, color: '#c9a227', marginBottom: 8 }}>{lf(f, 'title')}</h4>
+                  <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>{lf(f, 'desc')}</p>
                 </div>
               ))}
             </div>
@@ -176,9 +176,9 @@ export default function HomePage() {
                     {/* Text side */}
                     <div style={{ padding: '36px 32px', display: 'flex', flexDirection: 'column', justifyContent: 'center', order: idx % 2 !== 0 ? 1 : 2 }}>
                       {city.biblical_ref && <span style={{ fontSize: 11, color: '#c9a227', fontWeight: 600, background: goldBg, border: goldBorder, borderRadius: 20, padding: '3px 14px', width: 'fit-content', marginBottom: 12 }}>📖 {city.biblical_ref}</span>}
-                      <h3 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 'clamp(24px,3vw,36px)', fontWeight: 800, marginBottom: 12 }}>{city.name}</h3>
-                      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, marginBottom: 12 }}>{city.description}</p>
-                      <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', lineHeight: 1.7, marginBottom: 20 }}>{city.biblical_context}</p>
+                      <h3 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 'clamp(24px,3vw,36px)', fontWeight: 800, marginBottom: 12 }}>{lf(city, 'name')}</h3>
+                      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7, marginBottom: 12 }}>{lf(city, 'description')}</p>
+                      <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', lineHeight: 1.7, marginBottom: 20 }}>{lf(city, 'biblical_context')}</p>
 
                       {spots.length > 0 && (
                         <button onClick={() => setExpandedCity(isExpanded ? null : city.id)} style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: 'none', border: goldBorder, borderRadius: 10, padding: '8px 16px', color: '#c9a227', fontWeight: 600, fontSize: 13, cursor: 'pointer', width: 'fit-content', marginBottom: isExpanded ? 16 : 0 }}>
@@ -209,8 +209,8 @@ export default function HomePage() {
                               )}
                             </div>
                             <div style={{ padding: '14px 16px' }}>
-                              <h4 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 15, fontWeight: 700, color: '#c9a227', marginBottom: 6 }}>{spot.name}</h4>
-                              <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>{spot.description}</p>
+                              <h4 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 15, fontWeight: 700, color: '#c9a227', marginBottom: 6 }}>{lf(spot, 'name')}</h4>
+                              <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>{lf(spot, 'description')}</p>
                             </div>
                           </div>
                         ))}
@@ -230,24 +230,24 @@ export default function HomePage() {
         <div style={{ maxWidth: 1000, margin: '0 auto' }}>
           <SectionHeader label={lf(mapSec, 'label') || mapSec.label} title={lf(mapSec, 'title') || mapSec.title} subtitle={lf(mapSec, 'subtitle') || mapSec.subtitle} />
           <div className="home-stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 12, margin: '36px auto 32px', maxWidth: 800 }}>
-            {(mapSec.stats || [{ label: 'DISTÂNCIA', value: '16.000+ km' }, { label: 'DURAÇÃO', value: '~12 anos' }, { label: 'PAÍSES', value: '10 visitados' }, { label: 'CIDADES', value: '50+ cidades' }]).map((st: any) => (
+            {(mapSec.stats || [{ label: 'DISTÂNCIA', label_en: 'DISTANCE', value: '16.000+ km', value_en: '16,000+ km' }, { label: 'DURAÇÃO', label_en: 'DURATION', value: '~12 anos', value_en: '~12 years' }, { label: 'PAÍSES', label_en: 'COUNTRIES', value: '10 visitados', value_en: '10 visited' }, { label: 'CIDADES', label_en: 'CITIES', value: '50+ cidades', value_en: '50+ cities' }]).map((st: any) => (
               <div key={st.label} style={{ background: goldBg, border: goldBorder, borderRadius: 12, padding: '14px 16px', textAlign: 'center' }}>
-                <p style={{ fontSize: 10, fontWeight: 700, color: '#c9a227', letterSpacing: 1.2, marginBottom: 4 }}>{st.label}</p>
-                <p style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 18, fontWeight: 800 }}>{st.value}</p>
+                <p style={{ fontSize: 10, fontWeight: 700, color: '#c9a227', letterSpacing: 1.2, marginBottom: 4 }}>{lf(st, 'label')}</p>
+                <p style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 18, fontWeight: 800 }}>{lf(st, 'value')}</p>
               </div>
             ))}
           </div>
           <div style={{ borderRadius: 16, overflow: 'hidden', border: '2px solid rgba(201,162,39,0.3)', boxShadow: '0 8px 40px rgba(0,0,0,0.4)', position: 'relative', background: '#1a1040' }}>
-            <img src={mapSec.image_url || '/images/map.svg'} alt="Viagens Missionárias de Paulo" style={{ width: '100%', display: 'block' }} />
+            <img src={mapSec.image_url || '/images/map.svg'} alt={locale === 'en' ? "Paul's Missionary Journeys" : 'Viagens Missionárias de Paulo'} style={{ width: '100%', display: 'block' }} />
             <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg,rgba(13,11,46,0.6) 0%,transparent 30%,transparent 70%,rgba(13,11,46,0.4) 100%)', pointerEvents: 'none' }} />
           </div>
           <div className="home-journeys-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginTop: 24 }}>
-            {(mapSec.journeys || [{ num: '1a', title: 'Primeira Viagem', route: 'Chipre, Turquia', date: '46-48 d.C.' }, { num: '2a', title: 'Segunda Viagem', route: 'Grécia, Macedônia', date: '49-52 d.C.' }, { num: '3a', title: 'Terceira Viagem', route: 'Éfeso, Jerusalém', date: '53-58 d.C.' }]).map((j: any) => (
+            {(mapSec.journeys || [{ num: '1ª', title: 'Primeira Viagem', title_en: 'First Journey', route: 'Chipre, Turquia', route_en: 'Cyprus, Turkey', date: '46-48 d.C.', date_en: '46-48 AD' }, { num: '2ª', title: 'Segunda Viagem', title_en: 'Second Journey', route: 'Grécia, Macedônia', route_en: 'Greece, Macedonia', date: '49-52 d.C.', date_en: '49-52 AD' }, { num: '3ª', title: 'Terceira Viagem', title_en: 'Third Journey', route: 'Éfeso, Jerusalém', route_en: 'Ephesus, Jerusalem', date: '53-58 d.C.', date_en: '53-58 AD' }]).map((j: any) => (
               <div key={j.num} style={{ display: 'flex', alignItems: 'center', gap: 12, background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 12, padding: '14px 16px' }}>
                 <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'linear-gradient(135deg,#c9a227,#8b6914)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, fontSize: 12, color: '#1a0a4a', flexShrink: 0 }}>{j.num}</div>
                 <div>
-                  <p style={{ fontWeight: 700, fontSize: 13, marginBottom: 2 }}>{j.title}</p>
-                  <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>⚓ {j.route} ({j.date})</p>
+                  <p style={{ fontWeight: 700, fontSize: 13, marginBottom: 2 }}>{lf(j, 'title')}</p>
+                  <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.4)' }}>⚓ {lf(j, 'route')} ({lf(j, 'date')})</p>
                 </div>
               </div>
             ))}
@@ -260,11 +260,11 @@ export default function HomePage() {
         <div style={{ maxWidth: 1100, margin: '0 auto' }}>
           <SectionHeader label={lf(howSec, 'label') || howSec.label} title={lf(howSec, 'title') || howSec.title} subtitle={lf(howSec, 'subtitle') || howSec.subtitle} />
           <div className="home-how-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 24, marginTop: 48 }}>
-            {(howSec.items || [{ icon: '📖', title: 'Aprenda', desc: 'Mergulhe em perguntas sobre contexto bíblico.' }, { icon: '⚔️', title: 'Compita', desc: 'Responda com precisão e velocidade.' }, { icon: '🏆', title: 'Ganhe', desc: 'Ganhe prêmios reais.' }]).map((item: any, i: number) => (
+            {(howSec.items || [{ icon: '📖', title: 'Aprenda', title_en: 'Learn', desc: 'Mergulhe em perguntas sobre contexto bíblico.', desc_en: 'Dive into questions about biblical context.' }, { icon: '⚔️', title: 'Compita', title_en: 'Compete', desc: 'Responda com precisão e velocidade.', desc_en: 'Answer with precision and speed.' }, { icon: '🏆', title: 'Ganhe', title_en: 'Win', desc: 'Ganhe prêmios reais.', desc_en: 'Win real prizes.' }]).map((item: any, i: number) => (
               <div key={i} style={{ background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 20, padding: '36px 28px', textAlign: 'center' }}>
                 <div style={{ width: 72, height: 72, borderRadius: '50%', background: goldBg, border: goldBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 22px', fontSize: 32, boxShadow: '0 0 24px rgba(201,162,39,0.2)' }}>{item.icon}</div>
-                <h3 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 22, fontWeight: 700, marginBottom: 12, color: '#c9a227' }}>{item.title}</h3>
-                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 15, lineHeight: 1.7 }}>{item.desc}</p>
+                <h3 style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 22, fontWeight: 700, marginBottom: 12, color: '#c9a227' }}>{lf(item, 'title')}</h3>
+                <p style={{ color: 'rgba(255,255,255,0.5)', fontSize: 15, lineHeight: 1.7 }}>{lf(item, 'desc')}</p>
               </div>
             ))}
           </div>
@@ -280,21 +280,21 @@ export default function HomePage() {
             {(testSec.stats || []).map((st: any, i: number) => (
               <div key={i} style={{ textAlign: 'center' }}>
                 <p style={{ fontFamily: "'Playfair Display','Georgia',serif", fontSize: 32, fontWeight: 800, color: '#c9a227', marginBottom: 4 }}>{st.number}</p>
-                <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.35)', letterSpacing: 0.5 }}>{st.label}</p>
+                <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.35)', letterSpacing: 0.5 }}>{lf(st, 'label')}</p>
               </div>
             ))}
           </div>
           {/* Testimonial cards */}
           <div className="home-test-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 20 }}>
-            {(testSec.items || []).map((t: any, i: number) => (
+            {(testSec.items || []).map((ti: any, i: number) => (
               <div key={i} style={{ background: 'rgba(255,255,255,0.04)', border: goldBorder, borderRadius: 20, padding: '28px 24px', position: 'relative' }}>
                 <div style={{ fontSize: 40, position: 'absolute', top: -8, left: 20, color: 'rgba(201,162,39,0.15)' }}>"</div>
-                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, marginBottom: 20, fontStyle: 'italic' }}>{t.text}</p>
+                <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.6)', lineHeight: 1.7, marginBottom: 20, fontStyle: 'italic' }}>{lf(ti, 'text')}</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                  <div style={{ width: 40, height: 40, borderRadius: '50%', background: goldBg, border: goldBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>{t.avatar}</div>
+                  <div style={{ width: 40, height: 40, borderRadius: '50%', background: goldBg, border: goldBorder, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20 }}>{ti.avatar}</div>
                   <div>
-                    <p style={{ fontSize: 13, fontWeight: 700 }}>{t.name}</p>
-                    <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>{t.role}</p>
+                    <p style={{ fontSize: 13, fontWeight: 700 }}>{ti.name}</p>
+                    <p style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)' }}>{lf(ti, 'role')}</p>
                   </div>
                 </div>
               </div>
@@ -313,12 +313,12 @@ export default function HomePage() {
               return (
                 <div key={i} style={{ background: 'rgba(255,255,255,0.04)', border: isOpen ? goldBorder : '1px solid rgba(255,255,255,0.08)', borderRadius: 14, overflow: 'hidden', transition: 'all 0.2s' }}>
                   <button onClick={() => setOpenFaq(isOpen ? null : i)} style={{ width: '100%', padding: '18px 22px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: 'none', border: 'none', color: isOpen ? '#c9a227' : '#fff', fontSize: 15, fontWeight: 600, cursor: 'pointer', textAlign: 'left' }}>
-                    {item.question}
+                    {lf(item, 'question')}
                     <span style={{ transform: isOpen ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.3s', fontSize: 12, color: '#c9a227', flexShrink: 0, marginLeft: 12 }}>▼</span>
                   </button>
                   {isOpen && (
                     <div style={{ padding: '0 22px 18px' }}>
-                      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7 }}>{item.answer}</p>
+                      <p style={{ fontSize: 14, color: 'rgba(255,255,255,0.55)', lineHeight: 1.7 }}>{lf(item, 'answer')}</p>
                     </div>
                   )}
                 </div>
@@ -352,7 +352,7 @@ export default function HomePage() {
           </div>
           <span style={{ fontFamily: "'Playfair Display','Georgia',serif", fontWeight: 700, fontSize: 15, color: 'rgba(255,255,255,0.7)' }}>{t('footer.brand')}</span>
         </div>
-        <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 13 }}>{lf(footerSec, 'text') || footerSec.text || '© 2026 O Discípulo — Todos os direitos reservados'}</p>
+        <p style={{ color: 'rgba(255,255,255,0.25)', fontSize: 13 }}>{lf(footerSec, 'text') || footerSec.text || (locale === 'en' ? '© 2026 The Disciple — All rights reserved' : '© 2026 O Discípulo — Todos os direitos reservados')}</p>
       </footer>
 
       <style>{`
